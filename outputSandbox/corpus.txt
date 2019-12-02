@@ -1,0 +1,80 @@
+/*
+  probe.c - code pertaining to probing methods
+  Part of Grbl
+
+  Copyright (c) 2014-2015 Sungeun K. Jeon
+
+  Grbl is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Grbl is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with Grbl.  If not, see <http://www.gnu.org/licenses/>.
+*/
+// Inverts the probe pin state depending on user settings and probing cycle mode.
+uint8_t
+uint8 t
+probe_invert_mask
+probe invert mask
+// Probe pin initialization routine.
+probe_init
+probe init
+PROBE_DDR
+probe ddr
+PROBE_MASK
+probe mask
+// Configure as input pins
+DISABLE_PROBE_PIN_PULL_UP
+disable probe pin pull up
+PROBE_PORT
+probe port
+// Normal low operation. Requires external pull-down.
+// Enable internal pull-up resistors. Normal high operation.
+// probe_configure_invert_mask(false); // Initialize invert mask. Not required. Updated when in-use.
+// Called by probe_init() and the mc_probe() routines. Sets up the probe pin invert mask to 
+// appropriately set the pin logic according to setting for normal-high/normal-low operation 
+// and the probing cycle modes for toward-workpiece/away-from-workpiece. 
+probe_configure_invert_mask
+probe configure invert mask
+is_probe_away
+is probe away
+// Initialize as zero.
+bit_isfalse
+bit isfalse
+settings
+flags
+BITFLAG_INVERT_PROBE_PIN
+bitflag invert probe pin
+// Returns the probe pin state. Triggered = true. Called by gcode parser and probe state monitor.
+probe_get_state
+probe get state
+PROBE_PIN
+probe pin
+// Monitors probe pin state and records the system position when detected. Called by the
+// stepper ISR per ISR tick.
+// NOTE: This function must be extremely efficient as to not bog down the stepper ISR.
+probe_state_monitor
+probe state monitor
+sys_probe_state
+sys probe state
+PROBE_ACTIVE
+probe active
+PROBE_OFF
+probe off
+memcpy
+sys
+probe_position
+probe position
+position
+bit_true
+bit true
+sys_rt_exec_state
+sys rt exec state
+EXEC_MOTION_CANCEL
+exec motion cancel
