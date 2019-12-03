@@ -135,7 +135,7 @@ class IdAndCommentAutomata {
                             if (startsWith("#define") || startsWith("#undef")
                                 || startsWith("#ifdef") || startsWith("#ifndef")
                             ) {
-                                val macro = this.split(" ")[1]
+                                val macro = this.split("""\s+""".toRegex())[1]
                                 tokens.add(preprocessor.Token(preprocessor.TokenType.IDENTIFIER, macro))
                             }
                             this.setLength(0)

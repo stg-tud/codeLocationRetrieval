@@ -175,7 +175,7 @@ class DocumentAutomata {
             }
         }
 
-        println("word list: $wordList")
+//        println("word list: $wordList")
 
         return documents
     }
