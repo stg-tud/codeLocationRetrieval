@@ -60,3 +60,4 @@ inputBig/
 outputBig/
 inputSandbox/
 outputSandbox/
+.idea/kotlinc.xml

@@ -13,6 +13,8 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 tasks.withType<KotlinCompile> {

@@ -5,9 +5,27 @@ import preprocessor.Preprocessor
 import java.io.File
 
 fun main(args: Array<String>) {
-    sandboxInput()
+//    sandboxInput()
+
+//    sandboxInputNoFileWrite()
 
 //    bigInput()
+}
+
+private fun sandboxInputNoFileWrite() {
+    val preprocessor = Preprocessor()
+
+    val filename = "gui"
+    val file = File("inputSandbox/$filename.c")
+    val fileContent = file.readText()
+
+    val tokens = preprocessor.extractTokens(fileContent)
+    tokens.forEach {
+        println(it)
+    }
+
+    // write the documents (TODO: if file .h then automatically new doc)
+    val documentList = preprocessor.extractDocuments(fileContent)
 }
 
 
@@ -18,7 +36,7 @@ private fun sandboxInput() {
     val file = File("inputSandbox/$filename.c")
     val fileContent = file.readText()
 
-    val tokens = preprocessor.tokenize(fileContent)
+    val tokens = preprocessor.extractTokens(fileContent)
     tokens.forEach {
         println(it)
     }
@@ -73,7 +91,7 @@ private fun bigInput() {
 
         val fileContent = it.readText()
 
-        val tokens = preprocessor.tokenize(fileContent)
+        val tokens = preprocessor.extractTokens(fileContent)
         for(token in tokens) {
             if(token.tokenType == TokenType.IDENTIFIER) {
                 val modifiedIds = preprocessor.getModifiedIdentifierList(token.value)
