@@ -4,9 +4,16 @@ import preprocessor.TokenType
 import preprocessor.Preprocessor
 import java.io.File
 import Matrix
+import preprocessor.Lexer
 import java.util.*
 
 fun main(args: Array<String>) {
+    // lexer
+    val tokens = Lexer(File("inputSandbox/gui.c").readText()).scan()
+    tokens.forEach {
+        println(it)
+    }
+
 //    sandboxInput()
 
 //    sandboxInputNoFileWrite()
@@ -24,7 +31,7 @@ fun main(args: Array<String>) {
     // 2. comments and modified identifiers are treated as a single string
     //      2.1. e.g. should "average num" be treated as one term or as two?
     //      2.2 should each word in a comment be treated as a single term?
-    createTdm()
+//    createTdm()
 }
 
 private fun sandboxInputNoFileWrite() {
