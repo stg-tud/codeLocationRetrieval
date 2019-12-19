@@ -2,10 +2,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.11"
+    application
 }
 
 group = "com.bekiroe.featurelocation"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClassName = "main.MainKt"
+}
 
 repositories {
     mavenCentral()
@@ -20,3 +25,4 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+

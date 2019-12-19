@@ -1,56 +1,4 @@
-/****************************************************************************
- * NCSA Mosaic for the X Window System                                      *
- * Software Development Group                                               *
- * National Center for Supercomputing Applications                          *
- * University of Illinois at Urbana-Champaign                               *
- * 605 E. Springfield, Champaign IL 61820                                   *
- * mosaic@ncsa.uiuc.edu                                                     *
- *                                                                          *
- * Copyright (C) 1993, Board of Trustees of the University of Illinois      *
- *                                                                          *
- * NCSA Mosaic software, both binary and source (hereafter, Software) is    *
- * copyrighted by The Board of Trustees of the University of Illinois       *
- * (UI), and ownership remains with the UI.                                 *
- *                                                                          *
- * The UI grants you (hereafter, Licensee) a license to use the Software    *
- * for academic, research and internal business purposes only, without a    *
- * fee.  Licensee may distribute the binary and source code (if released)   *
- * to third parties provided that the copyright notice and this statement   *
- * appears on all copies and that no charge is associated with such         *
- * copies.                                                                  *
- *                                                                          *
- * Licensee may make derivative works.  However, if Licensee distributes    *
- * any derivative work based on or derived from the Software, then          *
- * Licensee will (1) notify NCSA regarding its distribution of the          *
- * derivative work, and (2) clearly notify users that such derivative       *
- * work is a modified version and not the original NCSA Mosaic              *
- * distributed by the UI.                                                   *
- *                                                                          *
- * Any Licensee wishing to make commercial use of the Software should       *
- * contact the UI, c/o NCSA, to negotiate an appropriate license for such   *
- * commercial use.  Commercial use includes (1) integration of all or       *
- * part of the source code into a product for sale or license by or on      *
- * behalf of Licensee to third parties, or (2) distribution of the binary   *
- * code or source code to third parties that need it to utilize a           *
- * commercial product sold or licensed by or on behalf of Licensee.         *
- *                                                                          *
- * UI MAKES NO REPRESENTATIONS ABOUT THE SUITABILITY OF THIS SOFTWARE FOR   *
- * ANY PURPOSE.  IT IS PROVIDED "AS IS" WITHOUT EXPRESS OR IMPLIED          *
- * WARRANTY.  THE UI SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY THE    *
- * USERS OF THIS SOFTWARE.                                                  *
- *                                                                          *
- * By using or copying this Software, Licensee agrees to abide by the       *
- * copyright law and all other applicable laws of the U.S. including, but   *
- * not limited to, export control laws, and the terms of this license.      *
- * UI shall have the right to terminate this license immediately by         *
- * written notice upon Licensee's breach of, or non-compliance with, any    *
- * of its terms.  Licensee may be held legally responsible for any          *
- * copyright infringement that is caused or encouraged by Licensee's        *
- * failure to abide by the terms of this license.                           *
- *                                                                          *
- * Comments and questions are welcome and can be sent to                    *
- * mosaic-x@ncsa.uiuc.edu.                                                  *
- ****************************************************************************/
+/****************************************************************************\n * NCSA Mosaic for the X Window System                                      *\n * Software Development Group                                               *\n * National Center for Supercomputing Applications                          *\n * University of Illinois at Urbana-Champaign                               *\n * 605 E. Springfield, Champaign IL 61820                                   *\n * mosaic@ncsa.uiuc.edu                                                     *\n *                                                                          *\n * Copyright (C) 1993, Board of Trustees of the University of Illinois      *\n *                                                                          *\n * NCSA Mosaic software, both binary and source (hereafter, Software) is    *\n * copyrighted by The Board of Trustees of the University of Illinois       *\n * (UI), and ownership remains with the UI.                                 *\n *                                                                          *\n * The UI grants you (hereafter, Licensee) a license to use the Software    *\n * for academic, research and internal business purposes only, without a    *\n * fee.  Licensee may distribute the binary and source code (if released)   *\n * to third parties provided that the copyright notice and this statement   *\n * appears on all copies and that no charge is associated with such         *\n * copies.                                                                  *\n *                                                                          *\n * Licensee may make derivative works.  However, if Licensee distributes    *\n * any derivative work based on or derived from the Software, then          *\n * Licensee will (1) notify NCSA regarding its distribution of the          *\n * derivative work, and (2) clearly notify users that such derivative       *\n * work is a modified version and not the original NCSA Mosaic              *\n * distributed by the UI.                                                   *\n *                                                                          *\n * Any Licensee wishing to make commercial use of the Software should       *\n * contact the UI, c/o NCSA, to negotiate an appropriate license for such   *\n * commercial use.  Commercial use includes (1) integration of all or       *\n * part of the source code into a product for sale or license by or on      *\n * behalf of Licensee to third parties, or (2) distribution of the binary   *\n * code or source code to third parties that need it to utilize a           *\n * commercial product sold or licensed by or on behalf of Licensee.         *\n *                                                                          *\n * UI MAKES NO REPRESENTATIONS ABOUT THE SUITABILITY OF THIS SOFTWARE FOR   *\n * ANY PURPOSE.  IT IS PROVIDED "AS IS" WITHOUT EXPRESS OR IMPLIED          *\n * WARRANTY.  THE UI SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY THE    *\n * USERS OF THIS SOFTWARE.                                                  *\n *                                                                          *\n * By using or copying this Software, Licensee agrees to abide by the       *\n * copyright law and all other applicable laws of the U.S. including, but   *\n * not limited to, export control laws, and the terms of this license.      *\n * UI shall have the right to terminate this license immediately by         *\n * written notice upon Licensee's breach of, or non-compliance with, any    *\n * of its terms.  Licensee may be held legally responsible for any          *\n * copyright infringement that is caused or encouraged by Licensee's        *\n * failure to abide by the terms of this license.                           *\n *                                                                          *\n * Comments and questions are welcome and can be sent to                    *\n * mosaic-x@ncsa.uiuc.edu.                                                  *\n ****************************************************************************/
 Proxy
 proxy
 noproxy_list
@@ -71,7 +19,7 @@ top
 w
 h
 __SRC__
-  src  
+src
 Pixmap
 pixmap
 tmp_pix
@@ -132,17 +80,10 @@ security type
 /*SWP -- 10.27.95 -- No Content Length*/
 noLength
 no length
-/* doesn't seem to be on all X11R4 systems
-#if (XtSpecificationRelease == 4)
-extern void _XEditResCheckMessages();
-#define EDITRES_SUPPORT
-#endif
-*/
+/* doesn't seem to be on all X11R4 systems\n#if (XtSpecificationRelease == 4)\nextern void _XEditResCheckMessages();\n#define EDITRES_SUPPORT\n#endif\n*/
 EDITRES_SUPPORT
 editres support
-/*
- * EDITRES_SUPPORT seems to fail with the HP libraries
- */
+/*\n * EDITRES_SUPPORT seems to fail with the HP libraries\n */
 /*Busy Cursor*/
 /* for selective image loading */
 imagedelay_sites
@@ -157,28 +98,20 @@ currently delaying images
 /* Because Sun cripples the keysym.h file. */
 XK_KP_Up
 xk kp up
-xk_kp_up
 XK_KP_Home
 xk kp home
-xk_kp_home
 XK_KP_Left
 xk kp left
-xk_kp_left
 XK_KP_Right
 xk kp right
-xk_kp_right
 XK_KP_Down
 xk kp down
-xk_kp_down
 XK_KP_Prior
 xk kp prior
-xk_kp_prior
 XK_KP_Next
 xk kp next
-xk_kp_next
 XK_KP_End
 xk kp end
-xk_kp_end
 SLAB_MENU
 slab menu
 SLAB_TITLE
@@ -197,13 +130,7 @@ SLAB_SMALLGLOBE
 slab smallglobe
 SLAB_TEXTTOOLS
 slab texttools
-/*
- * Globals used by the pixmaps for the animated icon.
- * Marc, I imagine you might want to do something cleaner
- * with these?
- *
- * Marc's not here, man.
- */
+/*\n * Globals used by the pixmaps for the animated icon.\n * Marc, I imagine you might want to do something cleaner\n * with these?\n *\n * Marc's not here, man.\n */
 IconWidth
 icon width
 IconHeight
@@ -344,10 +271,7 @@ balloon_action
 balloon action
 XtActionProc
 xt action proc
-/* to use balloon help, add these bits to your widget ...  BJS 2/7/96
- *    XmNtranslations, XtParseTranslationTable(xlattab),
- *    XmNuserData, (xtpointer) "Balloon Help String!",
- */
+/* to use balloon help, add these bits to your widget ...  BJS 2/7/96\n *    XmNtranslations, XtParseTranslationTable(xlattab),\n *    XmNuserData, (xtpointer) "Balloon Help String!",\n */
 /* ------------------------------------------------------ */
 /* emacs bindings to be used in text fields */
 text_translations
@@ -361,10 +285,7 @@ take_focus
 take focus
 url_actions
 url actions
-/* this stuff is so we can properly update the current_win variable
-   eliminating alot of problems with cloned windows (We love globals!)
-
-   Globals? Where? There are no globals here! */
+/* this stuff is so we can properly update the current_win variable\n   eliminating alot of problems with cloned windows (We love globals!)\n\n   Globals? Where? There are no globals here! */
 toplevel_translations
 toplevel translations
 set_current_win
@@ -391,21 +312,16 @@ cci_get
 cci get
 HTReferer
 ht referer
-/* This is exported to libwww, like altogether too many other
-   variables here. */
+/* This is exported to libwww, like altogether too many other\n   variables here. */
 binary_transfer
 binary transfer
-/* Now we cache the current window right before doing a binary
-   transfer, too.  Sheesh, this is not pretty. */
+/* Now we cache the current window right before doing a binary\n   transfer, too.  Sheesh, this is not pretty. */
 current_win
 current win
-/* If startup_document is set to anything but NULL, it will be the
-   initial document viewed (this is separate from home_document
-   below). */
+/* If startup_document is set to anything but NULL, it will be the\n   initial document viewed (this is separate from home_document\n   below). */
 startup_document
 startup document
-/* If startup_document is NULL home_document will be the initial
-   document. */
+/* If startup_document is NULL home_document will be the initial\n   document. */
 home_document
 home document
 machine
@@ -429,10 +345,7 @@ cached url
 /* Forward declaration of test predicate. */
 anchor_visited_predicate
 anchor visited predicate
-/* When we first start the application, we call mo_startup()
-   after creating the unmapped toplevel widget.  mo_startup()
-   either sets the value of this to 1 or 0.  If 0, we don't
-   open a starting window. */
+/* When we first start the application, we call mo_startup()\n   after creating the unmapped toplevel widget.  mo_startup()\n   either sets the value of this to 1 or 0.  If 0, we don't\n   open a starting window. */
 defer_initial_window
 defer initial window
 /* Pixmaps for interrupt button. */
@@ -493,11 +406,11 @@ toolbar follow gray
 toolbarNewsFwd
 toolbar news fwd
 toolbarNewsFFwd
-toolbar news ffwd
+toolbar news f fwd
 toolbarNewsRev
 toolbar news rev
 toolbarNewsFRev
-toolbar news frev
+toolbar news f rev
 toolbarNewsIndex
 toolbar news index
 toolbarAddHotlist
@@ -557,8 +470,7 @@ mo uname
 /* ----------------------------- WINDOW LIST ------------------------------ */
 winlist
 wincount
-/* Return either the first window in the window list or the next
-   window after the current window. */
+/* Return either the first window in the window list or the next\n   window after the current window. */
 mo_next_window
 mo next window
 next
@@ -568,9 +480,7 @@ mo fetch window by id
 id
 /*        goto done;*/
 /* notfound:*/
-/*
- done:
-  return win;*/
+/*\n done:\n  return win;*/
 /* Register a window in the window list. */
 mo_add_window_to_list
 mo add window to list
@@ -590,66 +500,14 @@ mo exit
 /* Couldn't find it. */
 mo_fail
 mo fail
-/*
- * THIS IS NOT USED ANYMORE!
- */
-/****************************************************************************
- * name:    mo_check_for_proxy
- * purpose: Return the location of the proxy gateway for the passed access
- *	    method.
- * inputs:
- *   - char *access: access string from the URL (http, gopher, ftp, etc)
- * returns:
- *   The proxy gateway to use. (http://proxy.ncsa.uiuc.edu:911/)
- * remarks: This should really be open-ended configurable.
- ****************************************************************************/
+/*\n * THIS IS NOT USED ANYMORE!\n */
+/****************************************************************************\n * name:    mo_check_for_proxy\n * purpose: Return the location of the proxy gateway for the passed access\n *	    method.\n * inputs:\n *   - char *access: access string from the URL (http, gopher, ftp, etc)\n * returns:\n *   The proxy gateway to use. (http://proxy.ncsa.uiuc.edu:911/)\n * remarks: This should really be open-ended configurable.\n ****************************************************************************/
 mo_check_for_proxy
 mo check for proxy
 access
-/*
-	if (access == NULL)
-	{
-		return((char *)NULL);
-	}
-	else if (strcmp(access, "http") == 0)
-	{
-		return(Rdata.http_proxy);
-	}
-	else if (strcmp(access, "ftp") == 0)
-	{
-		return(Rdata.ftp_proxy);
-	}
-	else if (strcmp(access, "wais") == 0)
-	{
-		return(Rdata.wais_proxy);
-	}
-	else if (strcmp(access, "gopher") == 0)
-	{
-		return(Rdata.gopher_proxy);
-	}
-	else if (strcmp(access, "news") == 0)
-	{
-		return(Rdata.news_proxy);
-	}
-	else if (strcmp(access, "file") == 0)
-	{
-		return(Rdata.file_proxy);
-	}
-	else
-	{
-*/
-/*
-	}
-*/
-/****************************************************************************
- * name:    mo_assemble_help_url
- * purpose: Make a temporary, unique filename.
- * inputs:
- *   - char *file: Filename to be appended to Rdata.docs_directory.
- * returns:
- *   The desired help url (a malloc'd string).
- * remarks:
- ****************************************************************************/
+/*\n	if (access == NULL)\n	{\n		return((char *)NULL);\n	}\n	else if (strcmp(access, "http") == 0)\n	{\n		return(Rdata.http_proxy);\n	}\n	else if (strcmp(access, "ftp") == 0)\n	{\n		return(Rdata.ftp_proxy);\n	}\n	else if (strcmp(access, "wais") == 0)\n	{\n		return(Rdata.wais_proxy);\n	}\n	else if (strcmp(access, "gopher") == 0)\n	{\n		return(Rdata.gopher_proxy);\n	}\n	else if (strcmp(access, "news") == 0)\n	{\n		return(Rdata.news_proxy);\n	}\n	else if (strcmp(access, "file") == 0)\n	{\n		return(Rdata.file_proxy);\n	}\n	else\n	{\n*/
+/*\n	}\n*/
+/****************************************************************************\n * name:    mo_assemble_help_url\n * purpose: Make a temporary, unique filename.\n * inputs:\n *   - char *file: Filename to be appended to Rdata.docs_directory.\n * returns:\n *   The desired help url (a malloc'd string).\n * remarks:\n ****************************************************************************/
 mo_assemble_help_url
 mo assemble help url
 file
@@ -659,8 +517,7 @@ docs directory
 get_pref_string
 get pref string
 eDOCS_DIRECTORY
-edocs directory
-e docs_directory
+e docs directory
 strdup
 malloc
 strlen
@@ -684,8 +541,7 @@ searchindex_win
 searchindex win
 XFlush
 x flush
-/* For lack of a better place, we do the iconify icon stuff here as well...
-    --SWP */
+/* For lack of a better place, we do the iconify icon stuff here as well...\n    --SWP */
 i
 pmap
 mmap
@@ -696,21 +552,7 @@ ccell_fg
 ccell fg
 ccell_bg
 ccell bg
-/*
-XWMHints *whints=XAllocWMHints();
-
-	imap = XCreatePixmapFromBitmapData
-	(XtDisplay(toplevel), XtWindow(toplevel),
-	 iconify_bits, iconify_width, iconify_height, 1, 0, 1);
-	imaskmap = XCreatePixmapFromBitmapData
-	(XtDisplay(toplevel), XtWindow(toplevel),
-	 iconify_mask_bits, iconify_mask_width, iconify_mask_height, 1, 0, 1);
-
-	whints->flags=IconPixmapHint|IconMaskHint;
-	whints->icon_pixmap=imap;
-	whints->icon_mask=imaskmap;
-	XSetWMHints(XtDisplay(toplevel),XtWindow(toplevel),whints);
-*/
+/*\nXWMHints *whints=XAllocWMHints();\n\n	imap = XCreatePixmapFromBitmapData\n	(XtDisplay(toplevel), XtWindow(toplevel),\n	 iconify_bits, iconify_width, iconify_height, 1, 0, 1);\n	imaskmap = XCreatePixmapFromBitmapData\n	(XtDisplay(toplevel), XtWindow(toplevel),\n	 iconify_mask_bits, iconify_mask_width, iconify_mask_height, 1, 0, 1);\n\n	whints->flags=IconPixmapHint|IconMaskHint;\n	whints->icon_pixmap=imap;\n	whints->icon_mask=imaskmap;\n	XSetWMHints(XtDisplay(toplevel),XtWindow(toplevel),whints);\n*/
 get_pref_boolean
 get pref boolean
 eANIMATEBUSYICON
@@ -880,10 +722,7 @@ x define cursor
 mo_busy
 mo busy
 /* This happens in mo_gui_check_icon */
-/*
-	if (!busy) {
-	}
-*/
+/*\n	if (!busy) {\n	}\n*/
 HAVE_DTM
 have dtm
 /* --------------------- mo_set_dtm_menubar_functions --------------------- */
@@ -891,8 +730,7 @@ mo_set_dtm_menubar_functions
 mo set dtm menubar functions
 mo_dtm_out_active_p
 mo dtm out active p
-/* If we've got an active outport, then we can send a document
-         but not open another outport. */
+/* If we've got an active outport, then we can send a document\n         but not open another outport. */
 XmxRSetSensitive
 xmx r set sensitive
 menubar
@@ -904,19 +742,8 @@ mo_dtm_send_document
 mo dtm send document
 XmxSensitive
 xmx sensitive
-/* If we don't have an active outport, then we can't send a document
-         but we can open an outport. */
-/****************************************************************************
- * name:    mo_redisplay_window
- * purpose: Cause the current window's HTML widget to be refreshed.
- *          This causes the anchors to be reexamined for visited status.
- * inputs:
- *   - mo_window *win: Current window.
- * returns:
- *   mo_succeed
- * remarks:
- *
- ****************************************************************************/
+/* If we don't have an active outport, then we can't send a document\n         but we can open an outport. */
+/****************************************************************************\n * name:    mo_redisplay_window\n * purpose: Cause the current window's HTML widget to be refreshed.\n *          This causes the anchors to be reexamined for visited status.\n * inputs:\n *   - mo_window *win: Current window.\n * returns:\n *   mo_succeed\n * remarks:\n *\n ****************************************************************************/
 mo_redisplay_window
 mo redisplay window
 curl
@@ -986,8 +813,7 @@ cbs
 call_data
 call data
 eFOCUS_FOLLOWS_MOUSE
-efocus follows mouse
-e focus_follows_mouse
+e focus follows mouse
 XtSetKeyboardFocus
 xt set keyboard focus
 MOSAIC_URL_TEXT_FIELD
@@ -1004,20 +830,7 @@ mo_load_window_text
 mo load window text
 LINK_LOADED
 link loaded
-/****************************************************************************
- * name:    anchor_cb
- * purpose: Callback for triggering anchor in HTML widget.
- * inputs:
- *   - as per XmxCallback
- * returns:
- *   nothing
- * remarks:
- *   This is too complex and should be broken down.
- *   We look at the button event passed in through the callback;
- *   button1 == same window, button2 == new window.
- *   Call mo_open_another_window or mo_load_window_text to get
- *   the actual work done.
- ****************************************************************************/
+/****************************************************************************\n * name:    anchor_cb\n * purpose: Callback for triggering anchor in HTML widget.\n * inputs:\n *   - as per XmxCallback\n * returns:\n *   nothing\n * remarks:\n *   This is too complex and should be broken down.\n *   We look at the button event passed in through the callback;\n *   button1 == same window, button2 == new window.\n *   Call mo_open_another_window or mo_load_window_text to get\n *   the actual work done.\n ****************************************************************************/
 anchor_cb
 anchor cb
 href
@@ -1050,8 +863,7 @@ e disablemiddlebutton
 /* disable new window if in kiosk mode*/
 /* disable load to disk in kiosk */
 ePROTECT_ME_FROM_MYSELF
-eprotect me from myself
-e protect_me_from_myself
+e protect me from myself
 answer
 XmxModalYesOrNo
 xmx modal yes or no
@@ -1073,26 +885,11 @@ mo_open_another_window
 mo open another window
 /* Now redisplay this window. */
 /* Just do mo_load_window_text go get the xterm forked off. */
-/****************************************************************************
- * name:    anchor_visited_predicate (PRIVATE)
- * purpose: Called by the HTML widget to determine whether a given URL
- *          has been previously visited.
- * inputs:
- *   - Widget   w: HTML widget that called this routine.
- *   - char *href: URL to test.
- * returns:
- *   1 if href has been visited previously; 0 otherwise.
- * remarks:
- *   All this does is canonicalize the URL and call
- *   mo_been_here_before_huh_dad() to figure out if we've been
- *   there before.
- ****************************************************************************/
+/****************************************************************************\n * name:    anchor_visited_predicate (PRIVATE)\n * purpose: Called by the HTML widget to determine whether a given URL\n *          has been previously visited.\n * inputs:\n *   - Widget   w: HTML widget that called this routine.\n *   - char *href: URL to test.\n * returns:\n *   1 if href has been visited previously; 0 otherwise.\n * remarks:\n *   All this does is canonicalize the URL and call\n *   mo_been_here_before_huh_dad() to figure out if we've been\n *   there before.\n ****************************************************************************/
 rv
 eTRACK_VISITED_ANCHORS
-etrack visited anchors
-e track_visited_anchors
-/* This doesn't do special things for data elements inside
-     an HDF file, because it's faster this way. */
+e track visited anchors
+/* This doesn't do special things for data elements inside\n     an HDF file, because it's faster this way. */
 mo_url_canonicalize
 mo url canonicalize
 mo_been_here_before_huh_dad
@@ -1107,14 +904,11 @@ to free
 to_free_2
 to free 2
 eTRACK_POINTER_MOTION
-etrack pointer motion
-e track_pointer_motion
+e track pointer motion
 /* Sigh... */
-/* This is now the option wherein the URLs are just spit up there;
-         else we put up something more friendly. */
+/* This is now the option wherein the URLs are just spit up there;\n         else we put up something more friendly. */
 eTRACK_FULL_URL_NAMES
-etrack full url names
-e track_full_url_names
+e track full url names
 /* Everything already done... */
 /* This is where we go get a good description. */
 XmStringCreateSimple
@@ -1215,8 +1009,7 @@ window
 logo
 XtDispatchEvent
 xt dispatch event
-/* else just throw it away... users shouldn't be pressing buttons
-         in the middle of transfers anyway... */
+/* else just throw it away... users shouldn't be pressing buttons\n         in the middle of transfers anyway... */
 /*SWP 7/3/95*/
 mo_gui_check_security_icon_in_win
 mo gui check security icon in win
@@ -1238,15 +1031,13 @@ mo gui check icon
 twirl
 cnt
 eTWIRLING_TRANSFER_ICON
-etwirling transfer icon
-e twirling_transfer_icon
+e twirling transfer icon
 AnimatePixmapInWidget
 animate pixmap in widget
 get_pref_int
 get pref int
 ePIX_COUNT
-epix count
-e pix_count
+e pix count
 mo_gui_clear_icon
 mo gui clear icon
 mo_gui_apply_default_icon
@@ -1276,38 +1067,26 @@ mo_duplicate_window
 mo duplicate window
 mo_delete_window
 mo delete window
-/****************************************************************************
- * name:    mo_view_keypress_handler (PRIVATE)
- * purpose: This is the event handler for the HTML widget and associated
- *          scrolled window; it handles keypress events and enables the
- *          hotkey support.
- * inputs:
- *   - as per XmxEventHandler
- * returns:
- *   nothing
- * remarks:
- *   Hotkeys and their actions are currently hardcoded.  This is probably
- *   a bad idea, and Eric hates it.
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_view_keypress_handler (PRIVATE)\n * purpose: This is the event handler for the HTML widget and associated\n *          scrolled window; it handles keypress events and enables the\n *          hotkey support.\n * inputs:\n *   - as per XmxEventHandler\n * returns:\n *   nothing\n * remarks:\n *   Hotkeys and their actions are currently hardcoded.  This is probably\n *   a bad idea, and Eric hates it.\n ****************************************************************************/
 XmxEventHandler
 xmx event handler
 mo_view_keypress_handler
 mo view keypress handler
 /*  char url[128]; /* buffer for news io */
 _bufsize
- bufsize
+bufsize
 _count
- count
+count
 _buffer
- buffer
+buffer
 KeySym
 key sym
 _key
- key
+key
 XComposeStatus
 x compose status
 _cs
- cs
+cs
 sb
 String
 string
@@ -1316,25 +1095,20 @@ params
 XLookupString
 x lookup string
 xkey
-/* I don't know why this is necessary but for some reason the rbm was making
-     the above function return 0 as the _key, this fixes it -- TPR */
+/* I don't know why this is necessary but for some reason the rbm was making\n     the above function return 0 as the _key, this fixes it -- TPR */
 XKeycodeToKeysym
 x keycode to keysym
 keycode
 /* Insert trailing Nil. */
 XK_Prior
 xk prior
-xk_prior
 /* Page up. */
 eCATCH_PRIOR_AND_NEXT
-ecatch prior and next
-e catch_prior_and_next
+e catch prior and next
 XK_BackSpace
-xk backspace
-xk_back space
+xk back space
 XK_Delete
 xk delete
-xk_delete
 XmNverticalScrollBar
 xm nvertical scroll bar
 XtIsManaged
@@ -1343,73 +1117,56 @@ XtCallActionProc
 xt call action proc
 XK_Next
 xk next
-xk_next
 /* Page down. */
 XK_Return
 xk return
-xk_return
 XK_space
 xk space
-xk_space
 XK_Tab
 xk tab
-xk_tab
 ControlMask
 control mask
 HTMLTraverseTabGroups
 html traverse tab groups
 XmTRAVERSE_HOME
-xmtraverse home
-xm traverse_home
+xm traverse home
 XmTRAVERSE_NEXT_TAB_GROUP
-xmtraverse next tab group
-xm traverse_next_tab_group
+xm traverse next tab group
 XK_Home
 xk home
-xk_home
 /* Home -- Top */
 HTMLGotoId
 html goto id
 XK_End
 xk end
-xk_end
 /* End -- Bottom */
 HTMLLastId
 html last id
 XK_Down
 xk down
-xk_down
 XK_Right
 xk right
-xk_right
 XmNhorizontalScrollBar
 xm nhorizontal scroll bar
 XK_Up
 xk up
-xk_up
 XK_Left
 xk left
-xk_left
-/* News Hotkeys ...
-                 < > = prev/next thread  , . = prev/next message */
+/* News Hotkeys ...\n                 < > = prev/next thread  , . = prev/next message */
 XK_less
 xk less
-xk_less
 gui_news_prevt
 gui news prevt
 XK_greater
 xk greater
-xk_greater
 gui_news_nextt
 gui news nextt
 XK_comma
 xk comma
-xk_comma
 gui_news_prev
 gui news prev
 XK_period
 xk period
-xk_period
 gui_news_next
 gui news next
 XK_A
@@ -1417,7 +1174,6 @@ xk a
 /* Annotate. */
 XK_a
 xk a
-xk_a
 mo_post_annotate_win
 mo post annotate win
 XK_B
@@ -1425,7 +1181,6 @@ xk b
 /* Back. */
 XK_b
 xk b
-xk_b
 mo_back_node
 mo back node
 XK_C
@@ -1433,13 +1188,11 @@ xk c
 /* Clone */
 XK_c
 xk c
-xk_c
 XK_D
 xk d
 /* Document source. */
 XK_d
 xk d
-xk_d
 mo_post_source_window
 mo post source window
 XK_E
@@ -1447,14 +1200,12 @@ xk e
 /* Edit */
 XK_e
 xk e
-xk_e
 mo_edit_source
 mo edit source
 XK_F
 xk f
 XK_f
 xk f
-xk_f
 slab
 XmTextFieldSetString
 xm text field set string
@@ -1469,7 +1220,6 @@ mo_post_hotlist_win
 mo post hotlist win
 XK_h
 xk h
-xk_h
 /* History */
 mo_post_history_win
 mo post history win
@@ -1478,7 +1228,6 @@ xk l
 /* Open Local */
 XK_l
 xk l
-xk_l
 mo_post_open_local_window
 mo post open local window
 XK_M
@@ -1486,7 +1235,6 @@ xk m
 /* Mailto */
 XK_m
 xk m
-xk_m
 mo_post_mail_window
 mo post mail window
 XK_N
@@ -1494,13 +1242,11 @@ xk n
 /* New */
 XK_n
 xk n
-xk_n
 XK_O
 xk o
 /* Open */
 XK_o
 xk o
-xk_o
 mo_post_open_window
 mo post open window
 XK_P
@@ -1508,18 +1254,11 @@ xk p
 /* Print */
 XK_p
 xk p
-xk_p
-/*
-	  if(event->xkey.state & ControlMask) {
-		mo_presentation_mode(win);
-	  }
-	  else
-*/
+/*\n	  if(event->xkey.state & ControlMask) {\n		mo_presentation_mode(win);\n	  }\n	  else\n*/
 mo_post_print_window
 mo post print window
 XK_r
 xk r
-xk_r
 /* reload */
 mo_reload_window_text
 mo reload window text
@@ -1533,16 +1272,10 @@ xk s
 /* Search. */
 XK_s
 xk s
-xk_s
 mo_post_search_window
 mo post search window
 /* Tag 'n Bag */
-/*
-      case XK_T:
-      case XK_t:
-	  mo_tagnbag_url (win);
-          break;
-          */
+/*\n      case XK_T:\n      case XK_t:\n	  mo_tagnbag_url (win);\n          break;\n          */
 /* Not active */
 SWP_NOT_DONE
 swp not done
@@ -1551,12 +1284,10 @@ xk u
 /* Upload a file (method of put) */
 XK_u
 xk u
-xk_u
 XK_Z
 xk z
 XK_z
 xk z
-xk_z
 str
 XmTextFieldGetString
 xm text field get string
@@ -1567,7 +1298,6 @@ XtFree
 xt free
 XK_Escape
 xk escape
-xk_escape
 /* Kiosk */
 /* Forward */
 /* Callback to redraw the meter -bjs */
@@ -1619,28 +1349,20 @@ meter_font
 meter font
 WbNmeterFont
 wb nmeter font
-/*
- = XLoadQueryFont(XtDisplay(win->base),ftext))) {
-*/
+/*\n = XLoadQueryFont(XtDisplay(win->base),ftext))) {\n*/
 puts
 meter_fontW
-meter fontw
-meter_font w
+meter font w
 max_bounds
 max bounds
 rbearing
 meter_fontH
-meter fonth
-meter_font h
+meter font h
 ascent
 /* +			win->meter_font->max_bounds.descent;*/
 font
 fid
-/*
-		values.function = GXxor;
-		values.background = win->meter_bg;
-		mask |= GCFont | GCFunction | GCBackground;
-*/
+/*\n		values.function = GXxor;\n		values.background = win->meter_bg;\n		mask |= GCFont | GCFunction | GCBackground;\n*/
 GCFont
 gc font
 XChangeGC
@@ -1661,11 +1383,8 @@ x get window attributes
 width
 height
 /* Exported to libwww2 */
-/* take a text string of the form "MENU,URL,VIEW,STATUS" and set the
-   layout slab stuff from it */
-/* WARNING:  The code to draw the interface expects the rules enforced herein
-   to be followed... just taking out the safety checks here could cause some
-   major headaches. BJS */
+/* take a text string of the form "MENU,URL,VIEW,STATUS" and set the\n   layout slab stuff from it */
+/* WARNING:  The code to draw the interface expects the rules enforced herein\n   to be followed... just taking out the safety checks here could cause some\n   major headaches. BJS */
 parse_slabinfo
 parse slabinfo
 k
@@ -1684,8 +1403,7 @@ mo tools
 mo_back
 mo back
 moMODE_ALL
-momode all
-mo mode_all
+mo mode all
 mo_forward
 mo forward
 mo_reload_document
@@ -1705,8 +1423,7 @@ mo close window
 mo_register_node_in_default_hotlist
 mo register node in default hotlist
 moMODE_PLAIN
-momode plain
-mo mode_plain
+mo mode plain
 mo_search
 mo search
 mo_print_document
@@ -1717,8 +1434,7 @@ mo news groups
 mo_news_index
 mo news index
 moMODE_NEWS
-momode news
-mo mode_news
+mo mode news
 mo_news_prevt
 mo news prevt
 mo_news_prev
@@ -1735,8 +1451,7 @@ mo news follow
 mo_ftp_put
 mo ftp put
 moMODE_FTP
-momode ftp
-mo mode_ftp
+mo mode ftp
 mo_ftp_mkdir
 mo ftp mkdir
 /* NOTE: THESE MUST COINCIDE EXACTLY WITH mo_tools!!! */
@@ -1753,8 +1468,7 @@ ptr
 start
 end
 eTOOLBAR_LAYOUT
-etoolbar layout
-e toolbar_layout
+e toolbar layout
 eKIOSKPRINT
 e kioskprint
 isspace
@@ -1869,20 +1583,17 @@ xm push button widget class
 XmNtopAttachment
 xm ntop attachment
 XmATTACH_FORM
-xmattach form
-xm attach_form
+xm attach form
 XmNbottomAttachment
 xm nbottom attachment
 XmNleftAttachment
 xm nleft attachment
 XmATTACH_NONE
-xmattach none
-xm attach_none
+xm attach none
 XmNrightAttachment
 xm nright attachment
 XmATTACH_WIDGET
-xmattach widget
-xm attach_widget
+xm attach widget
 XmNleftWidget
 xm nleft widget
 XmNrightWidget
@@ -1899,8 +1610,7 @@ texttools
 long_text
 long text
 eUSE_LONG_TEXT_NAMES
-euse long text names
-e use_long_text_names
+e use long text names
 XFontStruct
 x font struct
 tmpFont
@@ -1915,8 +1625,7 @@ exit
 XmFontListCreate
 xm font list create
 XmSTRING_DEFAULT_CHARSET
-xmstring default charset
-xm string_default_charset
+xm string default charset
 /* Which tools to show */
 xmRowColumnWidgetClass
 xm row column widget class
@@ -1940,11 +1649,8 @@ xm nbottom offset
 XmNpacking
 xm npacking
 XmPACK_TIGHT
-xmpack tight
-xm pack_tight
-/*
-         XmNmarginWidth, 1,
-*/
+xm pack tight
+/*\n         XmNmarginWidth, 1,\n*/
 XmNlabelType
 xm nlabel type
 XmSTRING
@@ -1960,15 +1666,11 @@ xt add callback
 XmNactivateCallback
 xm nactivate callback
 action
-/*
-                 XmNmarginLeft, textbuttons ? 2 : 0,
-                 XmNmarginRight, textbuttons ? 2 : 0,
-*/
+/*\n                 XmNmarginLeft, textbuttons ? 2 : 0,\n                 XmNmarginRight, textbuttons ? 2 : 0,\n*/
 XmNalignment
 xm nalignment
 XmALIGNMENT_CENTER
-xmalignment center
-xm alignment_center
+xm alignment center
 image
 greyimage
 XmNlabelInsensitivePixmap
@@ -1980,19 +1682,8 @@ xm separator widget class
 XmNseparatorType
 xm nseparator type
 XmNO_LINE
-xmno line
-xm no_line
-/****************************************************************************
- * name:    mo_fill_window (PRIVATE)
- * purpose: Take a new (empty) mo_window struct and fill in all the
- *          GUI elements.
- * inputs:
- *   - mo_window *win: The window.
- * returns:
- *   mo_succeed
- * remarks:
- *
- ****************************************************************************/
+xm no line
+/****************************************************************************\n * name:    mo_fill_window (PRIVATE)\n * purpose: Take a new (empty) mo_window struct and fill in all the\n *          GUI elements.\n * inputs:\n *   - mo_window *win: The window.\n * returns:\n *   mo_succeed\n * remarks:\n *\n ****************************************************************************/
 mo_fill_window
 mo fill window
 up
@@ -2012,8 +1703,7 @@ pres slab
 kiosk_slab
 kiosk slab
 eGUI_LAYOUT
-egui layout
-e gui_layout
+e gui layout
 /*we be kiosking*/
 /* go with the default layout */
 slabcount
@@ -2046,8 +1736,7 @@ wb ntext
 XmNresizePolicy
 xm nresize policy
 XmRESIZE_ANY
-xmresize any
-xm resize_any
+xm resize any
 WbNpreviouslyVisitedTestFunction
 wb npreviously visited test function
 WbNpointerMotionCallback
@@ -2097,52 +1786,29 @@ xm nresize callback
 /* grab some colors */
 ccell2
 eMETER_FOREGROUND
-emeter foreground
-e meter_foreground
+e meter foreground
 pixel
 eMETER_BACKGROUND
-emeter background
-e meter_background
+e meter background
 eMETER_FONT_FOREGROUND
-emeter font foreground
-e meter_font_foreground
+e meter font foreground
 eMETER_FONT_BACKGROUND
-emeter font background
-e meter_font_background
+e meter font background
 XmALIGNMENT_BEGINNING
-xmalignment beginning
-xm alignment_beginning
+xm alignment beginning
 /*********************** SLAB_TOOLS ****************************/
 /* chain those slabs together 'n stuff */
 /* next two slabs have to attach to the globe */
 XmNbottomWidget
 xm nbottom widget
 /* we change link dir here AND link this slab both ways*/
-/*
-          fprintf(stderr,"%s (0x%08X): up=0x%08X dn=0x%08X ta=%d ba=%d\n",
-                  slab_words[win->slabpart[i]], win->slab[win->slabpart[i]],
-                  up, dn, topatt, botatt);
-                  */
+/*\n          fprintf(stderr,"%s (0x%08X): up=0x%08X dn=0x%08X ta=%d ba=%d\n",\n                  slab_words[win->slabpart[i]], win->slab[win->slabpart[i]],\n                  up, dn, topatt, botatt);\n                  */
 /* Can't go back or forward if we haven't gone anywhere yet... */
 mo_back_impossible
 mo back impossible
 mo_forward_impossible
 mo forward impossible
-/****************************************************************************
- * name:    mo_delete_window
- * purpose: Shut down a window.
- * inputs:
- *   - mo_window *win: The window.
- * returns:
- *   mo_succeed
- * remarks:
- *   This can be called, among other places, from the WM_DELETE_WINDOW
- *   handler.  By the time we get here, we must assume the window is already
- *   in the middle of being shut down.
- *   We must explicitly close every dialog that be open as a child of
- *   the window, because window managers too stupid to do that themselves
- *   will otherwise allow them to stay up.
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_delete_window\n * purpose: Shut down a window.\n * inputs:\n *   - mo_window *win: The window.\n * returns:\n *   mo_succeed\n * remarks:\n *   This can be called, among other places, from the WM_DELETE_WINDOW\n *   handler.  By the time we get here, we must assume the window is already\n *   in the middle of being shut down.\n *   We must explicitly close every dialog that be open as a child of\n *   the window, because window managers too stupid to do that themselves\n *   will otherwise allow them to stay up.\n ****************************************************************************/
 POPDOWN(x)
 popdown(x)
 mo_node
@@ -2199,8 +1865,7 @@ search_start
 search start
 search_end
 search end
-/* This will free the win structure (but none of its elements
-     individually) and exit if this is the last window in the list. */
+/* This will free the win structure (but none of its elements\n     individually) and exit if this is the last window in the list. */
 /* Go get another current_win. */
 mo_get_font_size_from_res
 mo get font size from res
@@ -2287,21 +1952,7 @@ mo_expand_images_current
 mo expand images current
 mo_delay_image_loads
 mo delay image loads
-/****************************************************************************
- * name:    mo_open_window_internal (PRIVATE)
- * purpose: Make a mo_window struct and fill up the GUI.
- * inputs:
- *   - Widget       base: The dialog widget on which this window is
- *                        to be based.
- *   - mo_window *parent: The parent mo_window struct for this window,
- *                        if one exists; this can be NULL.
- * returns:
- *   The new window (mo_window *).
- * remarks:
- *   This routine must set to 0 all elements in the mo_window struct
- *   that can be tested by various routines to see if various things
- *   have been done yet (popup windows created, etc.).
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_open_window_internal (PRIVATE)\n * purpose: Make a mo_window struct and fill up the GUI.\n * inputs:\n *   - Widget       base: The dialog widget on which this window is\n *                        to be based.\n *   - mo_window *parent: The parent mo_window struct for this window,\n *                        if one exists; this can be NULL.\n * returns:\n *   The new window (mo_window *).\n * remarks:\n *   This routine must set to 0 all elements in the mo_window struct\n *   that can be tested by various routines to see if various things\n *   have been done yet (popup windows created, etc.).\n ****************************************************************************/
 /* FOO */
 mo_open_window_internal
 mo open window internal
@@ -2317,10 +1968,7 @@ ftpremove_win
 ftpremove win
 ftpmkdir_win
 ftpmkdir win
-/*
-  win->tag_win = win->tag_list = 0;
-  win->urlUnderPointer = NULL;
-*/
+/*\n  win->tag_win = win->tag_list = 0;\n  win->urlUnderPointer = NULL;\n*/
 open_text
 open text
 mailhot_win
@@ -2371,8 +2019,7 @@ format optmenu
 save_format
 save format
 eDEFAULT_FONT_CHOICE
-edefault font choice
-e default_font_choice
+e default font choice
 font_family
 font family
 /*win->font_size = mo_regular_fonts;*/
@@ -2384,8 +2031,7 @@ underlines snarfed
 mo_default_underlines
 mo default underlines
 eDEFAULT_FANCY_SELECTIONS
-edefault fancy selections
-e default_fancy_selections
+e default fancy selections
 mail_format
 mail format
 record_fnam
@@ -2408,8 +2054,7 @@ ISINDEX
 keyword_search_possible
 keyword search possible
 eDELAY_IMAGE_LOADS
-edelay image loads
-e delay_image_loads
+e delay image loads
 /* Install all the GUI bits & pieces. */
 /* setup news default states */
 eUSETHREADVIEW
@@ -2433,14 +2078,12 @@ mo annotate edit
 mo_annotate_delete
 mo annotate delete
 eENABLE_TABLES
-eenable tables
-e enable_tables
+e enable tables
 eIMAGEVIEWINTERNAL
 e imageviewinternal
 /* take care of session history for rbm */
 eSESSION_HISTORY_ON_RBM
-esession history on rbm
-e session_history_on_rbm
+e session history on rbm
 session_menu
 session menu
 num_session_items
@@ -2448,8 +2091,7 @@ num session items
 session_items
 session items
 eNUMBER_OF_ITEMS_IN_RBM_HISTORY
-enumber of items in rbm history
-e number_of_items_in_rbm_history
+e number of items in rbm history
 /* Pop the window up. */
 /* Register win with internal window list. */
 /* Set the font size. */
@@ -2457,33 +2099,10 @@ e number_of_items_in_rbm_history
 /* Set the fancy selections toggle to the starting value. */
 mo_set_fancy_selections_toggle
 mo set fancy selections toggle
-/****************************************************************************
- * name:    delete_cb (PRIVATE)
- * purpose: Callback for the WM_DELETE_WINDOW protocol.
- * inputs:
- *   - as per XmxCallback
- * returns:
- *   nothing
- * remarks:
- *   By the time we get called here, the window has already been popped
- *   down.  Just call mo_delete_window to clean up.
- ****************************************************************************/
+/****************************************************************************\n * name:    delete_cb (PRIVATE)\n * purpose: Callback for the WM_DELETE_WINDOW protocol.\n * inputs:\n *   - as per XmxCallback\n * returns:\n *   nothing\n * remarks:\n *   By the time we get called here, the window has already been popped\n *   down.  Just call mo_delete_window to clean up.\n ****************************************************************************/
 delete_cb
 delete cb
-/****************************************************************************
- * name:    mo_make_window (PRIVATE)
- * purpose: Make a new window from scratch.
- * inputs:
- *   - Widget      parent: Parent for the new window shell.
- *   - mo_window *parentw: Parent window, if one exists (may be NULL).
- * returns:
- *   The new window (mo_window *).
- * remarks:
- *   The 'parent window' parentw is the window being cloned, or the
- *   window in which the 'new window' command was triggered, etc.
- *   Some GUI properties are inherited from it, if it exists (fonts,
- *   anchor appearance, etc.).
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_make_window (PRIVATE)\n * purpose: Make a new window from scratch.\n * inputs:\n *   - Widget      parent: Parent for the new window shell.\n *   - mo_window *parentw: Parent window, if one exists (may be NULL).\n * returns:\n *   The new window (mo_window *).\n * remarks:\n *   The 'parent window' parentw is the window being cloned, or the\n *   window in which the 'new window' command was triggered, etc.\n *   Some GUI properties are inherited from it, if it exists (fonts,\n *   anchor appearance, etc.).\n ****************************************************************************/
 mo_make_window
 mo make window
 parentw
@@ -2501,10 +2120,8 @@ topLevelShellWidgetClass
 top level shell widget class
 Xmx_wargs
 xmx wargs
-xmx_wargs
 Xmx_n
 xmx n
-xmx_n
 XtAddEventHandler
 xt add event handler
 EventMask
@@ -2513,18 +2130,8 @@ TRUE
 XtEventHandler
 xt event handler
 _XEditResCheckMessages
- xeditrescheckmessages
-_x edit res check messages
-/****************************************************************************
- * name:    mo_open_another_window_internal (PRIVATE)
- * purpose: Open a new window from an existing window.
- * inputs:
- *   - mo_window *win: The old window.
- * returns:
- *   The new window (mo_window *).
- * remarks:
- *   This routine handles (optional) autoplace of new windows.
- ****************************************************************************/
+x edit res check messages
+/****************************************************************************\n * name:    mo_open_another_window_internal (PRIVATE)\n * purpose: Open a new window from an existing window.\n * inputs:\n *   - mo_window *win: The old window.\n * returns:\n *   The new window (mo_window *).\n * remarks:\n *   This routine handles (optional) autoplace of new windows.\n ****************************************************************************/
 mo_open_another_window_internal
 mo open another window internal
 oldx
@@ -2544,68 +2151,27 @@ xm ny
 /* Ideally we open down and over 40 pixels... is this possible? */
 /* If not, deal with it... */
 /* Bug fix, thanks to Ken Shores <kss1376@pop.draper.com> */
-/* the original test did not handle the case where the old window
-   * was exactly the same size as the screen.  Also, it used a looping
-   * algorithm which would infinite loop under such a case. */
+/* the original test did not handle the case where the old window\n   * was exactly the same size as the screen.  Also, it used a looping\n   * algorithm which would infinite loop under such a case. */
 XmNdefaultPosition
 xm ndefault position
 eAUTO_PLACE_WINDOWS
-eauto place windows
-e auto_place_windows
+e auto place windows
 geom
 XmNgeometry
 xm ngeometry
-/****************************************************************************
- * name:    mo_open_window
- * purpose: Open a new window to view a given URL.
- * inputs:
- *   - Widget      parent: The parent Widget for the new window's shell.
- *   - char          *url: The URL to view in the new window.
- *   - mo_window *parentw: The (optional) parent window of the new window.
- * returns:
- *   The new window.
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_open_window\n * purpose: Open a new window to view a given URL.\n * inputs:\n *   - Widget      parent: The parent Widget for the new window's shell.\n *   - char          *url: The URL to view in the new window.\n *   - mo_window *parentw: The (optional) parent window of the new window.\n * returns:\n *   The new window.\n * remarks:\n *\n ****************************************************************************/
 mo_open_window
 mo open window
-/****************************************************************************
- * name:    mo_duplicate_window
- * purpose: Clone a existing window as intelligently as possible.
- * inputs:
- *   - mo_window *win: The existing window.
- * returns:
- *   The new window.
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_duplicate_window\n * purpose: Clone a existing window as intelligently as possible.\n * inputs:\n *   - mo_window *win: The existing window.\n * returns:\n *   The new window.\n * remarks:\n *\n ****************************************************************************/
 neww
 mo_duplicate_window_text
 mo duplicate window text
-/****************************************************************************
- * name:    mo_open_another_window
- * purpose: Open another window to view a given URL, unless the URL
- *          indicates that it's pointless to do so
- * inputs:
- *   - mo_window      *win: The existing window.
- *   - char           *url: The URL to view in the new window.
- *   - char           *ref: The reference (hyperlink text contents) for this
- *                          URL; can be NULL.
- *   - char *target_anchor: The target anchor to view open opening the
- *                          window, if any.
- * returns:
- *   The new window.
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_open_another_window\n * purpose: Open another window to view a given URL, unless the URL\n *          indicates that it's pointless to do so\n * inputs:\n *   - mo_window      *win: The existing window.\n *   - char           *url: The URL to view in the new window.\n *   - char           *ref: The reference (hyperlink text contents) for this\n *                          URL; can be NULL.\n *   - char *target_anchor: The target anchor to view open opening the\n *                          window, if any.\n * returns:\n *   The new window.\n * remarks:\n *\n ****************************************************************************/
 ref
 return_stat
 return stat
-/* Check for reference to telnet.  Never open another window
-     if reference to telnet exists; instead, call mo_load_window_text,
-     which knows how to manage current window's access to telnet. */
-/* Set it here; hope it gets handled in mo_load_window_text_first
-     (it probably won't, now. */
+/* Check for reference to telnet.  Never open another window\n     if reference to telnet exists; instead, call mo_load_window_text,\n     which knows how to manage current window's access to telnet. */
+/* Set it here; hope it gets handled in mo_load_window_text_first\n     (it probably won't, now. */
 /* ------------------------------------------------------------------------ */
 gargv
 gargc
@@ -2622,18 +2188,7 @@ mo dtm poll and read
 mo_register_dtm_blip
 mo register dtm blip
 /* Set a timer that will poll DTM regularly. */
-/****************************************************************************
- * name:    fire_er_up (PRIVATE)
- * purpose: Callback from timer that actually starts up the application,
- *          i.e., opens the first window.
- * inputs:
- *   - as per XmxCallback
- * returns:
- *   Nothing.
- * remarks:
- *   This routine figures out what the home document should be
- *   and then calls mo_open_window().
- ****************************************************************************/
+/****************************************************************************\n * name:    fire_er_up (PRIVATE)\n * purpose: Callback from timer that actually starts up the application,\n *          i.e., opens the first window.\n * inputs:\n *   - as per XmxCallback\n * returns:\n *   Nothing.\n * remarks:\n *   This routine figures out what the home document should be\n *   and then calls mo_open_window().\n ****************************************************************************/
 fire_er_up
 fire er up
 home_opt
@@ -2643,17 +2198,12 @@ init document
 fname
 /* Pick up default or overridden value out of X resources. */
 eHOME_DOCUMENT
-ehome document
-e home_document
+e home document
 /* Value of environment variable WWW_HOME overrides that. */
 getenv
 SAM
 PRERELEASE
-/*
-   * If this is a pre-release, go to the help-on-version doc for three
-   *   start ups. Then, go to the Pre-Release warning page for three
-   *   start ups. Then go to their defined page or the NCSA home page.
-   */
+/*\n   * If this is a pre-release, go to the help-on-version doc for three\n   *   start ups. Then, go to the Pre-Release warning page for three\n   *   start ups. Then go to their defined page or the NCSA home page.\n   */
 GetCardCount
 get card count
 MakeFilename
@@ -2662,35 +2212,23 @@ MO_GO_NCSA_COUNT
 mo go ncsa count
 MO_HELP_ON_VERSION_DOCUMENT
 mo help on version document
-/*
-   * If this is not a pre-release, go to the help-on-version doc for three
-   *   start ups. Then go to their defined page or the NCSA home page.
-   */
-/* Value of argv[1], if it exists, sets startup_document.
-     (All other command-line flags will have been picked up by
-     the X resource mechanism.) */
+/*\n   * If this is not a pre-release, go to the help-on-version doc for three\n   *   start ups. Then go to their defined page or the NCSA home page.\n   */
+/* Value of argv[1], if it exists, sets startup_document.\n     (All other command-line flags will have been picked up by\n     the X resource mechanism.) */
 /* Unless they are bogus options - then they will break... DXP */
 /* Check for proper home document URL construction. */
 mo_url_canonicalize_local
 mo url canonicalize local
 /* Check for proper init document URL construction. */
-/* SWP -- Done in mo_url_prepend_protcol
-  if (startup_document && !strstr (startup_document, ":"))
-    startup_document = mo_url_canonicalize_local (startup_document);
-*/
+/* SWP -- Done in mo_url_prepend_protcol\n  if (startup_document && !strstr (startup_document, ":"))\n    startup_document = mo_url_canonicalize_local (startup_document);\n*/
 /* set the geometry values - dxp */
-/* then no -geometry was specified on the command line,
-	   so we just use the default values from the resources */
+/* then no -geometry was specified on the command line,\n	   so we just use the default values from the resources */
 eDEFAULT_WIDTH
-edefault width
-e default_width
+e default width
 eDEFAULT_HEIGHT
-edefault height
-e default_height
+e default height
 /* the they DID specify a -geometry, so we use that */
 eINITIAL_WINDOW_ICONIC
-einitial window iconic
-e initial_window_iconic
+e initial window iconic
 XmNiconic
 xm niconic
 /* Check the Comment Card */
@@ -2706,33 +2244,11 @@ XmNkeyboardFocusPolicy
 xm nkeyboard focus policy
 XmPOINTER
 xm pointer
-/****************************************************************************
- * name:    mo_open_initial_window
- * purpose: This routine is called when we know we want to open the
- *          initial Document View window.
- * inputs:
- *   none
- * returns:
- *   mo_succeed
- * remarks: This routine is simply a stub that sets a timeout that
- *          calls fire_er_up() after 10 milliseconds, which does the
- *          actual work.
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_open_initial_window\n * purpose: This routine is called when we know we want to open the\n *          initial Document View window.\n * inputs:\n *   none\n * returns:\n *   mo_succeed\n * remarks: This routine is simply a stub that sets a timeout that\n *          calls fire_er_up() after 10 milliseconds, which does the\n *          actual work.\n ****************************************************************************/
 mo_open_initial_window
 mo open initial window
 /* Set a timer that will actually cause the window to open. */
-/****************************************************************************
- * name:    mo_error_handler (PRIVATE)
- * purpose: Handle X errors.
- * inputs:
- *   - Display       *dsp: The X display.
- *   - XErrorEvent *event: The error event to handle.
- * returns:
- *   0, if it doesn't force an exit.
- * remarks:
- *   The main reason for this handler is to keep the application
- *   from crashing on BadAccess errors during calls to XFreeColors().
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_error_handler (PRIVATE)\n * purpose: Handle X errors.\n * inputs:\n *   - Display       *dsp: The X display.\n *   - XErrorEvent *event: The error event to handle.\n * returns:\n *   0, if it doesn't force an exit.\n * remarks:\n *   The main reason for this handler is to keep the application\n *   from crashing on BadAccess errors during calls to XFreeColors().\n ****************************************************************************/
 mo_error_handler
 mo error handler
 XErrorEvent
@@ -2742,8 +2258,7 @@ x ungrab pointer
 CurrentTime
 current time
 /* in case error occurred in Grab */
-/* BadAlloc errors (on a XCreatePixmap() call)
-     and BadAccess errors on XFreeColors are 'ignoreable' errors */
+/* BadAlloc errors (on a XCreatePixmap() call)\n     and BadAccess errors on XFreeColors are 'ignoreable' errors */
 error_code
 error code
 BadAlloc
@@ -2757,16 +2272,7 @@ XGetErrorText
 x get error text
 /* Try to close down gracefully. */
 /* never makes it here.... */
-/****************************************************************************
- * name:    setup_imagekill
- * purpose: Read the imagekill file if it exists and fill in the
- *          imagekill_sites array
- *
- * returns:
- *   nothing
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    setup_imagekill\n * purpose: Read the imagekill file if it exists and fill in the\n *          imagekill_sites array\n *\n * returns:\n *   nothing\n * remarks:\n *\n ****************************************************************************/
 IMAGESELECT_FILENAME
 imageselect filename
 setup_imagekill
@@ -2800,20 +2306,9 @@ strncpy
 fclose
 /* exported from HTTP.c */
 HT_SetExtraHeaders
-ht setextraheaders
-ht_set extra headers
+ht set extra headers
 headers
-/****************************************************************************
- * name:    mo_do_gui
- * purpose: This is basically the real main routine of the application.
- * inputs:
- *   - int    argc: Number of arguments.
- *   - char **argv: The argument vector.
- * returns:
- *   nothing
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_do_gui\n * purpose: This is basically the real main routine of the application.\n * inputs:\n *   - int    argc: Number of arguments.\n *   - char **argv: The argument vector.\n * returns:\n *   nothing\n * remarks:\n *\n ****************************************************************************/
 mo_do_gui
 mo do gui
 argc
@@ -2843,17 +2338,13 @@ prefsStructP
 prefs struct p
 thePrefsStructP
 the prefs struct p
-/* Loop through the args before passing them off to
-     XtAppInitialize() in case we need to catch something first. */
+/* Loop through the args before passing them off to\n     XtAppInitialize() in case we need to catch something first. */
 /* Motif setup. */
 XmxStartup
 xmx startup
 XmNmappedWhenManaged
 xm nmapped when managed
-/*
-     * Awful expensive to open and close the display just to find
-     * rhe depth information.
-     */
+/*\n     * Awful expensive to open and close the display just to find\n     * rhe depth information.\n     */
 XOpenDisplay
 x open display
 DisplayPlanes
@@ -2888,30 +2379,12 @@ xt va get application resources
 RdataP
 rdata p
 resources
-/*
-  appDB=XrmGetDatabase(dsp);
-
-  if (Rdata.internationalFilename!=NULL) {
-	if ((intDB=XrmGetFileDatabase(Rdata.internationalFilename))!=NULL) {
-		XrmMergeDatabases(intDB,&appDB);
-		XrmSetDatabase(dsp,appDB);
-	}
-	else {
-		fprintf(stderr,"There was no language file called:\n  [%s]\n",Rdata.internationalFilename);
-	}
-  }
-
-  intWidget=XtVaCreateWidget("international",xmRowColumnWidgetClass,toplevel,
-			     NULL);
-  XtVaGetApplicationResources(intWidget, (XtPointer)&Idata, intResources,
-			      XtNumber (intResources), NULL);
-*/
+/*\n  appDB=XrmGetDatabase(dsp);\n\n  if (Rdata.internationalFilename!=NULL) {\n	if ((intDB=XrmGetFileDatabase(Rdata.internationalFilename))!=NULL) {\n		XrmMergeDatabases(intDB,&appDB);\n		XrmSetDatabase(dsp,appDB);\n	}\n	else {\n		fprintf(stderr,"There was no language file called:\n  [%s]\n",Rdata.internationalFilename);\n	}\n  }\n\n  intWidget=XtVaCreateWidget("international",xmRowColumnWidgetClass,toplevel,\n			     NULL);\n  XtVaGetApplicationResources(intWidget, (XtPointer)&Idata, intResources,\n			      XtNumber (intResources), NULL);\n*/
 /* read the preferences file now */
 read_preferences_file
 read preferences file
 eINSTALL_COLORMAP
-einstall colormap
-e install_colormap
+e install colormap
 bcolr
 XCreateColormap
 x create colormap
@@ -2953,8 +2426,7 @@ sysname
 release
 XSetErrorHandler
 x set error handler
-/* Transient shell cannot be focussed, so no point in splash screen as it
-       will be complete psychadelic */
+/* Transient shell cannot be focussed, so no point in splash screen as it\n       will be complete psychadelic */
 eSPLASHSCREEN
 e splashscreen
 splash_goto
@@ -2999,57 +2471,42 @@ xt app add actions
 mo_init_menubar
 mo init menubar
 __sgi
-  sgi
+sgi
 /* Turn on debugging malloc if necessary. */
 eDEBUGGING_MALLOC
-edebugging malloc
-e debugging_malloc
+e debugging malloc
 mallopt
 M_DEBUG
 m debug
 eACCEPT_LANGUAGE_STR
-eaccept language str
-e accept_language_str
+e accept language str
 extras
 eXTERM_COMMAND
-exterm command
-e xterm_command
+e xterm command
 eUNCOMPRESS_COMMAND
-euncompress command
-e uncompress_command
+e uncompress command
 eGUNZIP_COMMAND
-egunzip command
-e gunzip_command
+e gunzip command
 eTWEAK_GOPHER_TYPES
-etweak gopher types
-e tweak_gopher_types
+e tweak gopher types
 eMAX_WAIS_RESPONSES
-emax wais responses
-e max_wais_responses
+e max wais responses
 eFTP_TIMEOUT_VAL
-eftp timeout val
-e ftp_timeout_val
+e ftp timeout val
 eFTP_REDIAL
-eftp redial
-e ftp_redial
+e ftp redial
 eFTP_REDIAL_SLEEP
-eftp redial sleep
-e ftp_redial_sleep
+e ftp redial sleep
 eFTP_FILENAME_LENGTH
-eftp filename length
-e ftp_filename_length
+e ftp filename length
 eFTP_ELLIPSIS_LENGTH
-eftp ellipsis length
-e ftp_ellipsis_length
+e ftp ellipsis length
 eFTP_ELLIPSIS_MODE
-eftp ellipsis mode
-e ftp_ellipsis_mode
+e ftp ellipsis mode
 eSEND_REFERER
-esend referer
-e send_referer
+e send referer
 eSEND_AGENT
-esend agent
-e send_agent
+e send agent
 eHTTPTRACE
 e httptrace
 eWWW2TRACE
@@ -3067,45 +2524,33 @@ e nuttrace
 eUSEAFSKLOG
 e useafsklog
 ePROXY_SPECFILE
-eproxy specfile
-e proxy_specfile
+e proxy specfile
 ReadNoProxies
 read no proxies
 eNOPROXY_SPECFILE
-enoproxy specfile
-e noproxy_specfile
+e noproxy specfile
 eUSE_DEFAULT_EXTENSION_MAP
-euse default extension map
-e use_default_extension_map
+e use default extension map
 eGLOBAL_EXTENSION_MAP
-eglobal extension map
-e global_extension_map
+e global extension map
 ePERSONAL_EXTENSION_MAP
-epersonal extension map
-e personal_extension_map
+e personal extension map
 eUSE_DEFAULT_TYPE_MAP
-euse default type map
-e use_default_type_map
+e use default type map
 eGLOBAL_TYPE_MAP
-eglobal type map
-e global_type_map
+e global type map
 ePERSONAL_TYPE_MAP
-epersonal type map
-e personal_type_map
+e personal type map
 HAVE_HDF
 have hdf
 eTWIRL_INCREMENT
-etwirl increment
-e twirl_increment
-/* Then make a copy of the hostname for shortmachine.
-     Don't even ask. */
+e twirl increment
+/* Then make a copy of the hostname for shortmachine.\n     Don't even ask. */
 /* Then find out the full name, if possible. */
 eFULL_HOSTNAME
-efull hostname
-e full_hostname
+e full hostname
 eGETHOSTBYNAME_IS_EVIL
-egethostbyname is evil
-e gethostbyname_is_evil
+e gethostbyname is evil
 hostent
 phe
 gethostbyname
@@ -3120,41 +2565,32 @@ cc
 default_author_name
 default author name
 eDEFAULT_AUTHOR_NAME
-edefault author name
-e default_author_name
+e default author name
 default_author_email
 default author email
 eDEFAULT_AUTHOR_EMAIL
-edefault author email
-e default_author_email
+e default author email
 pw_gecos
 pw gecos
 pw_name
 pw name
-/* If there's no tmp directory assigned by the X resource, then
-     look at TMPDIR. */
+/* If there's no tmp directory assigned by the X resource, then\n     look at TMPDIR. */
 tmp_dir
 tmp dir
 eTMP_DIRECTORY
-etmp directory
-e tmp_directory
-/* It can still be NULL when we leave here -- then we'll just
-                   let tmpnam() do what it does best. */
-/* If there's no docs directory assigned by the X resource,
-     then look at MOSAIC_DOCS_DIRECTORY environment variable
-     and then at hardcoded default. */
+e tmp directory
+/* It can still be NULL when we leave here -- then we'll just\n                   let tmpnam() do what it does best. */
+/* If there's no docs directory assigned by the X resource,\n     then look at MOSAIC_DOCS_DIRECTORY environment variable\n     and then at hardcoded default. */
 docs_dir
 docs dir
 DOCS_DIRECTORY_DEFAULT
 docs directory default
 eCOLORS_PER_INLINED_IMAGE
-ecolors per inlined image
-e colors_per_inlined_image
+e colors per inlined image
 set_pref_int
 set pref int
 eUSE_GLOBAL_HISTORY
-euse global history
-e use_global_history
+e use global history
 mo_setup_global_history
 mo setup global history
 mo_init_global_history
@@ -3166,8 +2602,7 @@ mo write default hotlist
 mo_setup_pan_list
 mo setup pan list
 eHOTLIST_ON_RBM
-ehotlist on rbm
-e hotlist_on_rbm
+e hotlist on rbm
 mo_init_hotmenu
 mo init hotmenu
 /* Write pid into "~/.mosaicpid". */
@@ -3178,7 +2613,6 @@ XCreateFontCursor
 x create font cursor
 XC_watch
 xc watch
-xc_watch
 XtRealizeWidget
 xt realize widget
 /* get the current geometry values */
@@ -3192,21 +2626,9 @@ MoCCIStartListening
 mo cci start listening
 XtAppMainLoop
 xt app main loop
-/****************************************************************************
- * name:    mo_process_external_directive
- * purpose: Handle an external directive given to the application via
- *          a config file read in response to a SIGUSR1.
- * inputs:
- *   - char *directive: The directive; either "goto" or "newwin".
- *   - char       *url: The URL corresponding to the directive.
- * returns:
- *   nothing
- * remarks:
- *
- ****************************************************************************/
+/****************************************************************************\n * name:    mo_process_external_directive\n * purpose: Handle an external directive given to the application via\n *          a config file read in response to a SIGUSR1.\n * inputs:\n *   - char *directive: The directive; either "goto" or "newwin".\n *   - char       *url: The URL corresponding to the directive.\n * returns:\n *   nothing\n * remarks:\n *\n ****************************************************************************/
 CLIP_TRAILING_NEWLINE(url)
 clip trailing newline(url)
-clip_trailing_newline(url)
 mo_manufacture_dummy_event
 mo manufacture dummy event
 foo
@@ -3245,7 +2667,6 @@ mo flush passwd cache
 HTFTPClearCache
 htftp clear cache
 HTAAServer_clear
-htaaserver clear
-htaa server_clear
+htaa server clear
 HTProgress
 ht progress
