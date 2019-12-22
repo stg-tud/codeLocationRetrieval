@@ -1,7 +1,7 @@
 package preprocessor
 
 // TODO: keeping track of the start index of the lexeme might be useful
-data class Token(val tokenType: TokenType, val value: String)
+data class Token(val tokenType: TokenType, val value: String, val startIndex: Int = -1)
 
 enum class TokenType {
     // single character
@@ -11,6 +11,7 @@ enum class TokenType {
     RIGHT_PAREN,
     LEFT_BRACE,
     RIGHT_BRACE,
+    SEMICOLON,      // needed as terminator (???)
 
     IDENTIFIER,
     COMMENT,

@@ -75,9 +75,10 @@ class Lexer(private val input: String) {
             '=' -> tokens.add(Token(TokenType.EQUAL, "="))
             ',' -> tokens.add(Token(TokenType.COMMA, ","))
             '(' -> tokens.add(Token(TokenType.LEFT_PAREN, "("))
-            ')' -> tokens.add(Token(TokenType.RIGHT_PAREN, "("))
-            '{' -> tokens.add(Token(TokenType.LEFT_BRACE, "("))
-            '}' -> tokens.add(Token(TokenType.RIGHT_BRACE, "("))
+            ')' -> tokens.add(Token(TokenType.RIGHT_PAREN, ")"))
+            '{' -> tokens.add(Token(TokenType.LEFT_BRACE, "{", startIndex))
+            '}' -> tokens.add(Token(TokenType.RIGHT_BRACE, "}", startIndex))
+            ';' -> tokens.add(Token(TokenType.SEMICOLON, ";"))
 
             // more complex cases
             '\'' -> {
@@ -124,7 +125,7 @@ class Lexer(private val input: String) {
         if(type == null) {
             type = TokenType.IDENTIFIER
         }
-        tokens.add(Token(type, lexeme))
+        tokens.add(Token(type, lexeme, startIndex))
     }
 
     private fun lineComment() {
@@ -135,7 +136,7 @@ class Lexer(private val input: String) {
             lexeme.append(advance())
         }
 
-        tokens.add(Token(TokenType.COMMENT, lexeme.toString()))
+        tokens.add(Token(TokenType.COMMENT, lexeme.toString(), startIndex))
     }
 
     private fun blockComment() {
@@ -166,7 +167,7 @@ class Lexer(private val input: String) {
             }
         }
 
-        tokens.add(Token(TokenType.COMMENT, lexeme.toString()))
+        tokens.add(Token(TokenType.COMMENT, lexeme.toString(), startIndex))
     }
 
     private fun char() {

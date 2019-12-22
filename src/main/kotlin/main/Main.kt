@@ -5,21 +5,28 @@ import preprocessor.Preprocessor
 import java.io.File
 import Matrix
 import preprocessor.Lexer
+import preprocessor.Parser
 import java.util.*
 
 fun main(args: Array<String>) {
+    val sourceCode = File("inputSandbox/gui.c").readText()
     // lexer
-    val tokens = Lexer(File("inputSandbox/gui.c").readText()).scan()
-    tokens.forEach {
-        println(it)
+    val tokens = Lexer(sourceCode).scan()
+//    tokens.forEach {
+//        println(it)
+//    }
+
+    // parser
+    val blocks = Parser(tokens, sourceCode).parse()
+    blocks.forEach {
+        println(it.content)
     }
 
+
+
 //    sandboxInput()
-
 //    sandboxInputNoFileWrite()
-
 //    bigInput()
-
 //    gradleBig()
 
     // current issues:
