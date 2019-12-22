@@ -71,6 +71,15 @@ class Lexer(private val input: String) {
     private fun scanToken() {
         val previousChar = advance()     // note: we have advanced the current pointer
         when(previousChar) {
+            // simple stuff
+            '=' -> tokens.add(Token(TokenType.EQUAL, "="))
+            ',' -> tokens.add(Token(TokenType.COMMA, ","))
+            '(' -> tokens.add(Token(TokenType.LEFT_PAREN, "("))
+            ')' -> tokens.add(Token(TokenType.RIGHT_PAREN, "("))
+            '{' -> tokens.add(Token(TokenType.LEFT_BRACE, "("))
+            '}' -> tokens.add(Token(TokenType.RIGHT_BRACE, "("))
+
+            // more complex cases
             '\'' -> {
                 char()
             }
@@ -184,7 +193,6 @@ class Lexer(private val input: String) {
             if(peek() == '\\') {
                 lexeme.append(advance()) // '\'
             }
-
             lexeme.append(advance())
         }
         // consume last quote
@@ -197,8 +205,16 @@ class Lexer(private val input: String) {
     private fun preprocessorDirective() {
         val lexeme = StringBuilder("#")
 
+        // the preprocessor directive (#include, #define, #if, etc.)
         while(!peek().isWhitespace()) {
             lexeme.append(advance())
+        }
+
+        // #includes' are always single line, so process it here (easy way of handling <...>)
+        if(lexeme.toString() == "#include") {
+            while(peek() != '\n') {
+                lexeme.append(advance())
+            }
         }
 
         // TODO: what token type
