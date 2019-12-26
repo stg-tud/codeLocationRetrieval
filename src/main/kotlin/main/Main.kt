@@ -1,11 +1,8 @@
 package main
 
-import preprocessor.TokenType
-import preprocessor.Preprocessor
 import java.io.File
 import Matrix
-import preprocessor.Lexer
-import preprocessor.Parser
+import preprocessor.*
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -21,6 +18,15 @@ fun main(args: Array<String>) {
     blocks.forEach {
         println(it.content)
     }
+
+    // header files
+//    val headerFile = File("inputSandbox/gui.h").readText()
+//    val tkns = Lexer(headerFile).scan()
+//    val idsAndComms = tkns.asSequence()
+//        .filter { it.tokenType == TokenType.IDENTIFIER || it.tokenType == TokenType.COMMENT }
+//        .toList()
+//    val globalBlock = Block(headerFile, idsAndComms)
+//    println(globalBlock)
 
 
 

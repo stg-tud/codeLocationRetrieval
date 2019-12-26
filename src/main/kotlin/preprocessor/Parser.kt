@@ -2,7 +2,9 @@ package preprocessor
 
 import preprocessor.TokenType.*
 
-class Parser(private val tokens: List<Token>, private val sourceCode: String) {
+class Parser(private val tokens: List<Token>,
+             private val sourceCode: String,
+             private val isHeaderFile: Boolean = false) {
 
     private val blocks = ArrayList<Block>()
     private var currentIndex = 0
@@ -11,11 +13,20 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
     private var funcCount = 0
 
     fun parse(): List<Block> {
-        while(!isAtEnd()) {
-            parseToken()
+        // take header files as they are
+        if(isHeaderFile) {
+            val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
+            blocks.add(Block(sourceCode, idsAndComments))
         }
-        println("declaration block count: $decCount")
-        println("function definition count: $funcCount")
+        // for .c files find all function and declaration blocks
+        else {
+            while(!isAtEnd()) {
+                parseToken()
+            }
+            println("declaration block count: $decCount")
+            println("function definition count: $funcCount")
+        }
+
         return blocks
     }
 
