@@ -6,8 +6,6 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
 
     private val blocks = ArrayList<Block>()
     private var currentIndex = 0
-    private val returnTypes = listOf(IDENTIFIER, VOID, CHAR, SHORT,
-        INT, LONG, FLOAT, DOUBLE, SIGNED, UNSIGNED)
 
     private var decCount = 0
     private var funcCount = 0
@@ -38,52 +36,21 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
                     advanceToClosingBrace()
                 }
             }
-            LEFT_PAREN -> {}
             RIGHT_PAREN -> {
                 /* should be function ??? */
                 if(peek().tokenType == LEFT_BRACE) {
-                    // TODO: this is getting out of hand, there's still stuff like const and volatile that's not included
-                    // TODO: instead, backtrack until you see a '}' or ';' ... that should work too?
-                    // figure out startIndex; backtrack
-                    for(i in currentIndex downTo 2) {
-                        // ret_type func_name (
-                        if(tokens[i].tokenType == LEFT_PAREN
-                            && tokens[i - 1].tokenType == IDENTIFIER) {
-                            // point at function name
-                            currentIndex = i - 1
+                    // determine the beginning of the function
+                    for(i in currentIndex downTo 0) {
+                        val type = tokens[i].tokenType
+
+                        if(type == RIGHT_BRACE || type == SEMICOLON) {
                             break
                         }
-                    }
 
-                    // return type is explicit
-                    if(returnTypes.contains(tokens[currentIndex - 1].tokenType)) {
-                        currentIndex--
-                    }
-
-                    // variants (TODO? C99 also has _Complex for floating point types)
-                    when(tokens[currentIndex - 1].tokenType) {
-                        LONG, SIGNED, UNSIGNED, STRUCT, UNION, ENUM -> {
-                            currentIndex--
-                        }
-                        else -> {
-                            /* do nothing */
+                        if(type == IDENTIFIER || type == COMMENT) {
+                            currentIndex = i
                         }
                     }
-
-                    // static or extern or comment?
-                    when(tokens[currentIndex - 1].tokenType) {
-                        STATIC, EXTERN, COMMENT -> {
-                            // point at static/extern/comment
-                            currentIndex--
-                        }
-                        else -> { /* do nothing */ }
-                    }
-
-                    // function comment? (maybe multiple single line or block comments? or allow max 1?)
-                    while(tokens[currentIndex - 1].tokenType == COMMENT) {
-                        currentIndex--
-                    }
-
                     val startIndex = tokens[currentIndex].startIndex
                     functionBlock(startIndex)
                     funcCount++
@@ -94,17 +61,6 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
                 declarationBlock(previousToken.startIndex)
                 decCount++
             }
-            RIGHT_BRACE -> {}
-
-            COMMENT -> {}
-            IDENTIFIER -> {
-                // else, check if peek() is a '(' -> potential function -> need to check for ) { as well
-            }
-
-            // check all the keywords of the form __(...) { ... } -> skip those to avoid mistaking them for functions
-            // actually: there should be no way to reach here because these can only be inside functions etc
-            IF, ELSE, FOR, DO, WHILE -> {}
-
             else -> { /* do nothing */ }
         }
     }
@@ -128,7 +84,6 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
 
         // TODO: last token returned is '}' ??
         val endIndex = token.startIndex + token.value.length
-        println("($startIndex, $endIndex)")
         blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
     }
 
@@ -162,7 +117,6 @@ class Parser(private val tokens: List<Token>, private val sourceCode: String) {
         }
 
         val endIndex = token.startIndex + token.value.length
-        println("func($startIndex, $endIndex)")
         blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
     }
 
