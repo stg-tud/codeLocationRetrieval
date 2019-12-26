@@ -6,8 +6,13 @@ class Preprocessor {
         return DocumentAutomata().process(input)
     }
 
+    fun extractDocs(tokens: List<Token>, sourceCode: String, isHeaderFile: Boolean): List<Block> {
+        return Parser(tokens, sourceCode, isHeaderFile).parse()
+    }
+
     fun extractTokens(input: String): List<Token> {
-        return IdAndCommentAutomata().process(input)
+        return Lexer(input).scan()
+//        return IdAndCommentAutomata().process(input)
     }
 
     fun getModifiedIdentifier(identifier: String): String? {

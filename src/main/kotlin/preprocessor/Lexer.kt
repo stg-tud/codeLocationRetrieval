@@ -206,8 +206,8 @@ class Lexer(private val input: String) {
     private fun preprocessorDirective() {
         val lexeme = StringBuilder("#")
 
-        // the preprocessor directive (#include, #define, #if, etc.)
-        while(!peek().isWhitespace()) {
+        // the preprocessor directive (#include, #define, #if, etc.)    // TODO: also !isAtEnd() ... e.g. #endif
+        while(!isAtEnd() && !peek().isWhitespace()) {
             lexeme.append(advance())
         }
 
