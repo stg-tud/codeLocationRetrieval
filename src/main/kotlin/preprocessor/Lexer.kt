@@ -1,11 +1,8 @@
 package preprocessor
 
+import preprocessor.TokenType.*
 
 class Lexer(private val input: String) {
-    // TODO: important, maybe give as command line option
-    // e.g. in [gui.c] check line 280: /*AppData Rdata;  /* extern'd in mosaic.h */
-    private val compilerAllowsNestedComments = false
-
     // the list of tokens that is to be filled during the scan of the input
     private val tokens = ArrayList<Token>()
 
@@ -18,48 +15,49 @@ class Lexer(private val input: String) {
 
     init {
         keywords = HashMap()
-        keywords.put("auto",        TokenType.AUTO)
-        keywords.put("break",       TokenType.BREAK)
-        keywords.put("case",        TokenType.CASE)
-        keywords.put("char",        TokenType.CHAR)
-        keywords.put("const",       TokenType.CONST)
-        keywords.put("continue",    TokenType.CONTINUE)
-        keywords.put("default",     TokenType.DEFAULT)
-        keywords.put("do",          TokenType.DO)
-        keywords.put("double",      TokenType.DOUBLE)
-        keywords.put("else",        TokenType.ELSE)
-        keywords.put("enum",        TokenType.ENUM)
-        keywords.put("extern",      TokenType.EXTERN)
-        keywords.put("float",       TokenType.FLOAT)
-        keywords.put("for",         TokenType.FOR)
-        keywords.put("goto",        TokenType.GOTO)
-        keywords.put("if",          TokenType.IF)
-        keywords.put("int",         TokenType.INT)
-        keywords.put("long",        TokenType.LONG)
-        keywords.put("register",    TokenType.REGISTER)
-        keywords.put("return",      TokenType.RETURN)
-        keywords.put("short",       TokenType.SHORT)
-        keywords.put("signed",      TokenType.SIGNED)
-        keywords.put("sizeof",      TokenType.SIZEOF)
-        keywords.put("static",      TokenType.STATIC)
-        keywords.put("struct",      TokenType.STRUCT)
-        keywords.put("switch",      TokenType.SWITCH)
-        keywords.put("typedef",     TokenType.TYPEDEF)
-        keywords.put("union",       TokenType.UNION)
-        keywords.put("unsigned",    TokenType.UNSIGNED)
-        keywords.put("void",        TokenType.VOID)
-        keywords.put("volatile",    TokenType.VOLATILE)
-        keywords.put("while",       TokenType.WHILE)
+        keywords.apply {
+            put("auto",        AUTO)
+            put("break",       BREAK)
+            put("case",        CASE)
+            put("char",        CHAR)
+            put("const",       CONST)
+            put("continue",    CONTINUE)
+            put("default",     DEFAULT)
+            put("do",          DO)
+            put("double",      DOUBLE)
+            put("else",        ELSE)
+            put("enum",        ENUM)
+            put("extern",      EXTERN)
+            put("float",       FLOAT)
+            put("for",         FOR)
+            put("goto",        GOTO)
+            put("if",          IF)
+            put("int",         INT)
+            put("long",        LONG)
+            put("register",    REGISTER)
+            put("return",      RETURN)
+            put("short",       SHORT)
+            put("signed",      SIGNED)
+            put("sizeof",      SIZEOF)
+            put("static",      STATIC)
+            put("struct",      STRUCT)
+            put("switch",      SWITCH)
+            put("typedef",     TYPEDEF)
+            put("union",       UNION)
+            put("unsigned",    UNSIGNED)
+            put("void",        VOID)
+            put("volatile",    VOLATILE)
+            put("while",       WHILE)
+        }
     }
 
-    // TODO: keep track of functions and declaration blocks here or defer completely to parser?
     fun scan(): List<Token> {
         while(!isAtEnd()) {
             startIndex = currentIndex
             scanToken()
         }
 
-        tokens.add(Token(TokenType.EOF, ""))
+        tokens.add(Token(EOF, ""))
         return tokens
     }
 
@@ -72,24 +70,16 @@ class Lexer(private val input: String) {
         val previousChar = advance()     // note: we have advanced the current pointer
         when(previousChar) {
             // simple stuff
-            '=' -> tokens.add(Token(TokenType.EQUAL, "="))
-            ',' -> tokens.add(Token(TokenType.COMMA, ","))
-            '(' -> tokens.add(Token(TokenType.LEFT_PAREN, "("))
-            ')' -> tokens.add(Token(TokenType.RIGHT_PAREN, ")"))
-            '{' -> tokens.add(Token(TokenType.LEFT_BRACE, "{", startIndex))
-            '}' -> tokens.add(Token(TokenType.RIGHT_BRACE, "}", startIndex))
-            ';' -> tokens.add(Token(TokenType.SEMICOLON, ";"))
+            '=' -> tokens.add(Token(EQUAL, "="))
+            '(' -> tokens.add(Token(LEFT_PAREN, "("))
+            ')' -> tokens.add(Token(RIGHT_PAREN, ")"))
+            '{' -> tokens.add(Token(LEFT_BRACE, "{", startIndex))
+            '}' -> tokens.add(Token(RIGHT_BRACE, "}", startIndex))
+            ';' -> tokens.add(Token(SEMICOLON, ";"))
 
             // more complex cases
-            '\'' -> {
-                char()
-            }
-            '\"' -> {
-                string()
-            }
-            '#' -> {
-                preprocessorDirective()
-            }
+            '\'', '\"' -> skipQuotes(previousChar)
+            '#' -> preprocessorDirective()
             '/' -> {
                 /* check if comment */
                 if(match('/')) {
@@ -101,11 +91,8 @@ class Lexer(private val input: String) {
             }
             else -> {
                 /* check if identifier */
-                if(previousChar.isDigit()) {
-                    // skip numbers
-                }
-                else if(previousChar.isLetterOrDigit() || previousChar == '_') {
-                    // note that we only check the beginning char here, the rest is handled in identifier()
+                if(previousChar.isLetter() || previousChar == '_') {
+                    // note that we only check the beginning char here, the rest is handled in Lexer#identifier()
                     identifier()
                 }
             }
@@ -123,7 +110,7 @@ class Lexer(private val input: String) {
         val lexeme = input.substring(startIndex, currentIndex)
         var type = keywords[lexeme]
         if(type == null) {
-            type = TokenType.IDENTIFIER
+            type = IDENTIFIER
         }
         tokens.add(Token(type, lexeme, startIndex))
     }
@@ -132,94 +119,59 @@ class Lexer(private val input: String) {
         // two slashes have already been matched and consumed
         val lexeme = StringBuilder("//")
 
-        while(peek() != '\n' && peek() != 0.toChar()) {
+        while(!match('\n')) {
             lexeme.append(advance())
         }
 
-        tokens.add(Token(TokenType.COMMENT, lexeme.toString(), startIndex))
+        tokens.add(Token(COMMENT, lexeme.toString(), startIndex))
     }
 
     private fun blockComment() {
         // beginning of block comment has already been matched
         val lexeme = StringBuilder("/*")
 
-        // keep track of nested /**/ (init to 1 since we've seen the outermost /*)
-        var nestCount = 1
-
-        while(nestCount != 0) {
-            val current = peek()
-            val next = lookahead()
-
-            if(compilerAllowsNestedComments && current == '/' && next == '*') {
-                nestCount++
-                lexeme.append("/*")
-                currentIndex += 2   // skip next
-            }
-            else if(current == '*' && next == '/') {
-                nestCount--
-                lexeme.append("*/")
-                currentIndex += 2   // skip next
-            }
-            else {
-//                print(current)
-                lexeme.append(current)
-                currentIndex++
-            }
-        }
-
-        tokens.add(Token(TokenType.COMMENT, lexeme.toString(), startIndex))
-    }
-
-    private fun char() {
-        // a char is either of the form 'a' or '\n'
-        val lexeme = StringBuilder("'")
-
-        // catch the '\' if it's there
-        if(peek() == '\\') {
+        while(!(peek() == '*' && lookahead() == '/')) {
             lexeme.append(advance())
         }
+
+        // consume end of comment: "*/"
+        lexeme.append(advance())
         lexeme.append(advance())
 
-        // TODO:
-        tokens.add(Token(TokenType.PLACEHOLDER, lexeme.toString()))
-    }
-
-    // TODO: important, it works, but note that some (or all?) compilers allow multiline comments with \ at the end
-    private fun string() {
-        // consumed double quotes already
-        val lexeme = StringBuilder("\"")
-
-        while(peek() != '\"') {
-            // escape character (next char will definitely not be the closing quote)
-            if(peek() == '\\') {
-                lexeme.append(advance()) // '\'
-            }
-            lexeme.append(advance())
-        }
-        // consume last quote
-        lexeme.append(advance())
-
-        // TODO: think about whether separate token types are needed for non ids/comments
-        tokens.add(Token(TokenType.PLACEHOLDER, lexeme.toString()))
+        tokens.add(Token(COMMENT, lexeme.toString(), startIndex))
     }
 
     private fun preprocessorDirective() {
         val lexeme = StringBuilder("#")
 
-        // the preprocessor directive (#include, #define, #if, etc.)    // TODO: also !isAtEnd() ... e.g. #endif
+        // there may be whitespace in-between: e.g. "#   include <stdio.h>"
+        while(!isAtEnd() && peek().isWhitespace()) {
+            lexeme.append(advance())
+        }
+
+        // the preprocessor directive (include, define, if, etc.)
         while(!isAtEnd() && !peek().isWhitespace()) {
             lexeme.append(advance())
         }
 
         // #includes' are always single line, so process it here (easy way of handling <...>)
-        if(lexeme.toString() == "#include") {
+        if(lexeme.toString().matches("""#\s*include""".toRegex())) {
             while(peek() != '\n') {
                 lexeme.append(advance())
             }
         }
 
-        // TODO: what token type
-        tokens.add(Token(TokenType.PLACEHOLDER, lexeme.toString()))
+        tokens.add(Token(PP_DIRECTIVE, lexeme.toString(), startIndex))
+    }
+
+    private fun skipQuotes(singleOrDoubleQuote: Char) {
+        while(!match(singleOrDoubleQuote)) {
+            if(peek() == '\\') {
+                // advance twice if we see an escape character
+                advance()
+            }
+            advance()
+        }
     }
 
     // return current char and advance the pointer to the next char to be consumed
@@ -227,7 +179,6 @@ class Lexer(private val input: String) {
         currentIndex++
         return input[currentIndex - 1]
     }
-
 
     private fun match(expected: Char): Boolean {
         if(isAtEnd()) {
