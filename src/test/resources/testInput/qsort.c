@@ -1,10 +1,19 @@
 #ifndef QSORT
 #define QSORT
 
+enum color {
+    RED, GREEN
+}
+
+struct point {
+    int x;
+    int y;
+}
+
 /* qsort: /* sort v[left]...v[right] into increasing order */
 void qsort(char *v[], int i, int j)
 {
-    // comment this out to "quick test" strings: "abc" "def" 'a' "\n" '\\'
+    // comment this out to "quick test" strings: "abc" "def" 'a'
     int i, last;
     void swap(char *v[], int i, int j);
 

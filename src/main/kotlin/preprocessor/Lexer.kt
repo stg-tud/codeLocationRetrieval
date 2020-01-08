@@ -119,7 +119,7 @@ class Lexer(private val input: String) {
         // two slashes have already been matched and consumed
         val lexeme = StringBuilder("//")
 
-        while(!match('\n')) {
+        while(!isAtEnd() && !match('\n')) {
             lexeme.append(advance())
         }
 
@@ -165,7 +165,7 @@ class Lexer(private val input: String) {
     }
 
     private fun skipQuotes(singleOrDoubleQuote: Char) {
-        while(!match(singleOrDoubleQuote)) {
+        while(!isAtEnd() && !match(singleOrDoubleQuote)) {
             if(peek() == '\\') {
                 // advance twice if we see an escape character
                 advance()

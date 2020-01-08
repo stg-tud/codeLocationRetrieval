@@ -47,10 +47,16 @@ class Parser(private val tokens: List<Token>,
                     advanceToClosingBrace()
                 }
             }
+            ENUM, STRUCT, UNION -> {
+                // e.g. enum { RED, GREEN } or enum color { RED, GREEN }
+                if(match(LEFT_BRACE) || (match(IDENTIFIER) && match(LEFT_BRACE))) {
+                    advanceToClosingBrace()
+                }
+            }
             RIGHT_PAREN -> {
                 /* should be function ??? */
                 if(peek().tokenType == LEFT_BRACE) {
-                    // determine the beginning of the function
+                    // determine the beginning of the function (including comment)
                     for(i in currentIndex downTo 0) {
                         val type = tokens[i].tokenType
 
@@ -58,8 +64,17 @@ class Parser(private val tokens: List<Token>,
                             break
                         }
 
+                        currentIndex = i
                         if(type == IDENTIFIER || type == COMMENT) {
-                            currentIndex = i
+                            // TODO: temporary "solution", only include the closest comment
+                            if(type == COMMENT) {
+                                break
+                            }
+                        }
+
+                        // TODO break at first PP_DIRECTIVE encounter for now?
+                        if(type == PP_DIRECTIVE) {
+                            break
                         }
                     }
                     val startIndex = tokens[currentIndex].startIndex
@@ -104,14 +119,14 @@ class Parser(private val tokens: List<Token>,
         // has not consumed any brace when entering here
         var braceCount = 0
         var token = peek()
-        while(!match(LEFT_BRACE)) {
+        while(!isAtEnd() && !match(LEFT_BRACE)) {
+            token = advance()
             when(token.tokenType) {
                 IDENTIFIER, COMMENT -> {
                     idsAndComments.add(token)
                 }
                 else -> { /* do nothing */ }
             }
-            token = advance()
         }
         braceCount++
 
