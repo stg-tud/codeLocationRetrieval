@@ -60,7 +60,7 @@ class Parser(private val tokens: List<Token>,
                     for(i in currentIndex downTo 0) {
                         val type = tokens[i].tokenType
 
-                        if(type == RIGHT_BRACE || type == SEMICOLON) {
+                        if(type == RIGHT_BRACE || type == SEMICOLON || type == PP_END) {
                             break
                         }
 
@@ -70,11 +70,6 @@ class Parser(private val tokens: List<Token>,
                             if(type == COMMENT) {
                                 break
                             }
-                        }
-
-                        // TODO break at first PP_DIRECTIVE encounter for now?
-                        if(type == PP_DIRECTIVE) {
-                            break
                         }
                     }
                     val startIndex = tokens[currentIndex].startIndex

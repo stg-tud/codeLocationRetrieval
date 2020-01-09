@@ -10,6 +10,10 @@ class Lexer(private val input: String) {
     private var startIndex = 0      // points at the beginning of the lexeme of the current token
     private var currentIndex = 0    // points at the character that is to be consumed next
 
+    // keep track of directives
+    private var directiveBacktrackIndex = 0     // farthes point to backtrack to when checking for newline
+    private var isPreprocessorDirective = false
+
     // map keywords to token types
     private val keywords: Map<String, TokenType?>
 
@@ -78,8 +82,31 @@ class Lexer(private val input: String) {
             ';' -> tokens.add(Token(SEMICOLON, ";"))
 
             // more complex cases
-            '\'', '\"' -> skipQuotes(previousChar)
-            '#' -> preprocessorDirective()
+            '\'', '\"' -> {
+                skipQuotes(previousChar)
+            }
+            '#' -> {
+                preprocessorDirective()
+                isPreprocessorDirective = true
+                directiveBacktrackIndex = startIndex
+            }
+            '\r', '\n' -> {
+                if(isPreprocessorDirective) {
+                    var isDirectiveContinueOnNextLine = false
+                    for(i in (currentIndex-1) downTo directiveBacktrackIndex) {
+                        if(!input[i].isWhitespace()) {
+                            isDirectiveContinueOnNextLine = (input[i] == '\\')
+                            break
+                        }
+                    }
+
+                    if(!isDirectiveContinueOnNextLine) {
+                        // mark the end of a directive
+                        tokens.add(Token(PP_END, "", startIndex))
+                        isPreprocessorDirective = false
+                    }
+                }
+            }
             '/' -> {
                 /* check if comment */
                 if(match('/')) {
@@ -144,8 +171,16 @@ class Lexer(private val input: String) {
     private fun preprocessorDirective() {
         val lexeme = StringBuilder("#")
 
-        // there may be whitespace in-between: e.g. "#   include <stdio.h>"
+        // consume potential whitespace in-between: e.g. "#   include <stdio.h>"
         while(!isAtEnd() && peek().isWhitespace()) {
+            // null directive: #\s*[\r\n|\n]
+            when(peek()) {
+                '\r', '\n' -> {
+                    tokens.add(Token(PP_DIRECTIVE, lexeme.toString(), startIndex))
+                    return
+                }
+            }
+
             lexeme.append(advance())
         }
 
@@ -180,6 +215,7 @@ class Lexer(private val input: String) {
         return input[currentIndex - 1]
     }
 
+    // if match, advance the [currentIndex]
     private fun match(expected: Char): Boolean {
         if(isAtEnd()) {
             return false

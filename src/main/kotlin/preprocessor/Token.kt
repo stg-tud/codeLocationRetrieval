@@ -14,6 +14,7 @@ enum class TokenType {
     IDENTIFIER,
     COMMENT,
     PP_DIRECTIVE,
+    PP_END,         // marks the end of a directive
 
     // keywords
     AUTO,       DOUBLE, INT,        STRUCT,

@@ -10,7 +10,7 @@ class LexerTest {
     @Test
     fun testTokenListSize() {
         val tokens = lexer.scan()
-        Assertions.assertThat(tokens.size).isEqualTo(156)   // includes EOF token!
+        Assertions.assertThat(tokens.size).isEqualTo(158)   // includes EOF token!
     }
 
     @Test
@@ -27,6 +27,7 @@ class LexerTest {
         Assertions.assertThat(tokens.filter { it.tokenType == TokenType.IDENTIFIER }.size).isEqualTo(68)
         Assertions.assertThat(tokens.filter { it.tokenType == TokenType.COMMENT }.size).isEqualTo(5)
         Assertions.assertThat(tokens.filter { it.tokenType == TokenType.PP_DIRECTIVE }.size).isEqualTo(2)
+        Assertions.assertThat(tokens.filter { it.tokenType == TokenType.PP_END }.size).isEqualTo(2)
 
         // keywords
         Assertions.assertThat(tokens.filter { it.tokenType == TokenType.ENUM }.size).isEqualTo(1)

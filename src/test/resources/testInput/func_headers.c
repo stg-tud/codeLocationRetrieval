@@ -6,6 +6,7 @@
 
 enum boolean { FALSE, TRUE };
 
+// Close but still dangling - or should this be included?
 // Function 1 - as short as possible
 main()
 {
@@ -126,7 +127,11 @@ unsigned f12() { return -1; }
 unsigned int f13() { return -1; }
 unsigned short f14() { return -1; }
 unsigned short int f15() { return -1; }
+#define NUISANCE "This is not part of a function." \
+    "And multiline is not a problem, too" \
+    MULTI_NUISANCE
 unsigned long f16() { return -1; }
+#
 unsigned long int f17() { return -1; }
 unsigned long long f18() { return -1; }
 unsigned long long int f19() { return -1; }
