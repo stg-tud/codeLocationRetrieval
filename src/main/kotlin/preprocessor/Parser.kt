@@ -111,7 +111,7 @@ class Parser(private val tokens: List<Token>,
     private fun functionBlock(startIndex: Int) {
         val idsAndComments = ArrayList<Token>()
 
-        // has not consumed any brace when entering here
+        // consume return type, function name, parameter types and names, etc.
         var braceCount = 0
         var token = peek()
         while(!isAtEnd() && !match(LEFT_BRACE)) {
@@ -125,7 +125,7 @@ class Parser(private val tokens: List<Token>,
         }
         braceCount++
 
-        // here: one past '{'
+        // here: one past '{', i.e. beginning of the body of the function
         while(braceCount != 0) {
             token = advance()
 
@@ -133,6 +133,39 @@ class Parser(private val tokens: List<Token>,
                 LEFT_BRACE -> braceCount++
                 RIGHT_BRACE -> braceCount--
                 IDENTIFIER, COMMENT -> idsAndComments.add(token)
+                PP_DIRECTIVE -> {
+                    // handle conditional compiling, which can have un-balanced numbers of braces
+                    if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
+                        var ppConditionalBraceCount = 0
+                        token = advance()
+
+                        // advance until #elif, #else, or #endif and check if brace count is > 0
+                        while(!(token.tokenType == PP_DIRECTIVE
+                                && (token.value == "#elif" || token.value == "#else" || token.value == "#endif"))) {
+                            when(token.tokenType) {
+                                LEFT_BRACE -> ppConditionalBraceCount++
+                                RIGHT_BRACE -> ppConditionalBraceCount--
+                                IDENTIFIER, COMMENT -> idsAndComments.add(token)
+                                else -> { /* do nothing */ }
+                            }
+                            token = advance()
+                        }
+
+                        // here we are done with the if-condition of the pp-directive
+                        braceCount += ppConditionalBraceCount
+
+                        // token is currently either #elif or #else, so advance
+                        token = advance()
+                        while(!(token.tokenType == PP_DIRECTIVE && token.value == "#endif")) {
+                            if(token.tokenType == IDENTIFIER || token.tokenType == COMMENT) {
+                                idsAndComments.add(token)
+                            }
+                            token = advance()
+                        }
+                        // at #endif; done with conditional compiling
+                        token = advance()
+                    }
+                }
                 else -> { /* do nothing */ }
             }
         }

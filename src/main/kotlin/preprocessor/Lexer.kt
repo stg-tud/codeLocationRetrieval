@@ -181,7 +181,9 @@ class Lexer(private val input: String) {
                 }
             }
 
-            lexeme.append(advance())
+            // TODO: include whitespace in lexeme or not?
+//            lexeme.append(advance())
+            advance()
         }
 
         // the preprocessor directive (include, define, if, etc.)
