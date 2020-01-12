@@ -66,9 +66,8 @@ class Parser(private val tokens: List<Token>,
 
                         currentIndex = i
                         if(type == IDENTIFIER || type == COMMENT) {
-                            // TODO: temporary "solution", only include the closest comment
                             if(type == COMMENT) {
-                                break
+                                break // only include the closest comment
                             }
                         }
                     }
@@ -136,34 +135,8 @@ class Parser(private val tokens: List<Token>,
                 PP_DIRECTIVE -> {
                     // handle conditional compiling, which can have un-balanced numbers of braces
                     if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
-                        var ppConditionalBraceCount = 0
                         token = advance()
-
-                        // advance until #elif, #else, or #endif and check if brace count is > 0
-                        while(!(token.tokenType == PP_DIRECTIVE
-                                && (token.value == "#elif" || token.value == "#else" || token.value == "#endif"))) {
-                            when(token.tokenType) {
-                                LEFT_BRACE -> ppConditionalBraceCount++
-                                RIGHT_BRACE -> ppConditionalBraceCount--
-                                IDENTIFIER, COMMENT -> idsAndComments.add(token)
-                                else -> { /* do nothing */ }
-                            }
-                            token = advance()
-                        }
-
-                        // here we are done with the if-condition of the pp-directive
-                        braceCount += ppConditionalBraceCount
-
-                        // token is currently either #elif or #else, so advance
-                        token = advance()
-                        while(!(token.tokenType == PP_DIRECTIVE && token.value == "#endif")) {
-                            if(token.tokenType == IDENTIFIER || token.tokenType == COMMENT) {
-                                idsAndComments.add(token)
-                            }
-                            token = advance()
-                        }
-                        // at #endif; done with conditional compiling
-                        token = advance()
+                        braceCount += handleConditionalCompilation(token, idsAndComments)
                     }
                 }
                 else -> { /* do nothing */ }
@@ -172,6 +145,87 @@ class Parser(private val tokens: List<Token>,
 
         val endIndex = token.startIndex + token.value.length
         blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
+    }
+
+    /**
+     * Returns the number of left braces ('{')
+     * that have no matching right brace ('}')
+     * within an #if|#ifdef|#ifndef case
+     *
+     * For example, for the following construct
+     *
+     *      #ifdef NAME
+     *          if(someCondition) {
+     *              doThis();
+     *              if(someOtherCondition) {
+     *      #else
+     *          if(someCondition) {
+     *              doThat();
+     *              if(someOtherCondition) {
+     *      #endif
+     *                  otherStuff();
+     *              }
+     *              thisAndThat();
+     *          }
+     *
+     * there are two '{' in the #ifdef case that aren't closed before arriving at #else,
+     * hence the return value would be 2.
+     *
+     * Note: the #elif and #else cases will have the same number of unclosed open braces, if any.
+     *       This is because for N unclosed '{' in #if..., there must be N '}' that closes them after the #endif.
+     *       These N closing braces '}' must also match the #elif and #else cases.
+     *       (-> This means we can skip brace counting in the #elif and #else cases)
+     */
+    private fun handleConditionalCompilation(startToken: Token, idsAndComments: ArrayList<Token>): Int {
+        // #if/#ifdef/#ifndef already consumed
+        var token = startToken
+        var ppConditionalBraceCount = 0
+
+        // advance until #elif, #else, or #endif
+        while(!(token.tokenType == PP_DIRECTIVE
+                    && (token.value == "#elif" || token.value == "#else" || token.value == "#endif"))) {
+            when(token.tokenType) {
+                LEFT_BRACE -> ppConditionalBraceCount++
+                RIGHT_BRACE -> ppConditionalBraceCount--
+                IDENTIFIER, COMMENT -> idsAndComments.add(token)
+                PP_DIRECTIVE -> {
+                    // possible recursion
+                    if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
+                        token = advance()
+                        ppConditionalBraceCount += handleConditionalCompilation(token, idsAndComments)
+                    }
+                }
+                else -> { /* do nothing */ }
+            }
+            token = advance()
+        }
+
+        // token is either #elif, #else, or #endif
+        if(token.value == "#elif" || token.value == "#else") {
+            var nestCount = 0   // to keep track of the right #endif
+
+            token = advance()
+            while(!(token.tokenType == PP_DIRECTIVE && token.value == "#endif" && nestCount == 0)) {
+                when(token.tokenType) {
+                    IDENTIFIER, COMMENT -> idsAndComments.add(token)
+                    PP_DIRECTIVE -> {
+                        if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
+                            nestCount++
+                        }
+                        if(token.value == "#endif") {
+                            nestCount--
+                        }
+                    }
+                    else -> { /* do nothing */ }
+                }
+                token = advance()
+            }
+        }
+
+        // #endif; done with conditional compiling
+        advance()
+
+        return ppConditionalBraceCount
     }
 
     private fun advance(): Token {

@@ -103,6 +103,7 @@ class ParserTest {
         Assertions.assertThat(blocks[17].content).isEqualTo(f18)
         Assertions.assertThat(blocks[18].content).isEqualTo(f19)
         Assertions.assertThat(blocks[19].content).isEqualTo(f20)
+        Assertions.assertThat(blocks[20].content).isEqualTo(f21)
     }
 
     companion object FunctionDocs {
@@ -209,6 +210,67 @@ class ParserTest {
         val f19 = "unsigned long long int f19() { return -1; }"
         val f20 = "long double f20() { return -1; }"
 
-
+        val f21 = "void f21() {" + System.lineSeparator() +
+                "#ifdef NAME" + System.lineSeparator() +
+                "    if(isName) {}" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "        // ..." + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "    // Conditional compilation can cause some strange syntax to occur" + System.lineSeparator() +
+                "#define A 2" + System.lineSeparator() +
+                "#if A > 2" + System.lineSeparator() +
+                "\tprintf(\"if%n\");" + System.lineSeparator() +
+                "\tif(1 < 0) {" + System.lineSeparator() +
+                "#elif A > 1" + System.lineSeparator() +
+                "\tprintf(\"elif%n\");" + System.lineSeparator() +
+                "\tif(2 > 1) {" + System.lineSeparator() +
+                "#else" + System.lineSeparator() +
+                "\tprintf(\"else%n\");" + System.lineSeparator() +
+                "\tif(2 > 1) {" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "\t\tprintf(\"Hello World%n\");" + System.lineSeparator() +
+                "\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "    // can be more than just one { that's too much" + System.lineSeparator() +
+                "#ifdef NAME" + System.lineSeparator() +
+                "    if(someCondition) {" + System.lineSeparator() +
+                "        doThis();" + System.lineSeparator() +
+                "        if(someOtherCondition) {" + System.lineSeparator() +
+                "#else" + System.lineSeparator() +
+                "    if(someCondition) {" + System.lineSeparator() +
+                "        doThat();" + System.lineSeparator() +
+                "        if(someOtherCondition) {" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "            otherStuff();" + System.lineSeparator() +
+                "        }" + System.lineSeparator() +
+                "        thisAndThat();" + System.lineSeparator() +
+                "     }" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "    // nested pp-conditionals" + System.lineSeparator() +
+                "#if A > 0" + System.lineSeparator() +
+                "    if(isGreaterZero) {" + System.lineSeparator() +
+                "        #ifdef NAME" + System.lineSeparator() +
+                "            if(isDefined) {" + System.lineSeparator() +
+                "        #else" + System.lineSeparator() +
+                "            if(isOtherDefined) {" + System.lineSeparator() +
+                "        #endif" + System.lineSeparator() +
+                "                // ..." + System.lineSeparator() +
+                "            }" + System.lineSeparator() +
+                "#elif" + System.lineSeparator() +
+                "    if(isAnything) {" + System.lineSeparator() +
+                "#else" + System.lineSeparator() +
+                "    if(isSomething) {" + System.lineSeparator() +
+                "        #ifdef NAME" + System.lineSeparator() +
+                "            if(isDefined) {" + System.lineSeparator() +
+                "        #else" + System.lineSeparator() +
+                "            if(isOtherDefined) {" + System.lineSeparator() +
+                "        #endif" + System.lineSeparator() +
+                "                // ..." + System.lineSeparator() +
+                "            }" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "        // ..." + System.lineSeparator() +
+                "    }" + System.lineSeparator() +
+                "    printf(\"Done\");" + System.lineSeparator() +
+                "}"
     }
 }

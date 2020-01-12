@@ -138,79 +138,69 @@ unsigned long long int f19() { return -1; }
 long double f20() { return -1; }
 
 void f21() {
-    #define A 2
+#ifdef NAME
+    if(isName) {}
+#endif
+        // ...
 
     // Conditional compilation can cause some strange syntax to occur
-    #if A > 2
-    	printf("if\n");
-    	if(1 < 0) {
-    #elif A > 1
-    	printf("elif\n");
-    	if(2 > 1) {
-    #else
-    	printf("else\n");
-    	if(2 > 1) {
-    #endif
-    		printf("Hello World\n");
-    	}
+#define A 2
+#if A > 2
+	printf("if%n");
+	if(1 < 0) {
+#elif A > 1
+	printf("elif%n");
+	if(2 > 1) {
+#else
+	printf("else%n");
+	if(2 > 1) {
+#endif
+		printf("Hello World%n");
+	}
 
     // can be more than just one { that's too much
-    #ifdef NAME
-        if(someCondition) {
-            doThis();
-            if(someOtherCondition) {
-    #else
-        if(someCondition) {
-            doThat();
-            if(someOtherCondition) {
-    #endif
-                otherStuff();
-            }
-            thisAndThat();
-         }
+#ifdef NAME
+    if(someCondition) {
+        doThis();
+        if(someOtherCondition) {
+#else
+    if(someCondition) {
+        doThat();
+        if(someOtherCondition) {
+#endif
+            otherStuff();
+        }
+        thisAndThat();
+     }
 
     // nested pp-conditionals
-//    #if A > 0
-//        if(isGreaterZero) {
-//            #ifdef NAME
-//                if(isDefined) {
-//            #else
-//                if(isOtherDefined) {
-//            #endif
-//                    // ...
-//                }
-//    #elif
-//        if(isAnything) {
-//    #else
-//        if(isSomething) {
-//    #endif
-//            // ...
-//        }
+#if A > 0
+    if(isGreaterZero) {
+        #ifdef NAME
+            if(isDefined) {
+        #else
+            if(isOtherDefined) {
+        #endif
+                // ...
+            }
+#elif
+    if(isAnything) {
+#else
+    if(isSomething) {
+        #ifdef NAME
+            if(isDefined) {
+        #else
+            if(isOtherDefined) {
+        #endif
+                // ...
+            }
+#endif
+        // ...
+    }
     printf("Done");
 }
 
 /* Dangling comment: now mix in some extern, static, const, and volatile */
 
-// #21 and onwards
-
 // Also: test params: void with no parameter name, and varargs (i.e. ", ..." at the end)
 // varargs: #include <stdarg.h> (https://jameshfisher.com/2016/11/23/c-varargs/)
-
-/* Important: test this (preprocessor breaks {} count, here 3x { but only 1x }):
-    #define A 2
-
-    #if A > 2
-    	printf("if\n");
-    	if(1 < 0) {
-    #elif A > 1
-    	printf("elif\n");
-    	if(2 > 1) {
-    #else
-    	printf("else\n");
-    	if(2 > 1) {
-    #endif
-    		printf("Hello World\n");
-    	}
-
-    printf("Done");
- */
