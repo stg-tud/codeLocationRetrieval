@@ -65,10 +65,6 @@ class Lexer(private val input: String) {
         return tokens
     }
 
-    private fun isAtEnd(): Boolean {
-        return currentIndex >= input.length
-    }
-
     // scans the next token and adds it to the [tokens]
     private fun scanToken() {
         val previousChar = advance()     // note: we have advanced the current pointer
@@ -251,5 +247,9 @@ class Lexer(private val input: String) {
 
     private fun isAlphaNumeric(c: Char): Boolean {
         return c.isLetterOrDigit() || c == '_'
+    }
+
+    private fun isAtEnd(): Boolean {
+        return currentIndex >= input.length
     }
 }

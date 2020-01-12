@@ -8,6 +8,7 @@ import java.io.File
 class ParserTest {
     private lateinit var parser: Parser
     private lateinit var parserFunctionHeaders: Parser
+    private lateinit var parserDeclarationBlocks: Parser
 
     private val qsortContent =
             "/* qsort: /* sort v[left]...v[right] into increasing order */" + System.lineSeparator() +
@@ -48,6 +49,9 @@ class ParserTest {
 
         val functionHeadersSource = File("src/test/resources/testInput/func_headers.c").readText()
         parserFunctionHeaders = Parser(Lexer(functionHeadersSource).scan(), functionHeadersSource)
+
+        val decBlocksSource = File("src/test/resources/testInput/decl_blocks.c").readText()
+        parserDeclarationBlocks = Parser(Lexer(decBlocksSource).scan(), decBlocksSource)
     }
 
     @Test
@@ -104,6 +108,27 @@ class ParserTest {
         Assertions.assertThat(blocks[18].content).isEqualTo(f19)
         Assertions.assertThat(blocks[19].content).isEqualTo(f20)
         Assertions.assertThat(blocks[20].content).isEqualTo(f21)
+    }
+
+
+
+    // =============================
+    // == Test Declaration Blocks ==
+    // =============================
+
+    @Test
+    fun testDeclarationBlocks() {
+        val blocks = parserDeclarationBlocks.parse()
+
+        Assertions.assertThat(blocks[0].content).isEqualTo(d1)
+        Assertions.assertThat(blocks[1].content).isEqualTo(d2)
+        Assertions.assertThat(blocks[2].content).isEqualTo(d3)
+        Assertions.assertThat(blocks[3].content).isEqualTo(d4)
+        Assertions.assertThat(blocks[4].content).isEqualTo(d5)
+        Assertions.assertThat(blocks[5].content).isEqualTo(d6)
+        Assertions.assertThat(blocks[6].content).isEqualTo(d7)
+        Assertions.assertThat(blocks[7].content).isEqualTo(d8)
+        Assertions.assertThat(blocks[8].content).isEqualTo(d9)
     }
 
     companion object FunctionDocs {
@@ -271,6 +296,177 @@ class ParserTest {
                 "        // ..." + System.lineSeparator() +
                 "    }" + System.lineSeparator() +
                 "    printf(\"Done\");" + System.lineSeparator() +
+                "}"
+
+        // declaration blocks
+        val d1 = "{" + System.lineSeparator() +
+                "ListenAddress socketFD;" + System.lineSeparator() +
+                "struct sockaddr_in serverAddress;" + System.lineSeparator() +
+                "struct protoent *protocolEntry;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tprotocolEntry = getprotobyname(\"/*tcp\\\"/**/ // not single line either\");" + System.lineSeparator() +
+                "\tif (protocolEntry) {" + System.lineSeparator() +
+                "\t\tsocketFD = socket(AF_INET, SOCK_STREAM,protocolEntry->p_proto);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "\telse {" + System.lineSeparator() +
+                "\t\tsocketFD = socket(AF_INET, SOCK_STREAM,0);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tif (socketFD < 0) {" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "#ifndef DISABLE_TRACE" + System.lineSeparator() +
+                "\t\tif (srcTrace) {" + System.lineSeparator() +
+                "\t\t\tfprintf(stderr,\"Can't create socket.\");" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\t\treturn(-1);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "/*        bzero((char *) &serverAddress, sizeof(serverAddress));*/" + System.lineSeparator() +
+                "\tmemset((char *) &serverAddress, 0, sizeof(serverAddress));" + System.lineSeparator() +
+                "\tserverAddress.sin_family = AF_INET;" + System.lineSeparator() +
+                "\tserverAddress.sin_addr.s_addr = htonl(INADDR_ANY);" + System.lineSeparator() +
+                "\tserverAddress.sin_port = htons(portNumber);" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tif (bind(socketFD, (struct sockaddr *) &serverAddress," + System.lineSeparator() +
+                "\t\tsizeof(serverAddress))<0){" + System.lineSeparator() +
+                "#ifndef DISABLE_TRACE" + System.lineSeparator() +
+                "\t\t\tif (srcTrace) {" + System.lineSeparator() +
+                "\t\t\t\tfprintf(stderr,\"Can't bind to address.\");" + System.lineSeparator() +
+                "\t\t\t}" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\t\treturn(-1);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "#ifdef SCREWY_BLOCKING" + System.lineSeparator() +
+                "            /* set socket to non-blocking for linux */" + System.lineSeparator() +
+                "        fcntl(socketFD,FNDELAY,0);" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tif (listen(socketFD,5) == -1) {" + System.lineSeparator() +
+                "#ifndef DISABLE_TRACE" + System.lineSeparator() +
+                "\t\tif (srcTrace) {" + System.lineSeparator() +
+                "\t\t\tfprintf(stderr,\"Can't listen.\");" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\t\treturn(-1);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "#ifndef SCREWY_BLOCKING" + System.lineSeparator() +
+                "            /* set socket to non-blocking */" + System.lineSeparator() +
+                "\tioctl(socketFD,FIONBIO,0);" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\treturn(socketFD);" + System.lineSeparator() +
+                "}"
+
+        val d2 = "{" + System.lineSeparator() +
+                "int newSocketFD;" + System.lineSeparator() +
+                "struct sockaddr_in clientAddress;" + System.lineSeparator() +
+                "int clientAddressLength;" + System.lineSeparator() +
+                "PortDescriptor *c;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\t/* it's assumed that the socketFD has already been set to non block*/" + System.lineSeparator() +
+                "\tclientAddressLength = sizeof(clientAddress);" + System.lineSeparator() +
+                "\tnewSocketFD = accept(socketFD,(struct sockaddr *) &clientAddress," + System.lineSeparator() +
+                "\t\t\t\t&clientAddressLength);" + System.lineSeparator() +
+                "\tif (newSocketFD < 0) {" + System.lineSeparator() +
+                "\t\treturn(NULL);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\t/* we have connection */" + System.lineSeparator() +
+                "\tif (!(c =(PortDescriptor *)MALLOC(sizeof(PortDescriptor)))){" + System.lineSeparator() +
+                "\t\treturn(0);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "\tc->socketFD = newSocketFD;" + System.lineSeparator() +
+                "\tc->numInBuffer = 0;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\treturn(c);" + System.lineSeparator() +
+                "}"
+
+        val d3 = "{" + System.lineSeparator() +
+                "int length;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tlength = read(c->socketFD, buffer, bufferSize);" + System.lineSeparator() +
+                "\treturn(length);" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "}"
+
+        val d4 = "{" + System.lineSeparator() +
+                "int length;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tlength = write(c->socketFD,buffer,bufferSize);" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\treturn(length);" + System.lineSeparator() +
+                "}"
+
+        val d5 = "{" + System.lineSeparator() +
+                "\tclose(c->socketFD);" + System.lineSeparator() +
+                "}"
+
+        val d6 = "{" + System.lineSeparator() +
+                "static struct  timeval timeout = { 0L , 0L };" + System.lineSeparator() +
+                "/*int val;*/" + System.lineSeparator() +
+                "fd_set readfds;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tFD_ZERO(&readfds);" + System.lineSeparator() +
+                "\tFD_SET(p->socketFD,&readfds);" + System.lineSeparator() +
+                "\tif (0 < select(32, &readfds, 0, 0, &timeout)){" + System.lineSeparator() +
+                "\t\treturn(1);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "\telse {" + System.lineSeparator() +
+                "\t\treturn(0);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "}"
+
+        val d7 = "{" + System.lineSeparator() +
+                "static struct  timeval timeout = { 0L , 0L };" + System.lineSeparator() +
+                "/*int val;*/" + System.lineSeparator() +
+                "fd_set readfds;" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "" + System.lineSeparator() +
+                "\tFD_ZERO(&readfds);" + System.lineSeparator() +
+                "\tFD_SET(socketFD,&readfds);" + System.lineSeparator() +
+                "\tif (0 < select(32, &readfds, 0, 0, &timeout)){" + System.lineSeparator() +
+                "\t\treturn(1);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "\telse {" + System.lineSeparator() +
+                "\t\treturn(0);" + System.lineSeparator() +
+                "\t\t}" + System.lineSeparator() +
+                "}"
+
+        val d8 = "{" + System.lineSeparator() +
+                "        return(s->socketFD);" + System.lineSeparator() +
+                "}"
+
+        val d9 = "{" + System.lineSeparator() +
+                "\tint\t\tflags;" + System.lineSeparator() +
+                "        int             pid=getpid();" + System.lineSeparator() +
+                "        int             sigio_on=1;" + System.lineSeparator() +
+                "\tDBGMSG1( \"dtm_sigio on fd %d\", fd );" + System.lineSeparator() +
+                "#ifdef __hpux" + System.lineSeparator() +
+                "\tif (flags = ioctl( fd, FIOSSAIOOWN, &pid) == -1 ) {" + System.lineSeparator() +
+                "#else" + System.lineSeparator() +
+                "\tif (flags = fcntl( fd, F_SETOWN, getpid()) == -1 ) {" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "\t\tDTMerrno = DTMSOCK;" + System.lineSeparator() +
+                "\t\treturn DTMERROR;" + System.lineSeparator() +
+                "\t}" + System.lineSeparator() +
+                "#ifdef __hpux" + System.lineSeparator() +
+                "\tif (flags = ioctl( fd, FIOSSAIOSTAT, &sigio_on ) == -1 ) {" + System.lineSeparator() +
+                "#else" + System.lineSeparator() +
+                "  \tif (flags = fcntl( fd, F_SETFL, FASYNC ) == -1 ) {" + System.lineSeparator() +
+                "#endif" + System.lineSeparator() +
+                "\t\tDTMerrno = DTMSOCK;" + System.lineSeparator() +
+                "\t\treturn DTMERROR;" + System.lineSeparator() +
+                "\t}" + System.lineSeparator() +
+                "\treturn DTM_OK;" + System.lineSeparator() +
                 "}"
     }
 }

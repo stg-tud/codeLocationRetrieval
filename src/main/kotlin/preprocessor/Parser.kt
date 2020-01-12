@@ -30,10 +30,6 @@ class Parser(private val tokens: List<Token>,
         return blocks
     }
 
-    private fun isAtEnd(): Boolean {
-        return currentIndex >= tokens.size
-    }
-
     private fun parseToken() {
         val previousToken = advance()
 
@@ -87,22 +83,11 @@ class Parser(private val tokens: List<Token>,
 
     private fun declarationBlock(startIndex: Int) {
         // assumes we've already seen the opening brace '{'
-        var braceCount = 1
-
         val idsAndComments = ArrayList<Token>()
 
-        var token: Token
-        do {
-            token = advance()
-            when(token.tokenType) {
-                LEFT_BRACE -> braceCount++
-                RIGHT_BRACE -> braceCount--
-                IDENTIFIER, COMMENT -> idsAndComments.add(token)
-                else -> { /* do nothing */ }
-            }
-        } while(braceCount != 0)
+        advanceToClosingBrace(idsAndComments)
+        val token = previous()!!
 
-        // TODO: last token returned is '}' ??
         val endIndex = token.startIndex + token.value.length
         blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
     }
@@ -111,8 +96,7 @@ class Parser(private val tokens: List<Token>,
         val idsAndComments = ArrayList<Token>()
 
         // consume return type, function name, parameter types and names, etc.
-        var braceCount = 0
-        var token = peek()
+        var token: Token
         while(!isAtEnd() && !match(LEFT_BRACE)) {
             token = advance()
             when(token.tokenType) {
@@ -122,9 +106,25 @@ class Parser(private val tokens: List<Token>,
                 else -> { /* do nothing */ }
             }
         }
-        braceCount++
 
-        // here: one past '{', i.e. beginning of the body of the function
+        // now we're past the first '{' (which begins the function body)
+        advanceToClosingBrace(idsAndComments)
+        token = previous()!!
+
+        val endIndex = token.startIndex + token.value.length
+        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
+    }
+
+    /**
+     * [idsAndComments] will hold the list of identifiers and comments for a block.
+     * Use the default argument if they can be ignored (e.g. when skipping an array initialization).
+     * Otherwise provide a list as an argument; the function will fill it.
+     */
+    private fun advanceToClosingBrace(idsAndComments: ArrayList<Token> = ArrayList<Token>()) {
+        // assumes we've already seen the opening brace '{'
+        var braceCount = 1
+
+        var token: Token
         while(braceCount != 0) {
             token = advance()
 
@@ -133,7 +133,6 @@ class Parser(private val tokens: List<Token>,
                 RIGHT_BRACE -> braceCount--
                 IDENTIFIER, COMMENT -> idsAndComments.add(token)
                 PP_DIRECTIVE -> {
-                    // handle conditional compiling, which can have un-balanced numbers of braces
                     if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
                         token = advance()
                         braceCount += handleConditionalCompilation(token, idsAndComments)
@@ -142,9 +141,6 @@ class Parser(private val tokens: List<Token>,
                 else -> { /* do nothing */ }
             }
         }
-
-        val endIndex = token.startIndex + token.value.length
-        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
     }
 
     /**
@@ -233,33 +229,16 @@ class Parser(private val tokens: List<Token>,
         return tokens[currentIndex - 1]
     }
 
-    private fun advanceToClosingBrace() {
-        // assumes we've already seen the opening brace '{'
-        var braceCount = 1
-
-        /*
-            static XtActionsRec balloon_action[] = {
-                {"BalloonHelpMe", (XtActionProc)BalloonHelpMe},
-                {"UnBalloonHelpMe", (XtActionProc)UnBalloonHelpMe}
-            };
-         */
-
-        var token: Token // advance here or not?
-        do {
-            token = advance()
-
-            if(token.tokenType == LEFT_BRACE) {
-                braceCount++
-            }
-
-            if(token.tokenType == RIGHT_BRACE) {
-                braceCount--
-            }
-        } while(braceCount != 0)
-    }
-
     private fun peek(): Token {
         return tokens[currentIndex]
+    }
+
+    private fun previous(): Token? {
+        if(currentIndex > 0) {
+            return tokens[currentIndex - 1]
+        }
+
+        return null
     }
 
     private fun match(expected: TokenType): Boolean {
@@ -269,5 +248,9 @@ class Parser(private val tokens: List<Token>,
 
         currentIndex++
         return true
+    }
+
+    private fun isAtEnd(): Boolean {
+        return currentIndex >= tokens.size
     }
 }
