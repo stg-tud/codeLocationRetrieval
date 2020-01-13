@@ -51,7 +51,15 @@ class Parser(private val tokens: List<Token>,
             }
             RIGHT_PAREN -> {
                 /* should be function ??? */
-                if(peek().tokenType == LEFT_BRACE) {
+                var isFunction = false
+                for(i in currentIndex..tokens.lastIndex) {
+                    if(tokens[i].tokenType != COMMENT) {
+                        isFunction = (tokens[i].tokenType == LEFT_BRACE)
+                        break
+                    }
+                }
+
+                if(isFunction) {
                     // determine the beginning of the function (including comment)
                     for(i in currentIndex downTo 0) {
                         val type = tokens[i].tokenType
@@ -62,8 +70,8 @@ class Parser(private val tokens: List<Token>,
 
                         currentIndex = i
                         if(type == IDENTIFIER || type == COMMENT) {
-                            if(type == COMMENT) {
-                                break // only include the closest comment
+                            if(type == COMMENT && !tokens[i].value.startsWith("//")) {
+                                break // if block comment, only include the closest one
                             }
                         }
                     }

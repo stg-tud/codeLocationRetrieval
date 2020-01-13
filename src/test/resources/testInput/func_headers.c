@@ -6,7 +6,7 @@
 
 enum boolean { FALSE, TRUE };
 
-// Close but still dangling - or should this be included?
+// Close but still dangling - or should this be included? -> Include it after all
 // Function 1 - as short as possible
 main()
 {
@@ -35,8 +35,6 @@ int power(int base, int n)
         p = p * base;
     return p;
 }
-
-// Another dangling comment.
 
 // #4 has return type pointer
 char *month_name(int n)
@@ -118,7 +116,7 @@ static Header *morecore(unsigned nu)
  * long double
  */
 
-// #8 and onwards
+/* #8 and onwards */
 short f8() { return -1; }
 short int f9() { return -1; }
 long f10() { return -1; }

@@ -132,7 +132,8 @@ class ParserTest {
     }
 
     companion object FunctionDocs {
-        val f1 = "// Function 1 - as short as possible" + System.lineSeparator() +
+        val f1 = "// Close but still dangling - or should this be included? -> Include it after all" + System.lineSeparator() +
+                "// Function 1 - as short as possible" + System.lineSeparator() +
                 "main()" + System.lineSeparator() +
                 "{" + System.lineSeparator() +
                 "    printf(\"hello, world!\");" + System.lineSeparator() +
@@ -220,7 +221,7 @@ class ParserTest {
                 "    return freep;" + System.lineSeparator() +
                 "}"
 
-        val f8 = "// #8 and onwards" + System.lineSeparator() +
+        val f8 = "/* #8 and onwards */" + System.lineSeparator() +
                 "short f8() { return -1; }"
         val f9 = "short int f9() { return -1; }"
         val f10 = "long f10() { return -1; }"
