@@ -18,7 +18,7 @@ class Lexer(private val input: String) {
     private val keywords: Map<String, TokenType?>
 
     init {
-        keywords = HashMap()
+        keywords = mutableMapOf()
         keywords.apply {
             put("auto",        AUTO)
             put("break",       BREAK)
@@ -207,11 +207,12 @@ class Lexer(private val input: String) {
         }
     }
 
+    // ==================================
+    // == Fundamental helper functions ==
+    // ==================================
+
     // return current char and advance the pointer to the next char to be consumed
-    private fun advance(): Char {
-        currentIndex++
-        return input[currentIndex - 1]
-    }
+    private fun advance() = input[currentIndex++]
 
     // if match, advance the [currentIndex]
     private fun match(expected: Char): Boolean {
@@ -241,15 +242,11 @@ class Lexer(private val input: String) {
             0.toChar()
         }
         else {
-            return input[currentIndex + 1]
+            input[currentIndex + 1]
         }
     }
 
-    private fun isAlphaNumeric(c: Char): Boolean {
-        return c.isLetterOrDigit() || c == '_'
-    }
+    private fun isAlphaNumeric(c: Char) = c.isLetterOrDigit() || c == '_'
 
-    private fun isAtEnd(): Boolean {
-        return currentIndex >= input.length
-    }
+    private fun isAtEnd() = currentIndex >= input.length
 }

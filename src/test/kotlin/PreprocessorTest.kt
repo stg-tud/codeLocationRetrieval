@@ -3,6 +3,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import preprocessor.Preprocessor
 import preprocessor.TokenType
+import preprocessor.Lexer
 import java.io.File
 
 class PreprocessorTest {
@@ -53,21 +54,27 @@ class PreprocessorTest {
         val actualOutput = StringBuilder()
         val tokenList = preprocessor.extractTokens(File("src/test/resources/testInput/main.c").readText())
         for(token in tokenList) {
-            when(token.tokenType) {
-                TokenType.COMMENT -> { actualOutput.append(token.value) }
-                TokenType.IDENTIFIER -> {
-                    actualOutput.append(token.value)
-                    val modified = preprocessor.getModifiedIdentifier(token.value)
-                    if(modified != null) {
-                        actualOutput.append("\n")
-                        actualOutput.append(modified)
-                    }
-                }
+            if(token.value == "\n") {
+                println("NEWLINE")
+            }
+            else if(token.value == "\r\n") {
+                println("CR NL")
             }
 
-            actualOutput.append("\n")
+            when(token.tokenType) {
+                TokenType.COMMENT -> { actualOutput.append("${token.value}\n") }
+                TokenType.IDENTIFIER -> {
+                    actualOutput.append("${token.value}\n")
+                    val modified = preprocessor.getModifiedIdentifier(token.value)
+                    if(modified != null) {
+                        actualOutput.append("$modified\n")
+                    }
+                }
+                else -> { /* do nothing */ }
+            }
         }
 
+//        println(actualOutput)
         Assertions.assertThat(actualOutput.toString()).isEqualTo(expectedOutput)
     }
 
@@ -77,11 +84,13 @@ class PreprocessorTest {
             .readText()
             .replace("\r", "")
 
-        val actualOutput = preprocessor.extractDocuments(File("src/test/resources/testInput/main.c").readText())
+        val source = File("src/test/resources/testInput/main.c").readText()
+        val lexer = Lexer(source)
+        val actualOutput = preprocessor.extractDocuments(lexer.scan(), source, false)
 
         Assertions.assertThat(actualOutput.size).isEqualTo(1)
         // TODO: whitespace is causing test to fail
-//        Assertions.assertThat(actualOutput[0]).isEqualTo(expectedOutput)
-        Assertions.assertThat(actualOutput[0]).isEqualToIgnoringWhitespace(expectedOutput)
+//        Assertions.assertThat(actualOutput[0].content).isEqualTo(expectedOutput)
+        Assertions.assertThat(actualOutput[0].content).isEqualToIgnoringWhitespace(expectedOutput)
     }
 }

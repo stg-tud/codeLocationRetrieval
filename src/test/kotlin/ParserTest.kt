@@ -87,51 +87,32 @@ class ParserTest {
     fun testFunctionHeaders() {
         val blocks = parserFunctionHeaders.parse()
 
-        Assertions.assertThat(blocks[0].content).isEqualTo(f1)
-        Assertions.assertThat(blocks[1].content).isEqualTo(f2)
-        Assertions.assertThat(blocks[2].content).isEqualTo(f3)
-        Assertions.assertThat(blocks[3].content).isEqualTo(f4)
-        Assertions.assertThat(blocks[4].content).isEqualTo(f5)
-        Assertions.assertThat(blocks[5].content).isEqualTo(f6)
-        Assertions.assertThat(blocks[6].content).isEqualTo(f7)
-        Assertions.assertThat(blocks[7].content).isEqualTo(f8)
-        Assertions.assertThat(blocks[8].content).isEqualTo(f9)
-        Assertions.assertThat(blocks[9].content).isEqualTo(f10)
-        Assertions.assertThat(blocks[10].content).isEqualTo(f11)
-        Assertions.assertThat(blocks[11].content).isEqualTo(f12)
-        Assertions.assertThat(blocks[12].content).isEqualTo(f13)
-        Assertions.assertThat(blocks[13].content).isEqualTo(f14)
-        Assertions.assertThat(blocks[14].content).isEqualTo(f15)
-        Assertions.assertThat(blocks[15].content).isEqualTo(f16)
-        Assertions.assertThat(blocks[16].content).isEqualTo(f17)
-        Assertions.assertThat(blocks[17].content).isEqualTo(f18)
-        Assertions.assertThat(blocks[18].content).isEqualTo(f19)
-        Assertions.assertThat(blocks[19].content).isEqualTo(f20)
-        Assertions.assertThat(blocks[20].content).isEqualTo(f21)
+        FunctionDocs.apply {
+            Assertions.assertThat(blocks[0].content).isEqualTo(f1)
+            Assertions.assertThat(blocks[1].content).isEqualTo(f2)
+            Assertions.assertThat(blocks[2].content).isEqualTo(f3)
+            Assertions.assertThat(blocks[3].content).isEqualTo(f4)
+            Assertions.assertThat(blocks[4].content).isEqualTo(f5)
+            Assertions.assertThat(blocks[5].content).isEqualTo(f6)
+            Assertions.assertThat(blocks[6].content).isEqualTo(f7)
+            Assertions.assertThat(blocks[7].content).isEqualTo(f8)
+            Assertions.assertThat(blocks[8].content).isEqualTo(f9)
+            Assertions.assertThat(blocks[9].content).isEqualTo(f10)
+            Assertions.assertThat(blocks[10].content).isEqualTo(f11)
+            Assertions.assertThat(blocks[11].content).isEqualTo(f12)
+            Assertions.assertThat(blocks[12].content).isEqualTo(f13)
+            Assertions.assertThat(blocks[13].content).isEqualTo(f14)
+            Assertions.assertThat(blocks[14].content).isEqualTo(f15)
+            Assertions.assertThat(blocks[15].content).isEqualTo(f16)
+            Assertions.assertThat(blocks[16].content).isEqualTo(f17)
+            Assertions.assertThat(blocks[17].content).isEqualTo(f18)
+            Assertions.assertThat(blocks[18].content).isEqualTo(f19)
+            Assertions.assertThat(blocks[19].content).isEqualTo(f20)
+            Assertions.assertThat(blocks[20].content).isEqualTo(f21)
+        }
     }
 
-
-
-    // =============================
-    // == Test Declaration Blocks ==
-    // =============================
-
-    @Test
-    fun testDeclarationBlocks() {
-        val blocks = parserDeclarationBlocks.parse()
-
-        Assertions.assertThat(blocks[0].content).isEqualTo(d1)
-        Assertions.assertThat(blocks[1].content).isEqualTo(d2)
-        Assertions.assertThat(blocks[2].content).isEqualTo(d3)
-        Assertions.assertThat(blocks[3].content).isEqualTo(d4)
-        Assertions.assertThat(blocks[4].content).isEqualTo(d5)
-        Assertions.assertThat(blocks[5].content).isEqualTo(d6)
-        Assertions.assertThat(blocks[6].content).isEqualTo(d7)
-        Assertions.assertThat(blocks[7].content).isEqualTo(d8)
-        Assertions.assertThat(blocks[8].content).isEqualTo(d9)
-    }
-
-    companion object FunctionDocs {
+    object FunctionDocs {
         val f1 = "// Close but still dangling - or should this be included? -> Include it after all" + System.lineSeparator() +
                 "// Function 1 - as short as possible" + System.lineSeparator() +
                 "main()" + System.lineSeparator() +
@@ -299,6 +280,31 @@ class ParserTest {
                 "    printf(\"Done\");" + System.lineSeparator() +
                 "}"
 
+
+    }
+
+    // =============================
+    // == Test Declaration Blocks ==
+    // =============================
+
+    @Test
+    fun testDeclarationBlocks() {
+        val blocks = parserDeclarationBlocks.parse()
+
+        DeclarationBlockDocs.apply {
+            Assertions.assertThat(blocks[0].content).isEqualTo(d1)
+            Assertions.assertThat(blocks[1].content).isEqualTo(d2)
+            Assertions.assertThat(blocks[2].content).isEqualTo(d3)
+            Assertions.assertThat(blocks[3].content).isEqualTo(d4)
+            Assertions.assertThat(blocks[4].content).isEqualTo(d5)
+            Assertions.assertThat(blocks[5].content).isEqualTo(d6)
+            Assertions.assertThat(blocks[6].content).isEqualTo(d7)
+            Assertions.assertThat(blocks[7].content).isEqualTo(d8)
+            Assertions.assertThat(blocks[8].content).isEqualTo(d9)
+        }
+    }
+
+    object DeclarationBlockDocs {
         // declaration blocks
         val d1 = "{" + System.lineSeparator() +
                 "ListenAddress socketFD;" + System.lineSeparator() +

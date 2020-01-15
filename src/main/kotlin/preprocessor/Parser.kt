@@ -128,7 +128,7 @@ class Parser(private val tokens: List<Token>,
      * Use the default argument if they can be ignored (e.g. when skipping an array initialization).
      * Otherwise provide a list as an argument; the function will fill it.
      */
-    private fun advanceToClosingBrace(idsAndComments: ArrayList<Token> = ArrayList<Token>()) {
+    private fun advanceToClosingBrace(idsAndComments: ArrayList<Token> = ArrayList()) {
         // assumes we've already seen the opening brace '{'
         var braceCount = 1
 
@@ -232,14 +232,13 @@ class Parser(private val tokens: List<Token>,
         return ppConditionalBraceCount
     }
 
-    private fun advance(): Token {
-        currentIndex++
-        return tokens[currentIndex - 1]
-    }
+    // ==================================
+    // == Fundamental helper functions ==
+    // ==================================
 
-    private fun peek(): Token {
-        return tokens[currentIndex]
-    }
+    private fun advance() = tokens[currentIndex++]
+
+    private fun peek() = tokens[currentIndex]
 
     private fun previous(): Token? {
         if(currentIndex > 0) {
@@ -258,7 +257,5 @@ class Parser(private val tokens: List<Token>,
         return true
     }
 
-    private fun isAtEnd(): Boolean {
-        return currentIndex >= tokens.size
-    }
+    private fun isAtEnd() = currentIndex >= tokens.size
 }
