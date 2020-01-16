@@ -84,9 +84,9 @@ class PreprocessorTest {
             .readText()
             .replace("\r", "")
 
-        val source = File("src/test/resources/testInput/main.c").readText()
-        val lexer = Lexer(source)
-        val actualOutput = preprocessor.extractDocuments(lexer.scan(), source, false)
+        val sourceFile = File("src/test/resources/testInput/main.c")
+        val lexer = Lexer(sourceFile.readText())
+        val actualOutput = preprocessor.extractDocuments(lexer.scan(), sourceFile)
 
         Assertions.assertThat(actualOutput.size).isEqualTo(1)
         // TODO: whitespace is causing test to fail

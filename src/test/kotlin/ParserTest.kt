@@ -44,14 +44,14 @@ class ParserTest {
 
     @BeforeEach
     fun initParser() {
-        val source = File("src/test/resources/testInput/qsort.c").readText()
-        parser = Parser(Lexer(source).scan(), source)
+        val sourceFile = File("src/test/resources/testInput/qsort.c")
+        parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
 
-        val functionHeadersSource = File("src/test/resources/testInput/func_headers.c").readText()
-        parserFunctionHeaders = Parser(Lexer(functionHeadersSource).scan(), functionHeadersSource)
+        val functionHeadersFile = File("src/test/resources/testInput/func_headers.c")
+        parserFunctionHeaders = Parser(Lexer(functionHeadersFile.readText()).scan(), functionHeadersFile)
 
-        val decBlocksSource = File("src/test/resources/testInput/decl_blocks.c").readText()
-        parserDeclarationBlocks = Parser(Lexer(decBlocksSource).scan(), decBlocksSource)
+        val decBlocksFile = File("src/test/resources/testInput/decl_blocks.c")
+        parserDeclarationBlocks = Parser(Lexer(decBlocksFile.readText()).scan(), decBlocksFile)
     }
 
     @Test

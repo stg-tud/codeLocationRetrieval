@@ -65,104 +65,55 @@ fun getCorpusAndBlocks(rootDir: String): Pair<Set<String>, List<Block>> {
         corpusSet.addAll(corpusList)
 
         // blocks
-        val isHeaderFile = it.extension == "h"
-        blocks.addAll(preprocessor.extractDocuments(tokens, sourceCode, isHeaderFile))
+        blocks.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
     }
 
     return Pair(corpusSet, blocks)
 }
 
 private fun bigInput() {
-    val preprocessor = Preprocessor()
-
-    val rootDir = "inputBig/grbl"
-    val file = File(rootDir)
-
     val start = System.currentTimeMillis()
 
-    var docIndex = 0
-    val corpusList = ArrayList<String>()
-    file.walkTopDown().forEach {
-        // only operate on .h and .c files
-        if(!(it.extension == "h" || it.extension == "c")) {
-            return@forEach  // mimics a continue
-        }
-
-        val sourceCode = it.readText()
-
-        // corpus
-        val tokens = preprocessor.extractTokens(sourceCode)
-        for(token in tokens) {
-            when(token.tokenType) {
-                TokenType.COMMENT -> corpusList.add(token.value)
-                TokenType.IDENTIFIER -> {
-                    corpusList.add(token.value)
-                    val modifiedId = preprocessor.getModifiedIdentifier(token.value)
-                    if(modifiedId != null) {
-                        corpusList.add(modifiedId)
-                    }
-                }
-                else -> { /* do nothing */ }
-            }
-        }
-
-        // documents
-        val isHeaderFile = it.extension == "h"
-        try {
-            val blocks = preprocessor.extractDocuments(tokens, sourceCode, isHeaderFile)
-            mBlocks.addAll(blocks)
-            for(block in blocks) {
-                val docFile = File("outputBig/docs/doc${docIndex}_${it.nameWithoutExtension}" +
-                        "_${it.extension}.txt")
-                docFile.parentFile.mkdirs()
-                val docWriter = docFile.bufferedWriter()
-                docWriter.write(block.content)
-                docIndex++
-                docWriter.close()
-            }
-        }
-        catch(e: Exception) {
-            println(it.canonicalPath)
-            throw e
-        }
-    }
+    val (terms, documents) = getCorpusAndBlocks(rootDir = "inputBig/grbl")
+    mCorpusSet.addAll(terms)
+    mBlocks.addAll(documents)
 
     // write corpus
     val corpus = File("outputBig/corpus.txt").bufferedWriter()
-    mCorpusSet.addAll(corpusList.toSet())
-    corpusList.toSet().forEach {
+    mCorpusSet.forEach {
         corpus.write(it)
         corpus.newLine()
     }
     corpus.close()
 
+    // write documents
+    var docIndex = 0
+    try {
+        for(block in mBlocks) {
+            val docFile = File("outputBig/docs/doc${docIndex}_${block.sourceFile.nameWithoutExtension}" +
+                    "_${block.sourceFile.extension}.txt")
+            docFile.parentFile.mkdirs()
+            val docWriter = docFile.bufferedWriter()
+            docWriter.write(block.content)
+            docIndex++
+            docWriter.close()
+        }
+    }
+    catch(e: Exception) {
+        throw e
+    }
+
     val end = System.currentTimeMillis()
     println("${(end - start) / 1000f}s")
 }
 
-fun createTdm() {
-    val corpus = File("outputBig/corpus.txt").readText()
-    val docDir = File("outputBig/docs")
-
-    // -1 because of empty line at the end (get rid of that)
-    val matrix = Matrix(corpus.lines().size - 1, docDir.listFiles().size)
-    println(matrix.numOfTerms)
-    println(matrix.numOfDocs)
-
+private fun createTdm() {
     val startTime = System.currentTimeMillis()
 
-    // iterate over docs
-    for(docIdx in 0..(mBlocks.size - 1)) {
-        val block = mBlocks[docIdx]
-        block.idsAndComments.forEach { token ->
-            val termIdx = mCorpusSet.indexOf(token.value)
-
-            // term is contained in the corpus
-            if(termIdx != -1) {
-                matrix.tdm[termIdx][docIdx] += 1
-            }
-        }
-    }
+    // -1 because of empty line at the end (get rid of that)
+    val matrix = Matrix(mCorpusSet, mBlocks)
+    println(matrix.numOfTerms)
+    println(matrix.numOfDocs)
 
     // time in seconds
     println("${(System.currentTimeMillis() - startTime) / 1000}s")

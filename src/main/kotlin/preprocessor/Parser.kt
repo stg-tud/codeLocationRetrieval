@@ -1,22 +1,21 @@
 package preprocessor
 
 import preprocessor.TokenType.*
+import java.io.File
 
-class Parser(private val tokens: List<Token>,
-             private val sourceCode: String,
-             private val isHeaderFile: Boolean = false) {
-
+class Parser(private val tokens: List<Token>, private val sourceFile: File) {
     private val blocks = ArrayList<Block>()
     private var currentIndex = 0
+    private val sourceCode = sourceFile.readText()
 
     private var decCount = 0
     private var funcCount = 0
 
     fun parse(): List<Block> {
         // take header files as they are
-        if(isHeaderFile) {
+        if(sourceFile.extension == "h") {
             val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
-            blocks.add(Block(sourceCode, idsAndComments))
+            blocks.add(Block(sourceCode, idsAndComments, sourceFile))
         }
         // for .c files find all function and declaration blocks
         else {
@@ -97,7 +96,7 @@ class Parser(private val tokens: List<Token>,
         val token = previous()!!
 
         val endIndex = token.startIndex + token.value.length
-        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
+        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
     }
 
     private fun functionBlock(startIndex: Int) {
@@ -120,7 +119,7 @@ class Parser(private val tokens: List<Token>,
         token = previous()!!
 
         val endIndex = token.startIndex + token.value.length
-        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments))
+        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
     }
 
     /**

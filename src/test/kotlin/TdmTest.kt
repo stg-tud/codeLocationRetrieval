@@ -9,8 +9,7 @@ class TdmTest {
     @BeforeEach
     fun init() {
         val (corpusSet, blocks) = getCorpusAndBlocks("src/test/resources/TermDocMatrixTest/in")
-        matrix = Matrix(corpusSet.size, blocks.size)
-        matrix.populateTdm(corpusSet, blocks)
+        matrix = Matrix(corpusSet, blocks)
     }
 
     @Test
