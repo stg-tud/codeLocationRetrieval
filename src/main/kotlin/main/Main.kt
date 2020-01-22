@@ -32,49 +32,10 @@ fun main(args: Array<String>) {
     //      2.2 should each word in a comment be treated as a single term?
 }
 
-fun getCorpusAndBlocks(rootDir: String): Pair<Set<String>, List<Block>> {
-    val corpusSet = mutableSetOf<String>()
-    val blocks = mutableListOf<Block>()
-
-    val preprocessor = Preprocessor()
-    val dir = File(rootDir)
-    dir.walkTopDown().forEach {
-        // only operate on .h and .c files
-        if(!(it.extension == "h" || it.extension == "c")) {
-            return@forEach  // mimics a continue
-        }
-
-        val sourceCode = it.readText()
-
-        // corpus
-        val corpusList = ArrayList<String>()
-        val tokens = preprocessor.extractTokens(sourceCode)
-        for(token in tokens) {
-            when(token.tokenType) {
-                TokenType.COMMENT -> corpusList.add(token.value)
-                TokenType.IDENTIFIER -> {
-                    corpusList.add(token.value)
-                    val modifiedId = preprocessor.getModifiedIdentifier(token.value)
-                    if(modifiedId != null) {
-                        corpusList.add(modifiedId)
-                    }
-                }
-                else -> { /* do nothing */ }
-            }
-        }
-        corpusSet.addAll(corpusList)
-
-        // blocks
-        blocks.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
-    }
-
-    return Pair(corpusSet, blocks)
-}
-
 private fun bigInput() {
     val start = System.currentTimeMillis()
 
-    val (terms, documents) = getCorpusAndBlocks(rootDir = "inputBig/grbl")
+    val (terms, documents) = getTermsAndBlocks(rootDir = "inputBig/grbl")
     mCorpusSet.addAll(terms)
     mBlocks.addAll(documents)
 

@@ -15,11 +15,11 @@ class Matrix(private val terms: Set<String>, private val documents: List<Block>)
     private fun populateTdm() {
         for(docIdx in 0..(documents.size - 1)) {
             val block = documents[docIdx]
-            block.idsAndComments.forEach { token ->
-                val termIdx = terms.indexOf(token.value)
+            block.terms.forEach { term ->
+                val termIdx = terms.indexOf(term)
 
-                // term is contained in the corpus
                 if(termIdx != -1) {
+                    // term is contained in the corpus
                     tdm[termIdx][docIdx] += 1
                 }
             }

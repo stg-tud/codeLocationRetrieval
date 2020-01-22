@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import preprocessor.Preprocessor
 import preprocessor.TokenType
 import preprocessor.Lexer
+import preprocessor.getModifiedIdentifier
 import java.io.File
 
 class PreprocessorTest {
@@ -12,39 +13,40 @@ class PreprocessorTest {
     @Test
     fun testIdModifier() {
         // no changes
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("lowercase")).isNull()
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("UPPERCASE")).isNull()
+        Assertions.assertThat(getModifiedIdentifier("lowercase")).isNull()
+        Assertions.assertThat(getModifiedIdentifier("UPPERCASE")).isNull()
 
         // camel case
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("URLLocation"))
+        Assertions.assertThat(getModifiedIdentifier("URLLocation"))
             .isEqualTo("url location")
 
         // underscore
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("underscore_test"))
+        Assertions.assertThat(getModifiedIdentifier("underscore_test"))
             .isEqualTo("underscore test")
 
         // mixed
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("someMixed_TestCase"))
+        Assertions.assertThat(getModifiedIdentifier("someMixed_TestCase"))
             .isEqualTo("some mixed test case")
 
         // edge-cases
             // range-limit
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("URILo"))
+        Assertions.assertThat(getModifiedIdentifier("URILo"))
             .isEqualTo("uri lo")
 
             // underscore at the beginning
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("_underscore"))
+        Assertions.assertThat(getModifiedIdentifier("_underscore"))
             .isEqualTo("underscore")
 
             // underscore at the end
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("underscore_"))
+        Assertions.assertThat(getModifiedIdentifier("underscore_"))
             .isEqualTo("underscore")
 
             // more than one underscore
-        Assertions.assertThat(preprocessor.getModifiedIdentifier("_under_score_"))
+        Assertions.assertThat(getModifiedIdentifier("_under_score_"))
             .isEqualTo("under score")
     }
 
+    // TODO: need to refactor
     @Test
     fun testTokenExtraction() {
         val expectedOutput = File("src/test/resources/testExpectedOutput/main/corpus.txt")
@@ -65,7 +67,7 @@ class PreprocessorTest {
                 TokenType.COMMENT -> { actualOutput.append("${token.value}\n") }
                 TokenType.IDENTIFIER -> {
                     actualOutput.append("${token.value}\n")
-                    val modified = preprocessor.getModifiedIdentifier(token.value)
+                    val modified = getModifiedIdentifier(token.value)
                     if(modified != null) {
                         actualOutput.append("$modified\n")
                     }

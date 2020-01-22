@@ -9,4 +9,6 @@ import java.io.File
  * @param[idsAndComments]   List of identifier and comment tokens that are part of this block.
  * @param[sourceFile]       The original file to which this block of code belongs to.
  */
-data class Block(val content: String, val idsAndComments: List<Token>, val sourceFile: File)
+data class Block(val content: String, val idsAndComments: List<Token>, val sourceFile: File) {
+    val terms = extractTerms(idsAndComments)
+}

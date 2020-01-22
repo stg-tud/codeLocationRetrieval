@@ -1,3 +1,6 @@
+/*
+ * Calculates the faculty function for n: n!
+*/
 unsigned int faculty(unsigned int n) {
     if(n == 0) {
         return 1;

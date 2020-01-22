@@ -1,3 +1,4 @@
+// The Fibonacci function
 unsigned int fibonacci(unsigned int n) {
     if(n < 2) {
         return n;
