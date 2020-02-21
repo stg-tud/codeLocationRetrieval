@@ -1,3 +1,4 @@
+import matrix.Matrix
 import preprocessor.getTermsAndBlocks
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -16,7 +17,7 @@ class TdmTest {
     fun testSize() {
         /*
             faculty.c:      calculates the faculty function for n   (6)
-            fibonacci.c:    the fibonacci function                  (1)
+            fibonacci.c:    the fibonacci function                  (1 - "fibonacci" is the only new term)
 
             -> [Calculates, the, faculty, function, for, n, fibonacci] (7)
          */
@@ -42,14 +43,14 @@ class TdmTest {
             fibonacci           0,          4
 
          */
-        val expectedTdm = Array(7) { Array(2){0} }
-        expectedTdm[0] = intArrayOf(1, 0).toTypedArray()    // "Calculates"
-        expectedTdm[1] = intArrayOf(1, 1).toTypedArray()    // "the"
-        expectedTdm[2] = intArrayOf(3, 0).toTypedArray()    // "faculty"
-        expectedTdm[3] = intArrayOf(1, 1).toTypedArray()    // "function"
-        expectedTdm[4] = intArrayOf(1, 0).toTypedArray()    // "for"
-        expectedTdm[5] = intArrayOf(6, 5).toTypedArray()    // "n"
-        expectedTdm[6] = intArrayOf(0, 4).toTypedArray()    // "fibonacci"
+        val expectedTdm = Array(7) { DoubleArray(2) {0.0} }
+        expectedTdm[0] = doubleArrayOf(1.0, 0.0)    // "Calculates"
+        expectedTdm[1] = doubleArrayOf(1.0, 1.0)    // "the"
+        expectedTdm[2] = doubleArrayOf(3.0, 0.0)    // "faculty"
+        expectedTdm[3] = doubleArrayOf(1.0, 1.0)    // "function"
+        expectedTdm[4] = doubleArrayOf(1.0, 0.0)    // "for"
+        expectedTdm[5] = doubleArrayOf(6.0, 5.0)    // "n"
+        expectedTdm[6] = doubleArrayOf(0.0, 4.0)    // "fibonacci"
 
         // println(Arrays.deepToString(matrix.tdm))
         // println(Arrays.deepToString(expectedTdm))

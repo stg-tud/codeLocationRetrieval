@@ -23,7 +23,7 @@ fun getTermsAndBlocks(rootDir: String): Pair<Set<String>, List<Block>> {
 
         val sourceCode = it.readText()
 
-        // corpus
+        // terms
         val tokens = preprocessor.extractTokens(sourceCode)
         val termList = extractTerms(tokens)
         termSet.addAll(termList)

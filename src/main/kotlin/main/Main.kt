@@ -1,7 +1,7 @@
 package main
 
 import java.io.File
-import Matrix
+import matrix.Matrix
 import preprocessor.*
 import java.lang.Exception
 import java.util.*
