@@ -20,6 +20,9 @@ dependencies {
     compile(kotlin("stdlib-jdk8"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testImplementation("org.assertj:assertj-core:3.11.1")
+
+    // Commons Math
+    compile("org.apache.commons:commons-math3:3.6.1")
 }
 
 tasks.withType<KotlinCompile> {
