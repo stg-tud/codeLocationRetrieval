@@ -8,6 +8,7 @@ plugins {
 group = "com.bekiroe.featurelocation"
 version = "1.0-SNAPSHOT"
 
+
 application {
     mainClassName = "main.MainKt"
 }
@@ -29,3 +30,9 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+// By default, Gradle's run task uses an empty stream for standard input -> manually set to System.in
+// see https://discuss.gradle.org/t/why-doesnt-system-in-read-block-when-im-using-gradle/3308
+// and https://stackoverflow.com/questions/45747112/kotlin-and-gradle-reading-from-stdio
+val run by tasks.getting(JavaExec::class) {
+    standardInput = System.`in`
+}
