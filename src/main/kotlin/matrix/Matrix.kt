@@ -3,12 +3,12 @@ package matrix
 import preprocessor.Block
 
 // N terms and M documents
-class Matrix(private val terms: Set<String>, private val documents: List<Block>) {
+class Matrix(val terms: Set<String>, val documents: List<Block>) {
     val numOfTerms = terms.size
     val numOfDocs = documents.size
 
     // a NxM array, initialized to all zeros
-    val tdm = Array(numOfTerms) { DoubleArray(numOfDocs) {0.0}}
+    val data = Array(numOfTerms) { DoubleArray(numOfDocs) {0.0}}
 
     init {
         populateTdm()
@@ -24,7 +24,7 @@ class Matrix(private val terms: Set<String>, private val documents: List<Block>)
 
                 if(termIdx != -1) {
                     // term is contained in the corpus
-                    tdm[termIdx][docIdx] += 1.0
+                    data[termIdx][docIdx] += 1.0
                 }
             }
         }

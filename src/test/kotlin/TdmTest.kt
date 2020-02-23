@@ -52,9 +52,9 @@ class TdmTest {
         expectedTdm[5] = doubleArrayOf(6.0, 5.0)    // "n"
         expectedTdm[6] = doubleArrayOf(0.0, 4.0)    // "fibonacci"
 
-        // println(Arrays.deepToString(matrix.tdm))
+        // println(Arrays.deepToString(matrix.data))
         // println(Arrays.deepToString(expectedTdm))
 
-        Assertions.assertThat(matrix.tdm).isEqualTo(expectedTdm)
+        Assertions.assertThat(matrix.data).isEqualTo(expectedTdm)
     }
 }
