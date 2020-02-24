@@ -2,16 +2,14 @@ package main
 
 import java.io.File
 import matrix.Matrix
-import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
-import org.apache.commons.math3.linear.SingularValueDecomposition
 import preprocessor.*
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
 import java.util.*
 
 val mBlocks = ArrayList<Block>()
-val mCorpusSet = HashSet<String>()
+val mTerms = HashSet<String>()
 lateinit var mTdm: Matrix
 
 fun main(args: Array<String>) {
@@ -42,23 +40,23 @@ private fun bigInput() {
     val start = System.currentTimeMillis()
 
     val (terms, documents) = getTermsAndBlocks(rootDir = "inputBig/grbl")
-    mCorpusSet.addAll(terms)
+    mTerms.addAll(terms)
     mBlocks.addAll(documents)
 
     // write corpus
-    val corpus = File("outputBig/corpus.txt").bufferedWriter()
-    mCorpusSet.forEach {
-        corpus.write(it)
-        corpus.newLine()
+    val termsFile = File("outputBig/terms.txt").bufferedWriter()
+    mTerms.forEach {
+        termsFile.write(it)
+        termsFile.newLine()
     }
-    corpus.close()
+    termsFile.close()
 
     // write documents
     var docIndex = 0
     try {
         for(block in mBlocks) {
             val docFile = File("outputBig/docs/doc${docIndex}_${block.sourceFile.nameWithoutExtension}" +
-                    "_${block.sourceFile.extension}.txt")
+                    "_${block.sourceFile.extension}.cc")
             docFile.parentFile.mkdirs()
             val docWriter = docFile.bufferedWriter()
             docWriter.write(block.content)
@@ -78,7 +76,7 @@ private fun createTdm() {
     val startTime = System.currentTimeMillis()
 
     // -1 because of empty line at the end (get rid of that)
-    val matrix = Matrix(mCorpusSet, mBlocks)
+    val matrix = Matrix(mTerms, mBlocks)
     println(matrix.numOfTerms)
     println(matrix.numOfDocs)
     mTdm = matrix

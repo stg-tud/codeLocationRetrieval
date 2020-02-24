@@ -6,7 +6,7 @@ import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
 import org.apache.commons.math3.linear.SingularValueDecomposition
 import retrieval.RetrievalResult
-import java.util.ArrayList
+import java.util.*
 
 class LatentSemanticIndexingModel(private val tdm: Matrix) {
     val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
@@ -30,6 +30,11 @@ class LatentSemanticIndexingModel(private val tdm: Matrix) {
             else {
                 println("The term $term does not exist in the index")
             }
+        }
+
+        // check if we even have a valid query
+        if(queryVector.norm == 0.0) {
+            return Collections.emptyList()
         }
 
         // 4. reduce query in LSI space as well

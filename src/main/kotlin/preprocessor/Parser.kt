@@ -22,8 +22,43 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
             while(!isAtEnd()) {
                 parseToken()
             }
-            println("declaration block count: $decCount")
-            println("function definition count: $funcCount")
+//            println("declaration block count: $decCount")
+//            println("function definition count: $funcCount")
+
+            // here reached end of file, check for comments and ids after the last block
+            val idsAndComments = ArrayList<Token>()
+            for(i in (currentIndex - 1) downTo 0) {
+                val type = tokens[i].tokenType
+
+                if(type == COMMENT || type == IDENTIFIER) {
+                    idsAndComments.add(tokens[i])
+                }
+
+                if(type == RIGHT_BRACE) {
+                    if(idsAndComments.isNotEmpty()) {
+                        println(sourceFile.name)
+                        val startIndex = tokens[i + 1].startIndex
+
+                        // update the last block to include everything that follows till the end of file
+                        val lastBlock = blocks.last()
+                        println("====")
+                        println(lastBlock.sourceFile.name)
+                        println(lastBlock.content)
+                        println("====")
+
+                        val updatedContent = "${lastBlock.content}\n${sourceCode.substring(startIndex)}"
+                        val updatedIdsAndComments = ArrayList<Token>(lastBlock.idsAndComments)
+                        updatedIdsAndComments.addAll(idsAndComments)
+
+                        val updatedLastBlock = Block(updatedContent, updatedIdsAndComments, sourceFile)
+
+                        blocks.remove(lastBlock)
+                        blocks.add(updatedLastBlock)
+                    }
+
+                    break
+                }
+            }
         }
 
         return blocks
@@ -38,18 +73,19 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
             EQUAL -> {
                 // e.g. int myIntArray[] = { 1, 2, 3, 4, 5 }
                 // skip until closing right brace hence avoid mistaking this for a declaration block
-                if(match(LEFT_BRACE)) {
-                    advanceToClosingBrace()
-                }
+//                if(match(LEFT_BRACE)) {
+//                    advanceToClosingBrace()
+//                }
             }
             ENUM, STRUCT, UNION -> {
                 // e.g. enum { RED, GREEN } or enum color { RED, GREEN }
-                if(match(LEFT_BRACE) || (match(IDENTIFIER) && match(LEFT_BRACE))) {
-                    advanceToClosingBrace()
-                }
+//                if(match(LEFT_BRACE) || (match(IDENTIFIER) && match(LEFT_BRACE))) {
+//                    advanceToClosingBrace()
+//                }
             }
             RIGHT_PAREN -> {
                 /* should be function ??? */
+                /*
                 var isFunction = false
                 for(i in currentIndex..tokens.lastIndex) {
                     if(tokens[i].tokenType != COMMENT) {
@@ -78,14 +114,53 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                     functionBlock(startIndex)
                     funcCount++
                 }
+                */
             }
             LEFT_BRACE -> {
                 /* should be declaration block ??? */
-                declarationBlock(previousToken.startIndex)
-                decCount++
+//                declarationBlock(previousToken.startIndex)
+//                decCount++
+
+                // find the end of the last block (or beginning of file - past first comment - if this is the first one)
+                for(i in currentIndex downTo 0) {
+                    val type = tokens[i].tokenType
+
+                    if(type == RIGHT_BRACE || (i == 0 && type == COMMENT)) {
+                        break
+                    }
+
+                    currentIndex = i
+                }
+                val startIndex = tokens[currentIndex].startIndex
+                generalBlock(startIndex)
             }
             else -> { /* do nothing */ }
         }
+    }
+
+    // could be a function, declaration block, enum, struct, etc. A '{' marks a new block
+    private fun generalBlock(startIndex: Int) {
+        val idsAndComments = ArrayList<Token>()
+
+        // start from the previous '}', i.e., take everything in-between this block and the previous one
+        // so, consume everything up until the first '{'
+        var token: Token
+        while(!isAtEnd() && !match(LEFT_BRACE)) {
+            token = advance()
+            when(token.tokenType) {
+                IDENTIFIER, COMMENT -> {
+                    idsAndComments.add(token)
+                }
+                else -> { /* do nothing */ }
+            }
+        }
+
+        // now we're past the first '{'
+        advanceToClosingBrace(idsAndComments)
+        token = previous()!!
+
+        val endIndex = token.startIndex + token.value.length
+        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
     }
 
     private fun declarationBlock(startIndex: Int) {
