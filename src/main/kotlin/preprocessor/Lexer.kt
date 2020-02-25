@@ -70,12 +70,12 @@ class Lexer(private val input: String) {
         val previousChar = advance()     // note: we have advanced the current pointer
         when(previousChar) {
             // simple stuff
-            '=' -> tokens.add(Token(EQUAL, "="))
-            '(' -> tokens.add(Token(LEFT_PAREN, "("))
-            ')' -> tokens.add(Token(RIGHT_PAREN, ")"))
+            '=' -> tokens.add(Token(EQUAL, "=", startIndex))
+            '(' -> tokens.add(Token(LEFT_PAREN, "(", startIndex))
+            ')' -> tokens.add(Token(RIGHT_PAREN, ")", startIndex))
             '{' -> tokens.add(Token(LEFT_BRACE, "{", startIndex))
             '}' -> tokens.add(Token(RIGHT_BRACE, "}", startIndex))
-            ';' -> tokens.add(Token(SEMICOLON, ";"))
+            ';' -> tokens.add(Token(SEMICOLON, ";", startIndex))
 
             // more complex cases
             '\'', '\"' -> {
