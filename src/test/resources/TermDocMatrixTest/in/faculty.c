@@ -1,3 +1,5 @@
+// Some comment pretending to be about licenses
+
 /*
  * Calculates the faculty function for n: n!
 */

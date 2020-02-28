@@ -23,13 +23,19 @@ fun getTermsAndBlocks(rootDir: String): Pair<Set<String>, List<Block>> {
 
         val sourceCode = it.readText()
 
-        // terms
         val tokens = preprocessor.extractTokens(sourceCode)
-        val termList = extractTerms(tokens)
-        termSet.addAll(termList)
+        // terms TODO: remove this? (see below)
+//        val termList = extractTerms(tokens)
+//        termSet.addAll(termList)
 
         // blocks
         blocks.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
+
+        // construct the terms of the TDM like this instead?
+        termSet.clear()
+        blocks.forEach {
+                block -> termSet.addAll(block.terms)
+        }
     }
 
     return Pair(termSet, blocks)

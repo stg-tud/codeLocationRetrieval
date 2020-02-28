@@ -29,11 +29,6 @@ fun main(args: Array<String>) {
     bigInput()
     createTdm()
     mainLoop()
-
-    // current issues:
-    // 2. comments and modified identifiers are treated as a single string
-    //      2.1. e.g. should "average num" be treated as one term or as two?
-    //      2.2 should each word in a comment be treated as a single term?
 }
 
 private fun bigInput() {
@@ -69,7 +64,7 @@ private fun bigInput() {
     }
 
     val end = System.currentTimeMillis()
-    println("${(end - start) / 1000f}s")
+    println("Time to create the corpus: ${(end - start) / 1000f}s")
 }
 
 private fun createTdm() {
@@ -77,28 +72,25 @@ private fun createTdm() {
 
     // -1 because of empty line at the end (get rid of that)
     val matrix = Matrix(mTerms, mBlocks)
-    println(matrix.numOfTerms)
-    println(matrix.numOfDocs)
+    println("Number of terms = ${matrix.numOfTerms}")
+    println("Number of documents = ${matrix.numOfDocs}")
     mTdm = matrix
 
     // time in seconds
-    println("${(System.currentTimeMillis() - startTime) / 1000}s")
-//    println(Arrays.toString(matrix.data[5]))
-
-    // print the matrix
-//    for(i in 0..(matrix.numOfTerms - 1)) {
-//        print(String.format("%-5.5s\t", corpus.lines()[i]))
-//        for(j in 0..(matrix.numOfDocs - 1)) {
-//            print("${matrix.data[i][j]} ")
-//        }
-//        println()
-//    }
+    println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
 }
 
 private fun mainLoop() {
     val startTime = System.currentTimeMillis()
     val lsiModel = LatentSemanticIndexingModel(mTdm)
     println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
+
+    println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")
+    println("dim(S): ${lsiModel.svd.s.rowDimension} x ${lsiModel.svd.s.columnDimension}")
+    println("dim(VT): ${lsiModel.svd.vt.rowDimension} x ${lsiModel.svd.vt.columnDimension}")
+
+    println("max singular value = ${lsiModel.svd.singularValues.first()}")
+    println("min singular value = ${lsiModel.svd.singularValues.last()}")
 
     val scanner = Scanner(System.`in`)
     val querySb = StringBuilder()
@@ -109,18 +101,6 @@ private fun mainLoop() {
     var isNewQuery = true
 
     while(true) {
-        if(isNewK) {
-            // dimensionality reduction k in [1, S.rowDim - 1]
-            do {
-                print("Type in a value for k (0, ${lsiModel.svd.s.rowDimension - 1}): ")
-                while(!scanner.hasNextInt()) {
-                    print("Type in a value for k (0, ${lsiModel.svd.s.rowDimension - 1}): ")
-                    scanner.next()
-                }
-                k = scanner.nextInt()
-            } while(!(0 <= k && k <= lsiModel.svd.s.rowDimension - 1))
-        }
-
         if(isNewQuery) {
             // read in user query TODO: make it nicer, maybe BufferedReader.readLine() instead
             querySb.setLength(0)
@@ -135,8 +115,38 @@ private fun mainLoop() {
             println("User query is: $querySb")
         }
 
-        val results = lsiModel.retrieveDocuments(k, querySb.split("\\s+".toRegex()))
-        results.forEach { println(it) }
+        if(isNewK) {
+            // print the singular values
+            val singularValues = lsiModel.svd.singularValues
+            for(i in singularValues.indices) {
+                if(i > 0 && (i % 4 == 0)) {
+                    println()
+                }
+
+                print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
+
+            }
+
+            // dimensionality reduction k in [1, S.rowDim - 1] ... -1 because otherwise no real reduction
+            do {
+                print("\nType in a value for k [1, ${lsiModel.svd.s.rowDimension - 1}]: ")
+                while(!scanner.hasNextInt()) {
+                    print("Type in a value for k [1, ${lsiModel.svd.s.rowDimension - 1}]: ")
+                    scanner.next()
+                }
+                k = scanner.nextInt()
+            } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension - 1))
+        }
+
+        // "normalize" query, e.g. make it all lowercase
+        val queryWordList = querySb.split("\\s+".toRegex()).toMutableList()
+        for(i in queryWordList.indices) {
+            queryWordList[i] = queryWordList[i].toLowerCase()
+        }
+        println(queryWordList)
+
+        val results = lsiModel.retrieveDocuments(k, queryWordList)
+        results.subList(0, 20).forEach { println(it) }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
         val input = scanner.next()

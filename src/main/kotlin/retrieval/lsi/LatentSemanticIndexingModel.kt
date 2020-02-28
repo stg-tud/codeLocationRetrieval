@@ -9,11 +9,10 @@ import retrieval.RetrievalResult
 import java.util.*
 
 class LatentSemanticIndexingModel(private val tdm: Matrix) {
+    // 1. compute SVD
     val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
 
-    fun retrieveDocuments(k: Int, query: List<String>, numberOfDocsToReturn: Int = 20): List<RetrievalResult> {
-        // 1. compute SVD (check)
-
+    fun retrieveDocuments(k: Int, query: List<String>): List<RetrievalResult> {
         // 2. truncate matrices
         val (Uk, Sk, VTk) = computeTruncatedMatrices(k)
         Sk.display("Sk")
@@ -24,7 +23,7 @@ class LatentSemanticIndexingModel(private val tdm: Matrix) {
             val termIdx = tdm.terms.indexOf(term)
             if(termIdx != - 1) {
                 // increment the term frequency
-                println("Setting query[$termIdx] to ${queryVector.getEntry(termIdx) + 1}")
+                println("Setting query[$termIdx] (\"$term\") to ${queryVector.getEntry(termIdx) + 1}")
                 queryVector.setEntry(termIdx, queryVector.getEntry(termIdx) + 1)
             }
             else {
@@ -52,7 +51,7 @@ class LatentSemanticIndexingModel(private val tdm: Matrix) {
         // 6. sort the results
         listOfRetrievalResults.sortByDescending { it.similarityScore }
 
-        return listOfRetrievalResults.subList(0, numberOfDocsToReturn)
+        return listOfRetrievalResults
     }
 
     private fun computeTruncatedMatrices(k: Int): Triple<RealMatrix, RealMatrix, RealMatrix> {

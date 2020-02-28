@@ -1,3 +1,10 @@
+#include "grbl.h"
+
+
+// Declare system global variable structure
+system_t sys;
+
+
 int main(void) {
   // Initialize system upon power-up.
   serial_init();   // Setup serial baud rate and interrupts

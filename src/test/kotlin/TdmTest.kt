@@ -9,8 +9,11 @@ class TdmTest {
 
     @BeforeEach
     fun init() {
-        val (corpusSet, blocks) = getTermsAndBlocks("src/test/resources/TermDocMatrixTest/in")
-        matrix = Matrix(corpusSet, blocks)
+        val (termSet, blocks) = getTermsAndBlocks("src/test/resources/TermDocMatrixTest/in")
+        matrix = Matrix(termSet, blocks)
+
+        println(termSet)
+        blocks.forEach { println(it.terms) }
     }
 
     @Test

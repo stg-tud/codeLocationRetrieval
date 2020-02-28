@@ -16,12 +16,23 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         }
         // for .c files find all function and declaration blocks
         else {
-            while(!isAtEnd()) {
-                parseToken()
+            try {
+                while(!isAtEnd()) {
+                    parseToken()
+                }
+
+                // here reached end of file, check for comments and ids after the last block
+                includeIdsAndCommentsAfterLastBlock()
+            }
+            catch(e: Exception) {
+                // temporary: just add the whole thing if sth goes wrong
+                // TODO: some kind of synchronization/error-recovery would be nice ...
+                // (at least start from startIndex instead of taking the whole file)
+                println("${e.javaClass.simpleName}: ${sourceFile.name}")
+                val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
+                blocks.add(Block(sourceCode, idsAndComments, sourceFile))
             }
 
-            // here reached end of file, check for comments and ids after the last block
-            includeIdsAndCommentsAfterLastBlock()
         }
 
         return blocks
@@ -206,7 +217,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
 
             if(type == RIGHT_BRACE) {
                 if(idsAndComments.isNotEmpty()) {
-                    println(sourceFile.name)
+                    println("Contains Ids/Comments after last block: ${sourceFile.name}")
                     val startIndex = tokens[i + 1].startIndex
 
                     // update the last block to include everything that follows till the end of file
