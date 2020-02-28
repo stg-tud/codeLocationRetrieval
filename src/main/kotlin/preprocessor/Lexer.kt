@@ -142,7 +142,7 @@ class Lexer(private val input: String) {
         // two slashes have already been matched and consumed
         val lexeme = StringBuilder("//")
 
-        while(!isAtEnd() && !match('\n')) {
+        while(!isAtEnd() && !(match('\r') || match('\n'))) {
             lexeme.append(advance())
         }
 

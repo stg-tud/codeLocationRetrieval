@@ -63,11 +63,8 @@ class PreprocessorTest {
         }
 
         // Then the identifier and comment tokens should be in the expected output
-        val expectedOutput = File("src/test/resources/PreprocessorTest/expectedOutput/terms.txt")
-            .readText()
-            .replace("\r", "")
-
-        assertThat(actualOutput.toString()).isEqualTo(expectedOutput)
+        val expectedOutput = File("src/test/resources/PreprocessorTest/expectedOutput/terms.txt").readText()
+        assertThat(actualOutput.toString()).isEqualToIgnoringNewLines(expectedOutput)
     }
 
     @Test
