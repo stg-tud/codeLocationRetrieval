@@ -1,5 +1,4 @@
-
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import preprocessor.Preprocessor
 import preprocessor.TokenType
@@ -13,56 +12,43 @@ class PreprocessorTest {
     @Test
     fun testIdModifier() {
         // no changes
-        Assertions.assertThat(getModifiedIdentifier("lowercase")).isNull()
-        Assertions.assertThat(getModifiedIdentifier("UPPERCASE")).isNull()
+        assertThat(getModifiedIdentifier("lowercase")).isNull()
+        assertThat(getModifiedIdentifier("UPPERCASE")).isNull()
 
         // camel case
-        Assertions.assertThat(getModifiedIdentifier("URLLocation"))
-            .isEqualTo("url location")
+        assertThat(getModifiedIdentifier("URLLocation")).isEqualTo("url location")
 
         // underscore
-        Assertions.assertThat(getModifiedIdentifier("underscore_test"))
-            .isEqualTo("underscore test")
+        assertThat(getModifiedIdentifier("underscore_test")).isEqualTo("underscore test")
 
         // mixed
-        Assertions.assertThat(getModifiedIdentifier("someMixed_TestCase"))
-            .isEqualTo("some mixed test case")
+        assertThat(getModifiedIdentifier("someMixed_TestCase")).isEqualTo("some mixed test case")
 
         // edge-cases
             // range-limit
-        Assertions.assertThat(getModifiedIdentifier("URILo"))
-            .isEqualTo("uri lo")
+       assertThat(getModifiedIdentifier("URILo")).isEqualTo("uri lo")
 
             // underscore at the beginning
-        Assertions.assertThat(getModifiedIdentifier("_underscore"))
-            .isEqualTo("underscore")
+        assertThat(getModifiedIdentifier("_underscore")).isEqualTo("underscore")
 
             // underscore at the end
-        Assertions.assertThat(getModifiedIdentifier("underscore_"))
-            .isEqualTo("underscore")
+        assertThat(getModifiedIdentifier("underscore_")).isEqualTo("underscore")
 
             // more than one underscore
-        Assertions.assertThat(getModifiedIdentifier("_under_score_"))
-            .isEqualTo("under score")
+        assertThat(getModifiedIdentifier("_under_score_")).isEqualTo("under score")
     }
 
-    // TODO: need to refactor
+    // TODO: test looks ugly
     @Test
     fun testTokenExtraction() {
-        val expectedOutput = File("src/test/resources/testExpectedOutput/main/corpus.txt")
-            .readText()
-            .replace("\r", "")
+        // Given a C file
+        val sourceFile = File("src/test/resources/PreprocessorTest/actualInput/main.c")
+
+        // When extracting tokens out of it
+        val tokens = preprocessor.extractTokens(sourceFile.readText())
 
         val actualOutput = StringBuilder()
-        val tokenList = preprocessor.extractTokens(File("src/test/resources/testInput/main.c").readText())
-        for(token in tokenList) {
-            if(token.value == "\n") {
-                println("NEWLINE")
-            }
-            else if(token.value == "\r\n") {
-                println("CR NL")
-            }
-
+        for(token in tokens) {
             when(token.tokenType) {
                 TokenType.COMMENT -> { actualOutput.append("${token.value}\n") }
                 TokenType.IDENTIFIER -> {
@@ -76,23 +62,29 @@ class PreprocessorTest {
             }
         }
 
-//        println(actualOutput)
-        Assertions.assertThat(actualOutput.toString()).isEqualTo(expectedOutput)
+        // Then the identifier and comment tokens should be in the expected output
+        val expectedOutput = File("src/test/resources/PreprocessorTest/expectedOutput/terms.txt")
+            .readText()
+            .replace("\r", "")
+
+        assertThat(actualOutput.toString()).isEqualTo(expectedOutput)
     }
 
     @Test
     fun testDocumentExtraction() {
-        val expectedOutput = File("src/test/resources/testExpectedOutput/main/doc0.txt")
+        // Given a C file
+        val sourceFile = File("src/test/resources/PreprocessorTest/actualInput/main.c")
+
+        // When extracting documents out of it
+        val lexer = Lexer(sourceFile.readText())
+        val actualDocuments = preprocessor.extractDocuments(lexer.scan(), sourceFile)
+
+        // Then they should be the same as the expected one(s)
+        val expectedOutput = File("src/test/resources/PreprocessorTest/expectedOutput/doc00_main_c.cc")
             .readText()
             .replace("\r", "")
 
-        val sourceFile = File("src/test/resources/testInput/main.c")
-        val lexer = Lexer(sourceFile.readText())
-        val actualOutput = preprocessor.extractDocuments(lexer.scan(), sourceFile)
-
-        Assertions.assertThat(actualOutput.size).isEqualTo(1)
-        // TODO: whitespace is causing test to fail
-//        Assertions.assertThat(actualOutput[0].content).isEqualTo(expectedOutput)
-        Assertions.assertThat(actualOutput[0].content).isEqualToIgnoringWhitespace(expectedOutput)
+        assertThat(actualDocuments.size).isEqualTo(1)
+        assertThat(actualDocuments[0].content).isEqualToIgnoringWhitespace(expectedOutput)
     }
 }

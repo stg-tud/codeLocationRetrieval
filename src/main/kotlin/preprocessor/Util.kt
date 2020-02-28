@@ -63,6 +63,7 @@ fun extractTerms(tokens: List<Token>): List<String> {
                 }
             }
             COMMENT -> {
+                // TODO: should we apply getModifiedIdentifier() to comments as well?
                 terms.addAll(extractTermsOutOfComment(token.value))
             }
             else -> { /* do nothing */ }
