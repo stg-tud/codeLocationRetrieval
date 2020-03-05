@@ -127,15 +127,15 @@ private fun mainLoop() {
 
             }
 
-            // dimensionality reduction k in [1, S.rowDim - 1] ... -1 because otherwise no real reduction
+            // dimensionality reduction k in [1, S.rowDim]
             do {
-                print("\nType in a value for k [1, ${lsiModel.svd.s.rowDimension - 1}]: ")
+                print("\nType in a value for k [1, ${lsiModel.svd.s.rowDimension}]: ")
                 while(!scanner.hasNextInt()) {
-                    print("Type in a value for k [1, ${lsiModel.svd.s.rowDimension - 1}]: ")
+                    print("Type in a value for k [1, ${lsiModel.svd.s.rowDimension }]: ")
                     scanner.next()
                 }
                 k = scanner.nextInt()
-            } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension - 1))
+            } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
         }
 
         // "normalize" query, e.g. make it all lowercase
