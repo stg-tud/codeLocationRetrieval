@@ -103,6 +103,8 @@ private fun mainLoop() {
 
     println("max singular value = ${lsiModel.svd.singularValues.first()}")
     println("min singular value = ${lsiModel.svd.singularValues.last()}")
+    println("rank = ${lsiModel.svd.rank},\tnorm = ${lsiModel.svd.norm},\tcn = ${lsiModel.svd.conditionNumber}," +
+            "\ticn = ${lsiModel.svd.inverseConditionNumber}")
 
     val scanner = Scanner(System.`in`)
     val querySb = StringBuilder()

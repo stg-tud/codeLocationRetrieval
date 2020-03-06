@@ -10,7 +10,8 @@ import java.util.*
 
 class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
-    val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
+//    val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
+    val svd = Svd(tdm, "decompositions/grbl")
 
     fun retrieveDocuments(k: Int, query: List<String>): List<RetrievalResult> {
         // 2. truncate matrices
