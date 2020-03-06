@@ -76,6 +76,18 @@ private fun createTdm() {
     println("Number of documents = ${matrix.numOfDocs}")
     mTdm = matrix
 
+    /*
+        TODO: depending on input args, apply a TermWeightingStrategy
+
+        // maybe instead of args[i] something like Options.weightStrategy
+        mTdm = when(args[i]) {
+            "tf_idf"            -> TfIdfWeighting().weightEntries(matrix)
+            "tf"                -> TermFrequencyWeighting().weightEntries(matrix)
+            "binary"            -> LocalBinaryWeighting().weightEntries(matrix)
+            "log_entropy", else -> LogEntropyWeighting().weightEntries(matrix)
+        }
+     */
+
     // time in seconds
     println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
 }
@@ -146,7 +158,7 @@ private fun mainLoop() {
         println(queryWordList)
 
         val results = lsiModel.retrieveDocuments(k, queryWordList)
-        results.subList(0, 20).forEach { println(it) }
+        results.subList(0, Integer.min(results.size, 20)).forEach { println(it) }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
         val input = scanner.next()
