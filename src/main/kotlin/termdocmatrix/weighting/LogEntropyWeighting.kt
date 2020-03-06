@@ -1,6 +1,6 @@
-package matrix.weighting
+package termdocmatrix.weighting
 
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealVector
 
@@ -19,7 +19,7 @@ import org.apache.commons.math3.linear.RealVector
  */
 class LogEntropyWeighting : TermWeightingStrategy {
 
-    override fun weightEntries(matrix: Matrix): Matrix {
+    override fun weightEntries(matrix: TermDocumentMatrix): TermDocumentMatrix {
         val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) {0.0} }
 
         for(i in matrix.data.indices) {
@@ -32,7 +32,7 @@ class LogEntropyWeighting : TermWeightingStrategy {
             }
         }
 
-        return Matrix(matrix.terms, matrix.documents, weightedData)
+        return TermDocumentMatrix(matrix.terms, matrix.documents, weightedData)
     }
 
     private fun entropy(termVector: RealVector, numOfDocs: Int): Double {

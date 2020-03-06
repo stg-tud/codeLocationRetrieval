@@ -1,8 +1,8 @@
-package matrix.weighting
+package termdocmatrix.weighting
 
 import io.mockk.every
 import io.mockk.mockk
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 import org.assertj.core.api.AbstractDoubleArrayAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.withPrecision
@@ -12,7 +12,7 @@ import preprocessor.Block
 
 class TermWeightingStrategyTest {
 
-    private lateinit var matrixToBeWeighted: Matrix
+    private lateinit var matrixToBeWeighted: TermDocumentMatrix
 
     @BeforeEach
     fun setupMatrix() {
@@ -24,7 +24,7 @@ class TermWeightingStrategyTest {
         every { doc2.terms } returns listOf("t1", "t2", "t2", "t3", "t3", "t3", "t4", "t4", "t5")
         every { doc3.terms } returns listOf("t1", "t3", "t4", "t4", "t4", "t4", "t4", "t4", "t4")
 
-        matrixToBeWeighted = Matrix(
+        matrixToBeWeighted = TermDocumentMatrix(
             setOf("t1", "t2", "t3", "t4", "t5"),
             listOf(doc1, doc2, doc3)
         )

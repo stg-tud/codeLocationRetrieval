@@ -1,12 +1,12 @@
-package matrix.weighting
+package termdocmatrix.weighting
 
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 
 // A binary weighting scheme:
 // The entry (t,d) = 1, if term t occurs in document d at least once. Otherwise (t, d) = 0.
 class LocalBinaryWeighting : TermWeightingStrategy {
 
-    override fun weightEntries(matrix: Matrix): Matrix {
+    override fun weightEntries(matrix: TermDocumentMatrix): TermDocumentMatrix {
         val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) {0.0} }
 
         for(i in matrix.data.indices) {
@@ -16,6 +16,6 @@ class LocalBinaryWeighting : TermWeightingStrategy {
             }
         }
 
-        return Matrix(matrix.terms, matrix.documents, weightedData)
+        return TermDocumentMatrix(matrix.terms, matrix.documents, weightedData)
     }
 }

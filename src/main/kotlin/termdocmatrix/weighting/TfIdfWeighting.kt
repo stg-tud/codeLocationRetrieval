@@ -1,6 +1,6 @@
-package matrix.weighting
+package termdocmatrix.weighting
 
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealVector
 
@@ -10,7 +10,7 @@ import org.apache.commons.math3.linear.RealVector
 // cf(t): number of times term t occurs in the entire collection
 class TfIdfWeighting : TermWeightingStrategy {
 
-    override fun weightEntries(matrix: Matrix): Matrix {
+    override fun weightEntries(matrix: TermDocumentMatrix): TermDocumentMatrix {
         val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) {0.0} }
 
 
@@ -26,7 +26,7 @@ class TfIdfWeighting : TermWeightingStrategy {
             }
         }
 
-        return Matrix(matrix.terms, matrix.documents, weightedData)
+        return TermDocumentMatrix(matrix.terms, matrix.documents, weightedData)
     }
 }
 

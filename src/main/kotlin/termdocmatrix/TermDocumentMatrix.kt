@@ -1,9 +1,9 @@
-package matrix
+package termdocmatrix
 
 import preprocessor.Block
 
 // N terms and M documents
-class Matrix {
+class TermDocumentMatrix {
     val terms: Set<String>
     val documents: List<Block>
 

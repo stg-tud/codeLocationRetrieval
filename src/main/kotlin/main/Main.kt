@@ -1,7 +1,7 @@
 package main
 
 import java.io.File
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.RealMatrix
 import preprocessor.*
 import retrieval.lsi.LatentSemanticIndexingModel
@@ -10,7 +10,7 @@ import java.util.*
 
 val mBlocks = ArrayList<Block>()
 val mTerms = HashSet<String>()
-lateinit var mTdm: Matrix
+lateinit var mTdm: TermDocumentMatrix
 
 fun main(args: Array<String>) {
 //    val sourceCode = File("inputSandbox/gui.c").readText()
@@ -38,7 +38,7 @@ private fun bigInput() {
     mTerms.addAll(terms)
     mBlocks.addAll(documents)
 
-    // write corpus
+    // write corpus TODO: this file is not needed, could be deleted - or should it stay to see the terms?
     val termsFile = File("outputBig/terms.txt").bufferedWriter()
     mTerms.forEach {
         termsFile.write(it)
@@ -71,7 +71,7 @@ private fun createTdm() {
     val startTime = System.currentTimeMillis()
 
     // -1 because of empty line at the end (get rid of that)
-    val matrix = Matrix(mTerms, mBlocks)
+    val matrix = TermDocumentMatrix(mTerms, mBlocks)
     println("Number of terms = ${matrix.numOfTerms}")
     println("Number of documents = ${matrix.numOfDocs}")
     mTdm = matrix

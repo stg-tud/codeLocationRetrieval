@@ -1,14 +1,14 @@
 package retrieval.lsi
 
 import main.display
-import matrix.Matrix
+import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
 import org.apache.commons.math3.linear.SingularValueDecomposition
 import retrieval.RetrievalResult
 import java.util.*
 
-class LatentSemanticIndexingModel(private val tdm: Matrix) {
+class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
     val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
 
