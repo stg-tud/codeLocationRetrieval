@@ -6,11 +6,13 @@ import org.apache.commons.math3.linear.SingularValueDecomposition
 import termdocmatrix.TermDocumentMatrix
 import java.io.*
 
-class Svd(private val tdm: TermDocumentMatrix, private val storageLocation: String = "") {
+// TODO: later use info from term-document matrix to verify that loaded SVD matches with current corpus
+class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? = null) {
     val u: RealMatrix
     val s: RealMatrix
-    val vt: RealMatrix
     val v: RealMatrix
+    val ut: RealMatrix
+    val vt: RealMatrix
 
     val singularValues: DoubleArray
     val rank: Int
@@ -19,42 +21,29 @@ class Svd(private val tdm: TermDocumentMatrix, private val storageLocation: Stri
     val inverseConditionNumber: Double
 
     init {
+        println("SVD file name: ${storedSvdFile?.name}")
 
         @Suppress("UNCHECKED_CAST")
         if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
-//            val (uData, sData, vtData) = loadUSVT()
-//            u = MatrixUtils.createRealMatrix(uData)
-//            s = MatrixUtils.createRealMatrix(sData)
-//            vt = MatrixUtils.createRealMatrix(vtData)
-//            singularValues = DoubleArray(Integer.min(s.rowDimension, s.columnDimension)) { 5.0 }
 
-            val ois = ObjectInputStream(FileInputStream("$storageLocation/svd.ser"))
-            val fields = ois.readObject() as ArrayList<Any>
+            val ois = ObjectInputStream(FileInputStream("decompositions/grbl/${storedSvdFile?.name}"))
 
-            with(fields) {
-                u   = MatrixUtils.createRealMatrix(get(0) as Array<DoubleArray>)
-                s   = MatrixUtils.createRealMatrix(get(1) as Array<DoubleArray>)
-                vt  = MatrixUtils.createRealMatrix(get(2) as Array<DoubleArray>)
-                v   = MatrixUtils.createRealMatrix(get(3) as Array<DoubleArray>)
+            val fieldsMap = ois.readObject() as Map<String, Any>
+            with(fieldsMap) {
+                u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
+                s   = MatrixUtils.createRealMatrix(get("s.data") as Array<DoubleArray>)
+                v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
+                ut  = MatrixUtils.createRealMatrix(get("ut.data") as Array<DoubleArray>)
+                vt  = MatrixUtils.createRealMatrix(get("vt.data") as Array<DoubleArray>)
 
-                singularValues = get(4) as DoubleArray
+                singularValues = get("singularValues") as DoubleArray
 
-                rank                    = get(5) as Int
-                norm                    = get(6) as Double
-                conditionNumber         = get(7) as Double
-                inverseConditionNumber  = get(8) as Double
+                rank                    = get("rank") as Int
+                norm                    = get("norm") as Double
+                conditionNumber         = get("conditionNumber") as Double
+                inverseConditionNumber  = get("inverseConditionNumber") as Double
             }
-
-//            u = MatrixUtils.createRealMatrix(ois.readObject() as Array<DoubleArray>)
-//            s = MatrixUtils.createRealMatrix(ois.readObject() as Array<DoubleArray>)
-//            vt = MatrixUtils.createRealMatrix(ois.readObject() as Array<DoubleArray>)
-//            v = MatrixUtils.createRealMatrix(ois.readObject() as Array<DoubleArray>)
-//            singularValues = ois.readObject() as DoubleArray
-//            rank = ois.readInt()
-//            norm = ois.readDouble()
-//            conditionNumber = ois.readDouble()
-//            inverseConditionNumber = ois.readDouble()
         }
         else {
             println("=== COMPUTING NEW SVD ===")
@@ -62,8 +51,9 @@ class Svd(private val tdm: TermDocumentMatrix, private val storageLocation: Stri
 
             u = svd.u
             s = svd.s
-            vt = svd.vt
             v = svd.v
+            ut = svd.ut
+            vt = svd.vt
             singularValues = svd.singularValues
             rank = svd.rank
             norm = svd.norm
@@ -71,38 +61,39 @@ class Svd(private val tdm: TermDocumentMatrix, private val storageLocation: Stri
             inverseConditionNumber = svd.inverseConditionNumber
 
             // store the computed decomposition
-//            storeUSVT()
             storeValues()
+
+            svd.solver
         }
     }
 
     private fun isDataStored(): Boolean {
-        val rootDir = File(storageLocation)
-        if(rootDir.listFiles().isEmpty()) {
-            return false
-        }
+        // no file means no data stored
+        storedSvdFile ?: return false
 
-        val filesInDir = rootDir.listFiles()
-        return filesInDir.contains(File("$storageLocation/svd.ser"))
+        // Get the rootDir from Options
+        val rootDir = File("decompositions/grbl")
+        return rootDir.listFiles()?.contains(storedSvdFile) ?: false
     }
 
     private fun storeValues() {
-        val oos = ObjectOutputStream(FileOutputStream("$storageLocation/svd.ser"))
+        val oos = ObjectOutputStream(FileOutputStream("decompositions/grbl/${storedSvdFile?.name}"))
 
-        // Order: U, S, VT, V, singularValue, rank, norm, conditionNumber, inverseConditionNumber
+        // Use a map instead of a list so that we're not depending on the order in which we add elements
         // Missing: solver, getCovariance()
-        val fieldsList = ArrayList<Any>()
-        fieldsList.apply {
-            add(u.data)
-            add(s.data)
-            add(vt.data)
-            add(v.data)
-            add(singularValues)
-            add(rank)
-            add(norm)
-            add(conditionNumber)
-            add(inverseConditionNumber)
+        val fieldsMap = mutableMapOf<String, Any>()
+        fieldsMap.apply {
+            put("u.data", u.data)
+            put("s.data", s.data)
+            put("v.data", v.data)
+            put("ut.data", ut.data)
+            put("vt.data", vt.data)
+            put("singularValues", singularValues)
+            put("rank", rank)
+            put("norm", norm)
+            put("conditionNumber", conditionNumber)
+            put("inverseConditionNumber", inverseConditionNumber)
         }
-        oos.writeObject(fieldsList)
+        oos.writeObject(fieldsMap)
     }
 }
