@@ -27,6 +27,7 @@ fun main(args: Array<String>) {
 //    }
 
     println("ARGS = ${args.toList()}")
+    Options.parse(args)
 
     bigInput()
     createTdm()
@@ -76,19 +77,7 @@ private fun createTdm() {
     val matrix = TermDocumentMatrix(mTerms, mBlocks)
     println("Number of terms = ${matrix.numOfTerms}")
     println("Number of documents = ${matrix.numOfDocs}")
-    mTdm = matrix
-
-    /*
-        TODO: depending on input args, apply a TermWeightingStrategy
-
-        // maybe instead of args[i] something like Options.weightStrategy
-        mTdm = when(args[i]) {
-            "tf_idf"            -> TfIdfWeighting().weightEntries(matrix)
-            "tf"                -> TermFrequencyWeighting().weightEntries(matrix)
-            "binary"            -> LocalBinaryWeighting().weightEntries(matrix)
-            "log_entropy", else -> LogEntropyWeighting().weightEntries(matrix)
-        }
-     */
+    mTdm = Options.termWeightingStrategy.weightEntries(matrix)
 
     // time in seconds
     println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
