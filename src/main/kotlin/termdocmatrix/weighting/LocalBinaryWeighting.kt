@@ -11,7 +11,6 @@ class LocalBinaryWeighting : TermWeightingStrategy {
 
         for(i in matrix.data.indices) {
             for(j in matrix.data[i].indices) {
-                // TODO: Checking for equality is more efficient ... if(matrix.data[i][j] == 0.0) 0.0 else 1.0
                 weightedData[i][j] = if(matrix.data[i][j] > 0.0) 1.0 else 0.0
             }
         }

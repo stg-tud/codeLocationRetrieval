@@ -22,8 +22,6 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
     val inverseConditionNumber: Double
 
     init {
-        println("Writing SVD to: ${storedSvdFile?.path}")
-
         @Suppress("UNCHECKED_CAST")
         if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
@@ -48,6 +46,8 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
         }
         else {
             println("=== COMPUTING NEW SVD ===")
+            println("Writing SVD to: ${storedSvdFile?.path}")
+            
             val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
 
             u = svd.u

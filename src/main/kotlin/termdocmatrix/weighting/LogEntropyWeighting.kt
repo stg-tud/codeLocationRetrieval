@@ -23,8 +23,7 @@ class LogEntropyWeighting : TermWeightingStrategy {
         val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) {0.0} }
 
         for(i in matrix.data.indices) {
-            val rowVectorForTermI = MatrixUtils.createRealVector(matrix.data[i])
-            val entropyForTermI = entropy(rowVectorForTermI, matrix.numOfDocs)
+            val entropyForTermI = entropy(matrix.data[i], matrix.numOfDocs)
 
             for(j in matrix.data[i].indices) {
                 val log = Math.log10(matrix.data[i][j] + 1)
@@ -35,15 +34,14 @@ class LogEntropyWeighting : TermWeightingStrategy {
         return TermDocumentMatrix(matrix.terms, matrix.documents, weightedData)
     }
 
-    private fun entropy(termVector: RealVector, numOfDocs: Int): Double {
+    private fun entropy(termRow: DoubleArray, numOfDocs: Int): Double {
         var entropy = 1.0
 
-        // cf(t) = sum of nonzero entries in that row (we can use the L_1 norm, since all nonzero entries are > 0)
-        val collectionFrequency = termVector.l1Norm
+        // cf(t) = sum of all frequencies of a term t
+        val collectionFrequency = termRow.sum()
 
-        val termVectorAsArray = termVector.toArray()
-        for(i in termVectorAsArray.indices) {
-            val tf = termVectorAsArray[i]
+        for(i in termRow.indices) {
+            val tf = termRow[i]
             val p = tf / collectionFrequency
 
             if(p > 0) {

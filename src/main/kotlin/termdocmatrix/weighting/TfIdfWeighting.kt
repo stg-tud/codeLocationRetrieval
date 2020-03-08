@@ -15,9 +15,8 @@ class TfIdfWeighting : TermWeightingStrategy {
 
 
         for(i in matrix.data.indices) {
-            val rowVectorForTermI = MatrixUtils.createRealVector(matrix.data[i])
             // df(t) = number of nonzero entries in that row
-            val docFrequencyOfTermI = rowVectorForTermI.countNonZeroEntries().toDouble()
+            val docFrequencyOfTermI = matrix.data[i].filter { it != 0.0 }.size.toDouble()
 
             for(j in matrix.data[i].indices) {
                 val tf = matrix.data[i][j]
@@ -28,8 +27,4 @@ class TfIdfWeighting : TermWeightingStrategy {
 
         return TermDocumentMatrix(matrix.terms, matrix.documents, weightedData)
     }
-}
-
-fun RealVector.countNonZeroEntries(): Int {
-    return toArray().filter { it != 0.0 }.size
 }
