@@ -26,6 +26,8 @@ fun main(args: Array<String>) {
 //        println(it.content)
 //    }
 
+    println("ARGS = ${args.toList()}")
+
     bigInput()
     createTdm()
     mainLoop()
