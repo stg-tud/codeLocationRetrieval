@@ -1,6 +1,7 @@
 package main
 
 import termdocmatrix.weighting.*
+import java.io.File
 
 object Options {
 
@@ -15,6 +16,9 @@ object Options {
     lateinit var svdFilename: String
         private set
 
+    lateinit var rootDirectory: File
+        private set
+
     // ==================
     // == Option Names ==
     // ==================
@@ -22,6 +26,7 @@ object Options {
     private const val OPTION_HELP_MESSAGE       = "-h"
     private const val OPTION_WEIGHTING_STRATEGY = "--weighting-strategy"
     private const val OPTION_SVD_FILENAME       = "--svd-filename"
+    private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
 
     // important: must be called before accessing any of the fields
     fun parse(args: Array<String>) {
@@ -55,6 +60,10 @@ object Options {
                     // TODO: make sure it's a valid file name
                     svdFilename = optionValue
                 }
+                OPTION_ROOT_DIRECTORY -> {
+                    // TODO: make sure optionValue contains a valid path
+                    rootDirectory = File(optionValue)
+                }
                 else -> println("Some unknown option: $option, $optionValue")
             }
         }
@@ -73,6 +82,10 @@ object Options {
 
         if(!this::svdFilename.isInitialized) {
             svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}"
+        }
+
+        if(!this::rootDirectory.isInitialized) {
+            rootDirectory = File("inputBig/grbl")
         }
     }
 
@@ -96,6 +109,8 @@ object Options {
         printFormattedOption(OPTION_SVD_FILENAME, "The SVD will be stored as a *.ser file " +
                 "with the provided file name. By default, the file name will mirror the options in order to make it " +
                 "identifiable. If the file already exists, it will be used to load the SVD from the *.ser file.")
+        printFormattedOption(OPTION_ROOT_DIRECTORY, "The root directory where the C project is located at. " +
+                "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl')")
     }
 
     private fun printFormattedOption(option: String, description: String) {
@@ -106,5 +121,6 @@ object Options {
         println("OPTIONS")
         println("\tTerm weighting strategy: ${termWeightingStrategy.javaClass.simpleName}")
         println("\tSVD file name (.ser):    $svdFilename")
+        println("\tRoot directory:          $rootDirectory")
     }
 }

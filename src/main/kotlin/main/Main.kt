@@ -13,19 +13,6 @@ val mTerms = HashSet<String>()
 lateinit var mTdm: TermDocumentMatrix
 
 fun main(args: Array<String>) {
-//    val sourceCode = File("inputSandbox/gui.c").readText()
-//    // lexer
-//    val tokens = Lexer(sourceCode).scan()
-////    tokens.forEach {
-////        println(it)
-////    }
-//
-//    // parser
-//    val blocks = Parser(tokens, sourceCode).parse()
-//    blocks.forEach {
-//        println(it.content)
-//    }
-
     println("ARGS = ${args.toList()}")
     Options.parse(args)
 
@@ -37,12 +24,18 @@ fun main(args: Array<String>) {
 private fun bigInput() {
     val start = System.currentTimeMillis()
 
-    val (terms, documents) = getTermsAndBlocks(rootDir = "inputBig/grbl")
+    val (terms, documents) = getTermsAndBlocks(rootDir = Options.rootDirectory.path)
     mTerms.addAll(terms)
     mBlocks.addAll(documents)
 
+    // Create output directory TODO: give command line arg as well?
+    val outputDir = File("outputBig/${Options.rootDirectory.name}")
+    if(!outputDir.exists()) {
+        outputDir.mkdirs()
+    }
+
     // write corpus TODO: this file is not needed, could be deleted - or should it stay to see the terms?
-    val termsFile = File("outputBig/terms.txt").bufferedWriter()
+    val termsFile = File("outputBig/${Options.rootDirectory.name}/terms.txt").bufferedWriter()
     mTerms.forEach {
         termsFile.write(it)
         termsFile.newLine()
@@ -53,7 +46,8 @@ private fun bigInput() {
     var docIndex = 0
     try {
         for(block in mBlocks) {
-            val docFile = File("outputBig/docs/doc${docIndex}_${block.sourceFile.nameWithoutExtension}" +
+            val docFile = File("outputBig/${Options.rootDirectory.name}" +
+                    "/corpus/doc${docIndex}_${block.sourceFile.nameWithoutExtension}" +
                     "_${block.sourceFile.extension}.cc")
             docFile.parentFile.mkdirs()
             val docWriter = docFile.bufferedWriter()

@@ -11,12 +11,11 @@ import java.util.*
 
 class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
-    val svd = Svd(tdm, File("decompositions/grbl/${Options.svdFilename}.ser"))
+    val svd = Svd(tdm, File("outputBig/${Options.rootDirectory.name}/decompositions/${Options.svdFilename}.ser"))
 
     fun retrieveDocuments(k: Int, query: List<String>): List<RetrievalResult> {
         // 2. truncate matrices
         val (uk, sk, vtk) = computeTruncatedMatrices(k)
-        sk.display("Sk")
 
         // 3. construct query vector
         val queryVector = MatrixUtils.createRealVector(DoubleArray(tdm.numOfTerms) {0.0})

@@ -1,5 +1,6 @@
 package retrieval.lsi
 
+import main.Options
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
 import org.apache.commons.math3.linear.SingularValueDecomposition
@@ -21,13 +22,13 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
     val inverseConditionNumber: Double
 
     init {
-        println("SVD file name: ${storedSvdFile?.name}")
+        println("Writing SVD to: ${storedSvdFile?.path}")
 
         @Suppress("UNCHECKED_CAST")
         if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
-
-            val ois = ObjectInputStream(FileInputStream("decompositions/grbl/${storedSvdFile?.name}"))
+            println("Reading SVD from: ${storedSvdFile?.path}")
+            val ois = ObjectInputStream(FileInputStream(storedSvdFile?.path))
 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
@@ -62,8 +63,6 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
 
             // store the computed decomposition
             storeValues()
-
-            svd.solver
         }
     }
 
@@ -71,13 +70,16 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
         // no file means no data stored
         storedSvdFile ?: return false
 
-        // Get the rootDir from Options
-        val rootDir = File("decompositions/grbl")
+        // Get the rootDir for decompositions
+        val rootDir = File("outputBig/${Options.rootDirectory.name}/decompositions")
+        if(!rootDir.exists()) {
+            rootDir.mkdirs()
+        }
         return rootDir.listFiles()?.contains(storedSvdFile) ?: false
     }
 
     private fun storeValues() {
-        val oos = ObjectOutputStream(FileOutputStream("decompositions/grbl/${storedSvdFile?.name}"))
+        val oos = ObjectOutputStream(FileOutputStream(storedSvdFile?.path))
 
         // Use a map instead of a list so that we're not depending on the order in which we add elements
         // Missing: solver, getCovariance()
