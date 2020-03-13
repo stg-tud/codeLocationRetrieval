@@ -23,18 +23,17 @@ fun getTermsAndBlocks(inputRootDir: File): Pair<Set<String>, List<Block>> {
         val sourceCode = it.readText()
 
         val tokens = preprocessor.extractTokens(sourceCode)
-        // terms TODO: remove this? (see below)
-//        val termList = extractTerms(tokens)
-//        termSet.addAll(termList)
 
         // blocks
         blocks.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
 
-        // construct the terms of the TDM like this instead?
+        // construct the terms of the TDM based on the documents
         termSet.clear()
         blocks.forEach {
                 block -> termSet.addAll(block.terms)
         }
+
+        // TODO: here might be a good place for stop-lists or stemming to take place
     }
 
     return Pair(termSet, blocks)
@@ -56,13 +55,12 @@ fun extractTerms(tokens: List<Token>): List<String> {
         when(token.tokenType) {
             IDENTIFIER -> {
                 terms.add(token.value)
-                val modifiedId = getModifiedIdentifier(token.value)
-                if(modifiedId != null) {
-                    terms.addAll(modifiedId.split(" "))
+                val modifiedTerm = getModifiedIdentifier(token.value)
+                if(modifiedTerm != null) {
+                    terms.addAll(modifiedTerm.split(" "))
                 }
             }
             COMMENT -> {
-                // TODO: should we apply getModifiedIdentifier() to comments as well?
                 terms.addAll(extractTermsOutOfComment(token.value))
             }
             else -> { /* do nothing */ }
@@ -123,7 +121,6 @@ fun getModifiedIdentifier(identifier: String): String? {
     return modifiedIdentifier.trim()
 }
 
-// TODO: deal with CamelCase? Ensure that is indeed a comment, else exception?
 /**
  * Extracts a list of terms out of a (line or block) comment. The terms are all set to lowercase. E.g.
  *      Input: /* This is a camelCase within a Block_Comment */
@@ -161,8 +158,14 @@ private class CommentLexer(private val input: String) {
         while(!isAtEnd() && (peek().isLetterOrDigit() || peek() == '_')) {
             termBuilder.append(advance())
         }
+        val currentTerm = termBuilder.toString()
 
-        terms.add(termBuilder.toString().toLowerCase()) // what about camel case etc?
+        terms.add(currentTerm)
+        val modifiedTerm = getModifiedIdentifier(currentTerm)
+        if(modifiedTerm != null) {
+            terms.addAll(modifiedTerm.split(" "))
+        }
+
         termBuilder.setLength(0)
     }
 
