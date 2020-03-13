@@ -18,7 +18,7 @@ class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
 
         // 3. construct query vector
         val queryVector = MatrixUtils.createRealVector(DoubleArray(tdm.numOfTerms) {0.0})
-        for(queryTerm in query.queryTerms) {
+        for(queryTerm in query.normalizedTerms) {
             val termIdx = tdm.terms.indexOf(queryTerm)
             if(termIdx != - 1) {
                 // increment the term frequency

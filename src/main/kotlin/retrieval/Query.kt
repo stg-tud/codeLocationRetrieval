@@ -4,16 +4,16 @@ import preprocessor.getModifiedIdentifier
 
 class Query(input: String) {
 
-    val queryTerms = input.split("\\s+".toRegex()).toMutableList()
+    val normalizedTerms = input.split("\\s+".toRegex()).toMutableList()
 
     init {
-        for(i in queryTerms.indices) {
-            val modifiedTerm = getModifiedIdentifier(queryTerms[i])
+        for(i in normalizedTerms.indices) {
+            val modifiedTerm = getModifiedIdentifier(normalizedTerms[i])
             if(modifiedTerm != null) {
-                queryTerms.addAll(modifiedTerm.split(" "))
+                normalizedTerms.addAll(modifiedTerm.split(" "))
             }
 
-            queryTerms[i] = queryTerms[i].toLowerCase()
+            normalizedTerms[i] = normalizedTerms[i].toLowerCase()
         }
     }
 }
