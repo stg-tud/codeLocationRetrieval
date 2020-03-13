@@ -4,6 +4,7 @@ import main.Options
 import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
+import retrieval.Query
 import retrieval.RetrievalResult
 import java.util.*
 
@@ -11,21 +12,21 @@ class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
     val svd = Svd(tdm, Options.outputSvdFile)
 
-    fun retrieveDocuments(k: Int, query: List<String>): List<RetrievalResult> {
+    fun retrieveDocuments(k: Int, query: Query): List<RetrievalResult> {
         // 2. truncate matrices
         val (uk, sk, vtk) = computeTruncatedMatrices(k)
 
         // 3. construct query vector
         val queryVector = MatrixUtils.createRealVector(DoubleArray(tdm.numOfTerms) {0.0})
-        for(term in query) {
-            val termIdx = tdm.terms.indexOf(term)
+        for(queryTerm in query.queryTerms) {
+            val termIdx = tdm.terms.indexOf(queryTerm)
             if(termIdx != - 1) {
                 // increment the term frequency
-                println("Setting query[$termIdx] (\"$term\") to ${queryVector.getEntry(termIdx) + 1}")
+                println("Setting query[$termIdx] (\"$queryTerm\") to ${queryVector.getEntry(termIdx) + 1}")
                 queryVector.setEntry(termIdx, queryVector.getEntry(termIdx) + 1)
             }
             else {
-                println("The term $term does not exist in the index")
+                println("The term $queryTerm does not exist in the index")
             }
         }
 

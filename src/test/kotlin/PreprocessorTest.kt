@@ -14,6 +14,7 @@ class PreprocessorTest {
         // no changes
         assertThat(getModifiedIdentifier("lowercase")).isNull()
         assertThat(getModifiedIdentifier("UPPERCASE")).isNull()
+        assertThat(getModifiedIdentifier("Null")).isNull()
 
         // camel case
         assertThat(getModifiedIdentifier("URLLocation")).isEqualTo("url location")

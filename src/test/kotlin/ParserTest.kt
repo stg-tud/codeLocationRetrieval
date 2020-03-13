@@ -75,7 +75,10 @@ class ParserTest {
 
         // When parsing the input and retrieving a document of small size
         val actualDocuments = parser.parse()
-        val smallDocument = actualDocuments[4]
+        val smallDocument = actualDocuments[4]  // plan_reset() { ... }
+
+        println(smallDocument.terms)
+        println("====")
 
         // Then the document should contain the following terms
         assertThat(smallDocument.terms).containsExactly(
@@ -93,11 +96,11 @@ class ParserTest {
             "empty", "tail",
             // next_buffer_head = 1; // plan_next_block_index(block_buffer_head)
             "next_buffer_head", "next", "buffer", "head",
-            "plan_next_block_index", // TODO: "plan", "next", "block", "index",
-            "block_buffer_head", // TODO: "block", "buffer", "head",
+            "plan_next_block_index", "plan", "next", "block", "index",
+            "block_buffer_head", "block", "buffer", "head",
             // block_buffer_planned = 0; // = block_buffer_tail;
             "block_buffer_planned", "block", "buffer", "planned",
-            "block_buffer_tail" // TODO:, "block", "buffer", "tail"
+            "block_buffer_tail", "block", "buffer", "tail"
         )
     }
 }

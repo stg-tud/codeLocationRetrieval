@@ -54,7 +54,7 @@ fun extractTerms(tokens: List<Token>): List<String> {
     for(token in tokens) {
         when(token.tokenType) {
             IDENTIFIER -> {
-                terms.add(token.value)
+                terms.add(token.value.toLowerCase())
                 val modifiedTerm = getModifiedIdentifier(token.value)
                 if(modifiedTerm != null) {
                     terms.addAll(modifiedTerm.split(" "))
@@ -117,6 +117,11 @@ fun getModifiedIdentifier(identifier: String): String? {
         modifiedIdentifier = modifiedIdentifier.replace('_', ' ')
     }
 
+    if(!modifiedIdentifier.contains("""\s+""".toRegex())) {
+        // no new words gained (e.g. can happen for Camel -> camel)
+        return null
+    }
+
     // also get rid of possible spaces at the beginning and/or end of the string
     return modifiedIdentifier.trim()
 }
@@ -160,7 +165,7 @@ private class CommentLexer(private val input: String) {
         }
         val currentTerm = termBuilder.toString()
 
-        terms.add(currentTerm)
+        terms.add(currentTerm.toLowerCase())
         val modifiedTerm = getModifiedIdentifier(currentTerm)
         if(modifiedTerm != null) {
             terms.addAll(modifiedTerm.split(" "))

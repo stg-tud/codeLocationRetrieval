@@ -4,6 +4,7 @@ import java.io.File
 import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.RealMatrix
 import preprocessor.*
+import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
 import java.util.*
@@ -101,7 +102,7 @@ private fun mainLoop() {
 
     while(true) {
         if(isNewQuery) {
-            // read in user query TODO: make it nicer, maybe BufferedReader.readLine() instead
+            // read in user query
             querySb.setLength(0)
             print("Type in query: ")
             while(scanner.hasNextLine()) {
@@ -123,7 +124,6 @@ private fun mainLoop() {
                 }
 
                 print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
-
             }
 
             // dimensionality reduction k in [1, S.rowDim]
@@ -137,14 +137,9 @@ private fun mainLoop() {
             } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
         }
 
-        // "normalize" query, e.g. make it all lowercase
-        val queryWordList = querySb.split("\\s+".toRegex()).toMutableList()
-        for(i in queryWordList.indices) {
-            queryWordList[i] = queryWordList[i].toLowerCase()
-        }
-        println(queryWordList)
+        val query = Query(querySb.toString())
 
-        val results = lsiModel.retrieveDocuments(k, queryWordList)
+        val results = lsiModel.retrieveDocuments(k, query)
         results.subList(0, Integer.min(results.size, 20)).forEach { println(it) }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
