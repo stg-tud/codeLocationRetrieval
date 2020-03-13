@@ -6,16 +6,15 @@ import preprocessor.TokenType.*
 /**
  * Returns the set of all terms and documents (function and declaration blocks) for a given C project.
  *
- * @param[rootDir] The root directory of the C project
+ * @param[inputRootDir] The root directory of the C project
  * @return a pair consisting of the set of terms and the list of documents within the entire project
  */
-fun getTermsAndBlocks(rootDir: String): Pair<Set<String>, List<Block>> {
+fun getTermsAndBlocks(inputRootDir: File): Pair<Set<String>, List<Block>> {
     val termSet = mutableSetOf<String>()
     val blocks = mutableListOf<Block>()
 
     val preprocessor = Preprocessor()
-    val dir = File(rootDir)
-    dir.walkTopDown().forEach {
+    inputRootDir.walkTopDown().forEach {
         // only operate on .h and .c files
         if(!(it.extension == "h" || it.extension == "c")) {
             return@forEach  // mimics a continue

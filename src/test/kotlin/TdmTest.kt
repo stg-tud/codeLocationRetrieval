@@ -3,13 +3,14 @@ import preprocessor.getTermsAndBlocks
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class TdmTest {
     lateinit var matrix: TermDocumentMatrix
 
     @BeforeEach
     fun init() {
-        val (termSet, blocks) = getTermsAndBlocks("src/test/resources/TermDocMatrixTest/in")
+        val (termSet, blocks) = getTermsAndBlocks(File("src/test/resources/TermDocMatrixTest/in"))
         matrix = TermDocumentMatrix(termSet, blocks)
 
         println(termSet)

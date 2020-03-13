@@ -1,17 +1,15 @@
 package retrieval.lsi
 
 import main.Options
-import main.display
 import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealMatrix
 import retrieval.RetrievalResult
-import java.io.File
 import java.util.*
 
 class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
-    val svd = Svd(tdm, File("outputBig/${Options.rootDirectory.name}/decompositions/${Options.svdFilename}.ser"))
+    val svd = Svd(tdm, Options.outputSvdFile)
 
     fun retrieveDocuments(k: Int, query: List<String>): List<RetrievalResult> {
         // 2. truncate matrices

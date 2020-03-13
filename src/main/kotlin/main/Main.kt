@@ -8,7 +8,7 @@ import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
 import java.util.*
 
-val mBlocks = ArrayList<Block>()
+val mDocuments = ArrayList<Block>()
 val mTerms = HashSet<String>()
 lateinit var mTdm: TermDocumentMatrix
 
@@ -24,32 +24,32 @@ fun main(args: Array<String>) {
 private fun bigInput() {
     val start = System.currentTimeMillis()
 
-    val (terms, documents) = getTermsAndBlocks(rootDir = Options.rootDirectory.path)
+    val (terms, documents) = getTermsAndBlocks(inputRootDir = Options.inputRootDirectory)
+
+    if(documents.isEmpty()) {
+        println("No C files were found. Please choose a directory that contains C files.")
+        System.exit(0)
+    }
+
     mTerms.addAll(terms)
-    mBlocks.addAll(documents)
+    mDocuments.addAll(documents)
 
-    // Create output directory TODO: give command line arg as well?
-    val outputDir = File("outputBig/${Options.rootDirectory.name}")
-    if(!outputDir.exists()) {
-        outputDir.mkdirs()
-    }
-
-    // write corpus TODO: this file is not needed, could be deleted - or should it stay to see the terms?
-    val termsFile = File("outputBig/${Options.rootDirectory.name}/terms.txt").bufferedWriter()
+    // write terms
+    val termsFileWriter = Options.outputTermsFile.bufferedWriter()
     mTerms.forEach {
-        termsFile.write(it)
-        termsFile.newLine()
+        termsFileWriter.write(it)
+        termsFileWriter.newLine()
     }
-    termsFile.close()
+    termsFileWriter.close()
 
     // write documents
     var docIndex = 0
     try {
-        for(block in mBlocks) {
-            val docFile = File("outputBig/${Options.rootDirectory.name}" +
-                    "/corpus/doc${docIndex}_${block.sourceFile.nameWithoutExtension}" +
-                    "_${block.sourceFile.extension}.cc")
-            docFile.parentFile.mkdirs()
+        for(block in mDocuments) {
+            // in output/corpus: doc#_origFileName_origExtension.cc
+            val docFile = File("${Options.outputCorpusDir}" +
+                    "/doc${docIndex}_${block.sourceFile.nameWithoutExtension}_${block.sourceFile.extension}.cc")
+//            docFile.parentFile.mkdirs()
             val docWriter = docFile.bufferedWriter()
             docWriter.write(block.content)
             docIndex++
@@ -68,7 +68,7 @@ private fun createTdm() {
     val startTime = System.currentTimeMillis()
 
     // -1 because of empty line at the end (get rid of that)
-    val matrix = TermDocumentMatrix(mTerms, mBlocks)
+    val matrix = TermDocumentMatrix(mTerms, mDocuments)
     println("Number of terms = ${matrix.numOfTerms}")
     println("Number of documents = ${matrix.numOfDocs}")
     mTdm = Options.termWeightingStrategy.weightEntries(matrix)

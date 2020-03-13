@@ -58,6 +58,7 @@ local.properties
 
 inputBig/
 outputBig/
+output/
 inputSandbox/
 outputSandbox/
 decompositions/

@@ -5,6 +5,15 @@ import java.io.File
 
 object Options {
 
+    // ==================
+    // == Option Names ==
+    // ==================
+
+    private const val OPTION_HELP_MESSAGE       = "-h"
+    private const val OPTION_WEIGHTING_STRATEGY = "--weighting-strategy"
+    private const val OPTION_SVD_FILENAME       = "--svd-filename"
+    private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
+
     // ===================
     // == Option Values ==
     // ===================
@@ -16,22 +25,37 @@ object Options {
     lateinit var svdFilename: String
         private set
 
-    lateinit var rootDirectory: File
+    lateinit var inputRootDirectory: File
         private set
 
-    // ==================
-    // == Option Names ==
-    // ==================
+    // ==================================
+    // == Output Directories And Files ==
+    // ==================================
 
-    private const val OPTION_HELP_MESSAGE       = "-h"
-    private const val OPTION_WEIGHTING_STRATEGY = "--weighting-strategy"
-    private const val OPTION_SVD_FILENAME       = "--svd-filename"
-    private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
+    lateinit var outputRootDir: File
+        private set
+
+    lateinit var outputCorpusDir: File
+        private set
+
+    lateinit var outputDecompositionsDir: File
+        private set
+
+    lateinit var outputTermsFile: File
+        private set
+
+    lateinit var outputSvdFile: File
+        private set
+
+    // =============
+    // == Methods ==
+    // =============
 
     // important: must be called before accessing any of the fields
     fun parse(args: Array<String>) {
         if(args.isEmpty() || args[0].isEmpty()) {
             setDefaultOptionsIfNecessary()
+            createOutputDirectoriesAndFiles()
             printOptionsConfirmationMessage()
             return
         }
@@ -62,7 +86,7 @@ object Options {
                 }
                 OPTION_ROOT_DIRECTORY -> {
                     // TODO: make sure optionValue contains a valid path
-                    rootDirectory = File(optionValue)
+                    inputRootDirectory = File(optionValue)
                 }
                 else -> println("Some unknown option: $option, $optionValue")
             }
@@ -70,6 +94,8 @@ object Options {
 
         // Provide values for which no arguments were provided
         setDefaultOptionsIfNecessary()
+
+        createOutputDirectoriesAndFiles()
 
         printOptionsConfirmationMessage()
     }
@@ -84,8 +110,8 @@ object Options {
             svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}"
         }
 
-        if(!this::rootDirectory.isInitialized) {
-            rootDirectory = File("inputBig/grbl")
+        if(!this::inputRootDirectory.isInitialized) {
+            inputRootDirectory = File("inputBig/grbl")
         }
     }
 
@@ -121,6 +147,29 @@ object Options {
         println("OPTIONS")
         println("\tTerm weighting strategy: ${termWeightingStrategy.javaClass.simpleName}")
         println("\tSVD file name (.ser):    $svdFilename")
-        println("\tRoot directory:          $rootDirectory")
+        println("\tRoot directory:          $inputRootDirectory")
+    }
+
+    private fun createOutputDirectoriesAndFiles() {
+        // assumes options have been set
+        val outputRootDirPath = "output/${inputRootDirectory.name}"
+        outputRootDir = File(outputRootDirPath)
+        if(!outputRootDir.exists()) {
+            outputRootDir.mkdirs()
+        }
+
+        outputCorpusDir = File("$outputRootDirPath/corpus")
+        if(!outputCorpusDir.exists()) {
+            outputCorpusDir.mkdirs()
+        }
+
+        outputDecompositionsDir = File("$outputRootDirPath/decompositions")
+        if(!outputDecompositionsDir.exists()) {
+            outputDecompositionsDir.mkdirs()
+        }
+
+        outputTermsFile = File("$outputRootDirPath/terms.txt")
+
+        outputSvdFile = File("${outputDecompositionsDir.path}/$svdFilename.ser")
     }
 }

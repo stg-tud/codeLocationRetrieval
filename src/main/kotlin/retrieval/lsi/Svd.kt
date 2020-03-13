@@ -8,7 +8,7 @@ import termdocmatrix.TermDocumentMatrix
 import java.io.*
 
 // TODO: later use info from term-document matrix to verify that loaded SVD matches with current corpus
-class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? = null) {
+class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) {
     val u: RealMatrix
     val s: RealMatrix
     val v: RealMatrix
@@ -25,8 +25,8 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
         @Suppress("UNCHECKED_CAST")
         if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
-            println("Reading SVD from: ${storedSvdFile?.path}")
-            val ois = ObjectInputStream(FileInputStream(storedSvdFile?.path))
+            println("Reading SVD from: ${storedSvdFile.path}")
+            val ois = ObjectInputStream(FileInputStream(storedSvdFile.path))
 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
@@ -46,7 +46,7 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
         }
         else {
             println("=== COMPUTING NEW SVD ===")
-            println("Writing SVD to: ${storedSvdFile?.path}")
+            println("Writing SVD to: ${storedSvdFile.path}")
             
             val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
 
@@ -66,20 +66,10 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File? 
         }
     }
 
-    private fun isDataStored(): Boolean {
-        // no file means no data stored
-        storedSvdFile ?: return false
-
-        // Get the rootDir for decompositions
-        val rootDir = File("outputBig/${Options.rootDirectory.name}/decompositions")
-        if(!rootDir.exists()) {
-            rootDir.mkdirs()
-        }
-        return rootDir.listFiles()?.contains(storedSvdFile) ?: false
-    }
+    private fun isDataStored() = Options.outputDecompositionsDir.listFiles()?.contains(storedSvdFile) ?: false
 
     private fun storeValues() {
-        val oos = ObjectOutputStream(FileOutputStream(storedSvdFile?.path))
+        val oos = ObjectOutputStream(FileOutputStream(storedSvdFile.path))
 
         // Use a map instead of a list so that we're not depending on the order in which we add elements
         // Missing: solver, getCovariance()
