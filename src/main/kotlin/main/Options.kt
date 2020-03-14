@@ -13,6 +13,7 @@ object Options {
     private const val OPTION_WEIGHTING_STRATEGY = "--weighting-strategy"
     private const val OPTION_SVD_FILENAME       = "--svd-filename"
     private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
+    private const val OPTION_STOP_LIST          = "--stop-list"
 
     // ===================
     // == Option Values ==
@@ -26,6 +27,9 @@ object Options {
         private set
 
     lateinit var inputRootDirectory: File
+        private set
+
+    lateinit var stopList: List<String>
         private set
 
     // ==================================
@@ -51,10 +55,13 @@ object Options {
     // == Methods ==
     // =============
 
-    // important: must be called before accessing any of the fields
+    init {
+        setDefaultOptions()
+    }
+
     fun parse(args: Array<String>) {
         if(args.isEmpty() || args[0].isEmpty()) {
-            setDefaultOptionsIfNecessary()
+            // Use the defaults
             createOutputDirectoriesAndFiles()
             printOptionsConfirmationMessage()
             return
@@ -88,31 +95,23 @@ object Options {
                     // TODO: make sure optionValue contains a valid path
                     inputRootDirectory = File(optionValue)
                 }
+                OPTION_STOP_LIST -> {
+                    stopList = File(optionValue).readLines()
+                    svdFilename = svdFilename.replace("withoutStopList", File(optionValue).nameWithoutExtension)
+                }
                 else -> println("Some unknown option: $option, $optionValue")
             }
         }
 
-        // Provide values for which no arguments were provided
-        setDefaultOptionsIfNecessary()
-
         createOutputDirectoriesAndFiles()
-
         printOptionsConfirmationMessage()
     }
 
-    private fun setDefaultOptionsIfNecessary() {
-        // For those fields that haven't been initialized yet, provide default values
-        if(!this::termWeightingStrategy.isInitialized) {
-            termWeightingStrategy = LogEntropyWeighting()
-        }
-
-        if(!this::svdFilename.isInitialized) {
-            svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}"
-        }
-
-        if(!this::inputRootDirectory.isInitialized) {
-            inputRootDirectory = File("inputBig/grbl")
-        }
+    private fun setDefaultOptions() {
+        termWeightingStrategy = LogEntropyWeighting()
+        svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}"
+        inputRootDirectory = File("inputBig/grbl")
+        stopList = emptyList()
     }
 
     private fun weightingStrategy(strategyName: String): TermWeightingStrategy {
@@ -137,6 +136,8 @@ object Options {
                 "identifiable. If the file already exists, it will be used to load the SVD from the *.ser file.")
         printFormattedOption(OPTION_ROOT_DIRECTORY, "The root directory where the C project is located at. " +
                 "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl')")
+        printFormattedOption(OPTION_STOP_LIST, "The stop-list to apply. The file should contain one " +
+                "stop word per line. By default, the stop-list is empty.")
     }
 
     private fun printFormattedOption(option: String, description: String) {

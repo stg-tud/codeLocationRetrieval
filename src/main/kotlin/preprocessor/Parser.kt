@@ -28,7 +28,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                 // temporary: just add the whole thing if sth goes wrong
                 // TODO: some kind of synchronization/error-recovery would be nice ...
                 // (at least start from startIndex instead of taking the whole file)
-                println("${e.javaClass.simpleName}: ${sourceFile.name}")
+                println("${e.javaClass.simpleName}: Parse error for ${sourceFile.path}")
                 val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
                 blocks.add(Block(sourceCode, idsAndComments, sourceFile))
             }
@@ -73,7 +73,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         for(i in currentIndex downTo 0) {
             val type = tokens[i].tokenType
 
-            if(type == RIGHT_BRACE || (i == 0 && type == COMMENT)) {
+            if(type == RIGHT_BRACE) {
                 break
             }
 

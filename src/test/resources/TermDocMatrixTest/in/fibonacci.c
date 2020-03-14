@@ -1,5 +1,3 @@
-// Some comment pretending to be about licenses
-
 // The Fibonacci function
 unsigned int fibonacci(unsigned int n) {
     if(n < 2) {

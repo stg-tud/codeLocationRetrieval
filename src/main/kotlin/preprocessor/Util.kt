@@ -1,5 +1,6 @@
 package preprocessor
 
+import main.Options
 import java.io.File
 import preprocessor.TokenType.*
 
@@ -32,9 +33,10 @@ fun getTermsAndBlocks(inputRootDir: File): Pair<Set<String>, List<Block>> {
         blocks.forEach {
                 block -> termSet.addAll(block.terms)
         }
-
-        // TODO: here might be a good place for stop-lists or stemming to take place
     }
+
+    // TODO: stemming or not?
+    termSet.removeAll(Options.stopList)
 
     return Pair(termSet, blocks)
 }

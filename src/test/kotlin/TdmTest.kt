@@ -1,3 +1,4 @@
+import main.Options
 import termdocmatrix.TermDocumentMatrix
 import preprocessor.getTermsAndBlocks
 import org.assertj.core.api.Assertions
