@@ -25,7 +25,7 @@ class OptionsTest {
 
         // Then default values should be set
         assertThat(Options.termWeightingStrategy).isInstanceOf(LogEntropyWeighting::class.java)
-        assertThat(Options.svdFilename).isEqualTo("svd_LogEntropyWeighting")
+        assertThat(Options.svdFilename).isEqualTo("svd_LogEntropyWeighting_defaultStopList")
     }
 
 /*

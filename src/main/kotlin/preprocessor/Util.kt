@@ -10,7 +10,7 @@ import preprocessor.TokenType.*
  * @param[inputRootDir] The root directory of the C project
  * @return a pair consisting of the set of terms and the list of documents within the entire project
  */
-fun getTermsAndBlocks(inputRootDir: File): Pair<Set<String>, List<Block>> {
+fun getTermsAndBlocks(inputRootDir: File, stopList: List<String> = emptyList()): Pair<Set<String>, List<Block>> {
     val termSet = mutableSetOf<String>()
     val blocks = mutableListOf<Block>()
 
@@ -36,7 +36,7 @@ fun getTermsAndBlocks(inputRootDir: File): Pair<Set<String>, List<Block>> {
     }
 
     // TODO: stemming or not?
-    termSet.removeAll(Options.stopList)
+    termSet.removeAll(stopList)
 
     return Pair(termSet, blocks)
 }

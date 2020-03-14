@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 private fun bigInput() {
     val start = System.currentTimeMillis()
 
-    val (terms, documents) = getTermsAndBlocks(inputRootDir = Options.inputRootDirectory)
+    val (terms, documents) = getTermsAndBlocks(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
 
     if(documents.isEmpty()) {
         println("No C files were found. Please choose a directory that contains C files.")

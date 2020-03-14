@@ -96,8 +96,15 @@ object Options {
                     inputRootDirectory = File(optionValue)
                 }
                 OPTION_STOP_LIST -> {
-                    stopList = File(optionValue).readLines()
-                    svdFilename = svdFilename.replace("withoutStopList", File(optionValue).nameWithoutExtension)
+                    if(optionValue == "empty") {
+                        stopList = emptyList()
+                        svdFilename = svdFilename.replace("defaultStopList", "noStopList")
+                    }
+                    else {
+                        stopList = File(optionValue).readLines()
+                        svdFilename = svdFilename.replace("defaultStopList", File(optionValue).nameWithoutExtension)
+                    }
+
                 }
                 else -> println("Some unknown option: $option, $optionValue")
             }
@@ -109,9 +116,9 @@ object Options {
 
     private fun setDefaultOptions() {
         termWeightingStrategy = LogEntropyWeighting()
-        svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}"
         inputRootDirectory = File("inputBig/grbl")
-        stopList = emptyList()
+        stopList = File("stoplists/defaultStopList.txt").readLines()
+        svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}_defaultStopList"
     }
 
     private fun weightingStrategy(strategyName: String): TermWeightingStrategy {
@@ -137,7 +144,8 @@ object Options {
         printFormattedOption(OPTION_ROOT_DIRECTORY, "The root directory where the C project is located at. " +
                 "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl')")
         printFormattedOption(OPTION_STOP_LIST, "The stop-list to apply. The file should contain one " +
-                "stop word per line. By default, the stop-list is empty.")
+                "stop word per line. Passing 'empty' as an argument will not remove any words. By default, " +
+                "stoplists/defaultStopList.txt is used.")
     }
 
     private fun printFormattedOption(option: String, description: String) {
@@ -149,6 +157,7 @@ object Options {
         println("\tTerm weighting strategy: ${termWeightingStrategy.javaClass.simpleName}")
         println("\tSVD file name (.ser):    $svdFilename")
         println("\tRoot directory:          $inputRootDirectory")
+        println("\tStop-list:               ${stopList.subList(0, Integer.min(stopList.size, 7))} ...")
     }
 
     private fun createOutputDirectoriesAndFiles() {
