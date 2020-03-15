@@ -137,10 +137,28 @@ private fun mainLoop() {
             } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
         }
 
-        val query = Query(querySb.toString())
+        val query = Query(querySb.toString(), mTdm.terms)
 
         val results = lsiModel.retrieveDocuments(k, query)
-        results.subList(0, Integer.min(results.size, 20)).forEach { println(it) }
+        results.subList(0, Integer.min(results.size, 20)).forEach {
+            print("$it\t\t")
+
+            val documentLines = mTdm.documents[it.docIdx].content.lines()
+
+            for(queryTerm in query.normalizedTerms) {
+                if(query.isIndexed(queryTerm)) {
+                    print("[$queryTerm: ")
+                    for(i in documentLines.indices) {
+                        if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                            print("(${i + 1}, ${documentLines[i].indexOf(queryTerm, ignoreCase = true) + 1}), ")
+                        }
+                    }
+                    print("], ")
+                }
+            }
+
+            println()
+        }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
         val input = scanner.next()

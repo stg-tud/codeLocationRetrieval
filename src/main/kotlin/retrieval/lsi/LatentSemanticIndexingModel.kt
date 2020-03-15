@@ -43,7 +43,7 @@ class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
         for(i in 0..(vtk.columnDimension - 1)) {
             val docIVector = vtk.getColumnVector(i)
             val cosineScore = reducedQueryVector.unitVector().dotProduct(docIVector.unitVector())
-            val retrievalResult = RetrievalResult(i, cosineScore, tdm.documents[i].sourceFile.name)
+            val retrievalResult = RetrievalResult(i, cosineScore, tdm.documents[i].sourceFile.path)
             listOfRetrievalResults.add(retrievalResult)
         }
 
