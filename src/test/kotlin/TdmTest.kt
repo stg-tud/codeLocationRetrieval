@@ -1,6 +1,5 @@
-import main.Options
 import termdocmatrix.TermDocumentMatrix
-import preprocessor.getTermsAndBlocks
+import preprocessor.getTermsAndDocuments
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -11,11 +10,11 @@ class TdmTest {
 
     @BeforeEach
     fun init() {
-        val (termSet, blocks) = getTermsAndBlocks(File("src/test/resources/TermDocMatrixTest/in"))
-        matrix = TermDocumentMatrix(termSet, blocks)
+        val (termSet, documents) = getTermsAndDocuments(File("src/test/resources/TermDocMatrixTest/in"))
+        matrix = TermDocumentMatrix(termSet, documents)
 
         println(termSet)
-        blocks.forEach { println(it.terms) }
+        documents.forEach { println(it.terms) }
     }
 
     @Test

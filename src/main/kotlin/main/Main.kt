@@ -11,7 +11,7 @@ import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
 import java.util.*
 
-val mDocuments = ArrayList<Block>()
+val mDocuments = ArrayList<Document>()
 val mTerms = HashSet<String>()
 lateinit var mTdm: TermDocumentMatrix
 
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 private fun bigInput() {
     val start = System.currentTimeMillis()
 
-    val (terms, documents) = getTermsAndBlocks(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
+    val (terms, documents) = getTermsAndDocuments(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
 
     if(documents.isEmpty()) {
         println("No C files were found. Please choose a directory that contains C files.")
@@ -48,13 +48,13 @@ private fun bigInput() {
     // write documents
     var docIndex = 0
     try {
-        for(block in mDocuments) {
+        for(document in mDocuments) {
             // in output/corpus: doc#_origFileName_origExtension.cc
             val docFile = File("${Options.outputCorpusDir}" +
-                    "/doc${docIndex}_${block.sourceFile.nameWithoutExtension}_${block.sourceFile.extension}.cc")
+                    "/doc${docIndex}_${document.sourceFile.nameWithoutExtension}_${document.sourceFile.extension}.cc")
 //            docFile.parentFile.mkdirs()
             val docWriter = docFile.bufferedWriter()
-            docWriter.write(block.content)
+            docWriter.write(document.content)
             docIndex++
             docWriter.close()
         }
@@ -121,7 +121,7 @@ private fun mainLoop() {
             // print the singular values
             val singularValues = lsiModel.svd.singularValues
             for(i in singularValues.indices) {
-                if(i > 0 && (i % 4 == 0)) {
+                if(i > 0 && (i % 5 == 0)) {
                     println()
                 }
 
@@ -197,6 +197,7 @@ private fun printResult(retrievalResult: RetrievalResult, query: Query) {
 }
 
 // extension function for printing Commons Math RealMatrix
+@Suppress("unused")
 fun RealMatrix.display(matrixName: String = "A") {
     val data = this.data
 

@@ -1,11 +1,11 @@
 package termdocmatrix
 
-import preprocessor.Block
+import preprocessor.Document
 
 // N terms and M documents
 class TermDocumentMatrix {
     val terms: Set<String>
-    val documents: List<Block>
+    val documents: List<Document>
 
     val numOfTerms: Int
     val numOfDocs: Int
@@ -14,7 +14,7 @@ class TermDocumentMatrix {
     val data: Array<DoubleArray>
 
     // constructor that constructs the matrix based on the terms and documents
-    constructor(terms: Set<String>, documents: List<Block>) {
+    constructor(terms: Set<String>, documents: List<Document>) {
         this.terms = terms
         this.documents = documents
 
@@ -28,7 +28,11 @@ class TermDocumentMatrix {
     // constructor which additionally takes in precomputed data
     // TODO: this is a bit dangerous, as the data array and the terms/documents collections are now decoupled
     // TODO: ... i.e., no guarantee that both actually correspond to each other (throw Exception?)
-    constructor(terms: Set<String>, documents: List<Block>, data: Array<DoubleArray>) {
+    // ...
+    // -> possible solution to this: make 'data' a var with a private setter
+    //      and provide a public weightEntries(TermWeightingStrategy) method in which we can alter 'data'
+    //      (requires refactoring of TermWeightingStrategy though; postpone until we do weighting with query vectors)
+    constructor(terms: Set<String>, documents: List<Document>, data: Array<DoubleArray>) {
         if(data.size != terms.size || data[0].size != documents.size) {
             throw RuntimeException("Dimensions of provided TDM do not match: " +
                     "Expected dimensions [${terms.size} x ${documents.size}, but was [${data.size} x ${data[0].size}")

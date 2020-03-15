@@ -4,17 +4,17 @@ import preprocessor.TokenType.*
 import java.io.File
 
 class Parser(private val tokens: List<Token>, private val sourceFile: File) {
-    private val blocks = ArrayList<Block>()
+    private val documents = ArrayList<Document>()
     private var currentIndex = 0
     private val sourceCode = sourceFile.readText()
 
-    fun parse(): List<Block> {
+    fun parse(): List<Document> {
         // take header files as they are
         if(sourceFile.extension == "h") {
             val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
-            blocks.add(Block(sourceCode, idsAndComments, sourceFile))
+            documents.add(Document(sourceCode, idsAndComments, sourceFile))
         }
-        // for .c files find all function and declaration blocks
+        // for .c files partition it around outermost blocks {...}
         else {
             try {
                 while(!isAtEnd()) {
@@ -30,12 +30,12 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                 // (at least start from startIndex instead of taking the whole file)
                 println("${e.javaClass.simpleName}: Parse error for ${sourceFile.path}")
                 val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
-                blocks.add(Block(sourceCode, idsAndComments, sourceFile))
+                documents.add(Document(sourceCode, idsAndComments, sourceFile))
             }
 
         }
 
-        return blocks
+        return documents
     }
 
     private fun parseToken() {
@@ -66,7 +66,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         val token = previous()!!    // token.type == '}'
 
         val endIndex = token.startIndex + token.value.length
-        blocks.add(Block(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
+        documents.add(Document(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
     }
 
     private fun determineStartIndex(): Int {
@@ -97,7 +97,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
     }
 
     /**
-     * [idsAndComments] will hold the list of identifiers and comments for a block.
+     * [idsAndComments] will hold the list of identifiers and comments for a [document][Document].
      * Use the default argument if they can be ignored (e.g. when skipping an array initialization).
      * Otherwise provide a list as an argument; the function will fill it.
      */
@@ -221,15 +221,15 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                     val startIndex = tokens[i + 1].startIndex
 
                     // update the last block to include everything that follows till the end of file
-                    val lastBlock = blocks.last()
+                    val lastBlock = documents.last()
                     val updatedContent = "${lastBlock.content}\n${sourceCode.substring(startIndex)}"
                     val updatedIdsAndComments = ArrayList<Token>(lastBlock.idsAndComments)
                     updatedIdsAndComments.addAll(idsAndComments)
 
-                    val updatedLastBlock = Block(updatedContent, updatedIdsAndComments, sourceFile)
+                    val updatedLastBlock = Document(updatedContent, updatedIdsAndComments, sourceFile)
 
-                    blocks.remove(lastBlock)
-                    blocks.add(updatedLastBlock)
+                    documents.remove(lastBlock)
+                    documents.add(updatedLastBlock)
                 }
 
                 break

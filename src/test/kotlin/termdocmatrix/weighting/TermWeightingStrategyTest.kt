@@ -8,7 +8,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.withPrecision
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import preprocessor.Block
+import preprocessor.Document
 
 class TermWeightingStrategyTest {
 
@@ -16,9 +16,9 @@ class TermWeightingStrategyTest {
 
     @BeforeEach
     fun setupMatrix() {
-        val doc1 = mockk<Block>()
-        val doc2 = mockk<Block>()
-        val doc3 = mockk<Block>()
+        val doc1 = mockk<Document>()
+        val doc2 = mockk<Document>()
+        val doc3 = mockk<Document>()
 
         every { doc1.terms } returns listOf("t1", "t1", "t1", "t2", "t2", "t5", "t5", "t5", "t5")
         every { doc2.terms } returns listOf("t1", "t2", "t2", "t3", "t3", "t3", "t4", "t4", "t5")

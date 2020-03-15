@@ -1,18 +1,17 @@
 package preprocessor
 
-import main.Options
 import java.io.File
 import preprocessor.TokenType.*
 
 /**
- * Returns the set of all terms and documents (function and declaration blocks) for a given C project.
+ * Returns the set of all terms and [documents][Document] for a given C project.
  *
  * @param[inputRootDir] The root directory of the C project
  * @return a pair consisting of the set of terms and the list of documents within the entire project
  */
-fun getTermsAndBlocks(inputRootDir: File, stopList: List<String> = emptyList()): Pair<Set<String>, List<Block>> {
+fun getTermsAndDocuments(inputRootDir: File, stopList: List<String> = emptyList()): Pair<Set<String>, List<Document>> {
     val termSet = mutableSetOf<String>()
-    val blocks = mutableListOf<Block>()
+    val documents = mutableListOf<Document>()
 
     val preprocessor = Preprocessor()
     inputRootDir.walkTopDown().forEach {
@@ -22,23 +21,19 @@ fun getTermsAndBlocks(inputRootDir: File, stopList: List<String> = emptyList()):
         }
 
         val sourceCode = it.readText()
-
         val tokens = preprocessor.extractTokens(sourceCode)
 
-        // blocks
-        blocks.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
-
-        // construct the terms of the TDM based on the documents
-        termSet.clear()
-        blocks.forEach {
-                block -> termSet.addAll(block.terms)
-        }
+        // documents
+        documents.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
     }
 
-    // TODO: stemming or not?
+    // construct the terms of the TDM based on the indexed documents
+    documents.forEach {
+            document -> termSet.addAll(document.terms)
+    }
     termSet.removeAll(stopList)
 
-    return Pair(termSet, blocks)
+    return Pair(termSet, documents)
 }
 
 /**
