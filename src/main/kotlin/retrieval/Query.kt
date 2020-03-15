@@ -7,7 +7,7 @@ import termdocmatrix.TermDocumentMatrix
 
 class Query(input: String, private val tdm: TermDocumentMatrix) {
 
-    val normalizedTerms = input.split("\\s+".toRegex()).toMutableList()
+    val normalizedTerms = input.split("[\\s.!?,()%\"\'\\-]+".toRegex()).filter { it.isNotBlank() }.toMutableList()
 
     val queryVector: RealVector = MatrixUtils.createRealVector(DoubleArray(tdm.numOfTerms) {0.0})
 

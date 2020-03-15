@@ -6,6 +6,7 @@ import org.apache.commons.math3.linear.RealMatrix
 import preprocessor.*
 import retrieval.Location
 import retrieval.Query
+import retrieval.RetrievalResult
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
 import java.util.*
@@ -142,37 +143,7 @@ private fun mainLoop() {
 
         val results = lsiModel.retrieveDocuments(k, query)
         results.subList(0, Integer.min(results.size, 20)).forEach {
-            val sb = StringBuilder("$it\t\t")
-
-            val documentLines = mTdm.documents[it.docIdx].content.lines()
-
-            val locations = mutableListOf<Location>()
-            for(queryTerm in query.indexedTerms) {
-                var isDocumentContainsTerm = false
-
-                sb.append("[$queryTerm:")
-                for(i in documentLines.indices) {
-                    if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
-                        isDocumentContainsTerm = true
-                        locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
-                    }
-                }
-
-                if(isDocumentContainsTerm) {
-                    // the term was found in this document
-                    // list.toString(): "[...]"
-                    // list.toString().substring(1): "...]"
-                    sb.append(" ${locations.toString().substring(1)},")
-                }
-                else {
-                    // the term was not found
-                    sb.append(" --],")
-                }
-            }
-
-            sb.deleteCharAt(sb.lastIndexOf(","))
-
-            println(sb)
+            printResult(retrievalResult = it, query = query)
         }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
@@ -189,6 +160,40 @@ private fun mainLoop() {
             else -> return // finish main loop
         }
     }
+}
+
+private fun printResult(retrievalResult: RetrievalResult, query: Query) {
+    val sb = StringBuilder("$retrievalResult\t\t")
+
+    val documentLines = mTdm.documents[retrievalResult.docIdx].content.lines()
+
+    val locations = mutableListOf<Location>()
+    for(queryTerm in query.indexedTerms) {
+        var isDocumentContainsTerm = false
+
+        sb.append("[$queryTerm:")
+        for(i in documentLines.indices) {
+            if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                isDocumentContainsTerm = true
+                locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+            }
+        }
+
+        if(isDocumentContainsTerm) {
+            // the term was found in this document
+            // list.toString(): "[...]"
+            // list.toString().substring(1): "...]"
+            sb.append(" ${locations.toString().substring(1)},")
+        }
+        else {
+            // the term was not found
+            sb.append(" --],")
+        }
+    }
+
+    sb.deleteCharAt(sb.lastIndexOf(","))
+
+    println(sb)
 }
 
 // extension function for printing Commons Math RealMatrix
