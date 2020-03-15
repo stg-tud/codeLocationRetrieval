@@ -16,19 +16,8 @@ class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
         // 2. truncate matrices
         val (uk, sk, vtk) = computeTruncatedMatrices(k)
 
-        // 3. construct query vector
-        val queryVector = MatrixUtils.createRealVector(DoubleArray(tdm.numOfTerms) {0.0})
-        for(queryTerm in query.normalizedTerms) {
-            val termIdx = tdm.terms.indexOf(queryTerm)
-            if(termIdx != - 1) {
-                // increment the term frequency
-                println("Setting query[$termIdx] (\"$queryTerm\") to ${queryVector.getEntry(termIdx) + 1}")
-                queryVector.setEntry(termIdx, queryVector.getEntry(termIdx) + 1)
-            }
-            else {
-                println("The term $queryTerm does not exist in the index")
-            }
-        }
+        // 3. get the query vector
+        val queryVector = query.queryVector
 
         // check if we even have a valid query
         if(queryVector.norm == 0.0) {

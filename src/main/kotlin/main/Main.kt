@@ -4,6 +4,7 @@ import java.io.File
 import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.RealMatrix
 import preprocessor.*
+import retrieval.Location
 import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.lang.Exception
@@ -137,27 +138,41 @@ private fun mainLoop() {
             } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
         }
 
-        val query = Query(querySb.toString(), mTdm.terms)
+        val query = Query(querySb.toString(), mTdm)
 
         val results = lsiModel.retrieveDocuments(k, query)
         results.subList(0, Integer.min(results.size, 20)).forEach {
-            print("$it\t\t")
+            val sb = StringBuilder("$it\t\t")
 
             val documentLines = mTdm.documents[it.docIdx].content.lines()
 
-            for(queryTerm in query.normalizedTerms) {
-                if(query.isIndexed(queryTerm)) {
-                    print("[$queryTerm: ")
-                    for(i in documentLines.indices) {
-                        if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
-                            print("(${i + 1}, ${documentLines[i].indexOf(queryTerm, ignoreCase = true) + 1}), ")
-                        }
+            val locations = mutableListOf<Location>()
+            for(queryTerm in query.indexedTerms) {
+                var isDocumentContainsTerm = false
+
+                sb.append("[$queryTerm:")
+                for(i in documentLines.indices) {
+                    if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                        isDocumentContainsTerm = true
+                        locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
                     }
-                    print("], ")
+                }
+
+                if(isDocumentContainsTerm) {
+                    // the term was found in this document
+                    // list.toString(): "[...]"
+                    // list.toString().substring(1): "...]"
+                    sb.append(" ${locations.toString().substring(1)},")
+                }
+                else {
+                    // the term was not found
+                    sb.append(" --],")
                 }
             }
 
-            println()
+            sb.deleteCharAt(sb.lastIndexOf(","))
+
+            println(sb)
         }
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")

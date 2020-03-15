@@ -7,3 +7,7 @@ data class RetrievalResult(val docIdx: Int, val similarityScore: Double, val sou
             docIdx, similarityScore, sourceFileName)
     }
 }
+
+data class Location(val line: Int, val col: Int) {
+    override fun toString() = "($line, $col)"
+}

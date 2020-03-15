@@ -1,8 +1,25 @@
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrieval.Query
+import termdocmatrix.TermDocumentMatrix
 
 class QueryTest {
+
+    // TODO: for now mock since we only test normalization; but may have to adapt later
+    @MockK
+    private lateinit var tdmMock: TermDocumentMatrix
+
+    @BeforeEach
+    fun setUpMock() {
+        tdmMock = mockk()
+
+        every { tdmMock.numOfTerms } returns 0
+        every { tdmMock.terms } returns emptySet()
+    }
 
     @Test
     fun testQueryNormalization_simple() {
@@ -10,7 +27,7 @@ class QueryTest {
         val inputQuery = "user query"
 
         // When processing the input
-        val actualQueryTerms = Query(inputQuery).normalizedTerms
+        val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
 
         // Then
         assertThat(actualQueryTerms).isEqualTo(listOf("user", "query"))
@@ -22,7 +39,7 @@ class QueryTest {
         val inputQuery = "camelCase pascalCase"
 
         // When processing the input
-        val actualQueryTerms = Query(inputQuery).normalizedTerms
+        val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
 
         // Then
         assertThat(actualQueryTerms).containsExactlyInAnyOrder(
@@ -36,7 +53,7 @@ class QueryTest {
         val inputQuery = "_at_start in_the_middle at_end_"
 
         // When
-        val actualQueryTerms = Query(inputQuery).normalizedTerms
+        val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
 
         // Then
         assertThat(actualQueryTerms).containsExactlyInAnyOrder(
@@ -51,7 +68,7 @@ class QueryTest {
         val inputQuery = "normal Title mixedCase MixedCase underScore_with_camelCase BIGCase CaseBIG ALL_UPPER SUPPER"
 
         // When
-        val actualQueryTerms = Query(inputQuery).normalizedTerms
+        val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
 
         // Then
         assertThat(actualQueryTerms).containsExactlyInAnyOrder(
