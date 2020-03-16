@@ -8,6 +8,9 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
     private var currentIndex = 0
     private val sourceCode = sourceFile.readText()
 
+    // TODO:
+    private var isBraceCountEnabled = true
+
     fun parse(): List<Document> {
         // take header files as they are
         if(sourceFile.extension == "h") {
@@ -70,7 +73,8 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
     }
 
     private fun determineStartIndex(): Int {
-        for(i in currentIndex downTo 0) {
+        // currentIndex - 1 to start at LEFT_BRACE
+        for(i in (currentIndex - 1) downTo 0) {
             val type = tokens[i].tokenType
 
             if(type == RIGHT_BRACE) {
@@ -91,6 +95,16 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                 IDENTIFIER, COMMENT -> {
                     idsAndComments.add(token)
                 }
+                PP_DIRECTIVE -> {
+                    // explanation:
+                    // 1. we know we're done the moment we see the first LEFT_BRACE
+                    // 2. if we see this LEFT_BRACE within an #if[(n)def], then there will be others within an #elif/#else
+                    //  -> in those cases their LEFT_BRACE should not be counted
+                    when(token.value) {
+                        "#if", "#ifdef", "#ifndef" -> isBraceCountEnabled = false
+                        "#endif" -> isBraceCountEnabled = true
+                    }
+                }
                 else -> { /* do nothing */ }
             }
         }
@@ -110,13 +124,21 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
             token = advance()
 
             when(token.tokenType) {
-                LEFT_BRACE -> braceCount++
+                LEFT_BRACE -> {
+                    if(isBraceCountEnabled) {
+                        braceCount++
+                    }
+                }
                 RIGHT_BRACE -> braceCount--
                 IDENTIFIER, COMMENT -> idsAndComments.add(token)
                 PP_DIRECTIVE -> {
                     if(token.value == "#if" || token.value == "#ifdef" || token.value == "#ifndef") {
                         token = advance()
                         braceCount += handleConditionalCompilation(token, idsAndComments)
+                    }
+
+                    if(token.value == "#endif") {
+                        isBraceCountEnabled = true
                     }
                 }
                 else -> { /* do nothing */ }
