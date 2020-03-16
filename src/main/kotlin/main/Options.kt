@@ -14,6 +14,7 @@ object Options {
     private const val OPTION_SVD_FILENAME       = "--svd-filename"
     private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
     private const val OPTION_STOP_LIST          = "--stop-list"
+    private const val OPTION_IR_MODEL           = "--ir-model"
 
     // ===================
     // == Option Values ==
@@ -30,6 +31,9 @@ object Options {
         private set
 
     lateinit var stopList: List<String>
+        private set
+
+    lateinit var irModel: String
         private set
 
     // ==================================
@@ -182,7 +186,13 @@ object Options {
                         stopList = File(optionValue).readLines()
                         svdFilename = svdFilename.replace(defaultStopListText, File(optionValue).nameWithoutExtension)
                     }
-
+                }
+                OPTION_IR_MODEL -> {
+                    irModel = optionValue
+                    if(optionValue != "vsm") {
+                        // TODO: for now a cheap solution to handle invalid input
+                        irModel = "lsi"
+                    }
                 }
                 else -> println("Some unknown option: $option, $optionValue")
             }
@@ -197,6 +207,7 @@ object Options {
         inputRootDirectory = File("inputBig/grbl")
         stopList = defaultStopList
         svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}_$defaultStopListText"
+        irModel = "lsi"
     }
 
     private fun weightingStrategy(strategyName: String): TermWeightingStrategy {
@@ -224,6 +235,8 @@ object Options {
         printFormattedOption(OPTION_STOP_LIST, "The stop-list to apply. The file should contain one " +
                 "stop word per line. Pass 'empty' as an argument to not use a stop-list. By default, " +
                 "a stop-list equal to the content of 'stoplists/defaultStopList.txt' is used.")
+        printFormattedOption(OPTION_IR_MODEL, "The model to use to retrieve information. Can be " +
+                "'lsi' (default) or 'vsm'. Any other input will default to 'lsi'.")
     }
 
     private fun printFormattedOption(option: String, description: String) {

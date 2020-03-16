@@ -22,8 +22,10 @@ fun main(args: Array<String>) {
 
     bigInput()
     createTdm()
-//    mainLoop()
-    vsmLoop()
+    when(Options.irModel) {
+        "lsi" -> lsiLoop()
+        "vsm" -> vsmLoop()
+    }
 }
 
 private fun bigInput() {
@@ -82,7 +84,7 @@ private fun createTdm() {
     println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
 }
 
-private fun mainLoop() {
+private fun lsiLoop() {
     val startTime = System.currentTimeMillis()
     val lsiModel = LatentSemanticIndexingModel(mTdm)
     println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
@@ -164,40 +166,6 @@ private fun mainLoop() {
     }
 }
 
-private fun printResult(retrievalResult: RetrievalResult, query: Query) {
-    val sb = StringBuilder("$retrievalResult\t\t")
-
-    val documentLines = mTdm.documents[retrievalResult.docIdx].content.lines()
-
-    val locations = mutableListOf<Location>()
-    for(queryTerm in query.indexedTerms) {
-        var isDocumentContainsTerm = false
-
-        sb.append("[$queryTerm:")
-        for(i in documentLines.indices) {
-            if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
-                isDocumentContainsTerm = true
-                locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
-            }
-        }
-
-        if(isDocumentContainsTerm) {
-            // the term was found in this document
-            // list.toString(): "[...]"
-            // list.toString().substring(1): "...]"
-            sb.append(" ${locations.toString().substring(1)},")
-        }
-        else {
-            // the term was not found
-            sb.append(" --],")
-        }
-    }
-
-    sb.deleteCharAt(sb.lastIndexOf(","))
-
-    println(sb)
-}
-
 private fun vsmLoop() {
     val startTime = System.currentTimeMillis()
     val vsmModel = VectorSpaceModel(mTdm)
@@ -240,6 +208,40 @@ private fun vsmLoop() {
             else -> return // finish main loop
         }
     }
+}
+
+private fun printResult(retrievalResult: RetrievalResult, query: Query) {
+    val sb = StringBuilder("$retrievalResult\t\t")
+
+    val documentLines = mTdm.documents[retrievalResult.docIdx].content.lines()
+
+    val locations = mutableListOf<Location>()
+    for(queryTerm in query.indexedTerms) {
+        var isDocumentContainsTerm = false
+
+        sb.append("[$queryTerm:")
+        for(i in documentLines.indices) {
+            if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                isDocumentContainsTerm = true
+                locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+            }
+        }
+
+        if(isDocumentContainsTerm) {
+            // the term was found in this document
+            // list.toString(): "[...]"
+            // list.toString().substring(1): "...]"
+            sb.append(" ${locations.toString().substring(1)},")
+        }
+        else {
+            // the term was not found
+            sb.append(" --],")
+        }
+    }
+
+    sb.deleteCharAt(sb.lastIndexOf(","))
+
+    println(sb)
 }
 
 // extension function for printing Commons Math RealMatrix
