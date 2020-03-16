@@ -12,6 +12,9 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
     private var isBraceCountEnabled = true
     private var conditionalsNestCount = 0
 
+    // on parse exception include everything starting from here
+    private var startIndexInCaseOfFailure = 0
+
     fun parse(): List<Document> {
         // take header files as they are
         if(sourceFile.extension == "h") {
@@ -29,12 +32,21 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                 includeIdsAndCommentsAfterLastBlock()
             }
             catch(e: Exception) {
-                // temporary: just add the whole thing if sth goes wrong
                 // TODO: some kind of synchronization/error-recovery would be nice ...
-                // (at least start from startIndex instead of taking the whole file)
+                // (For now: include everything starting from where the error occurred)
                 println("${e.javaClass.simpleName}: Parse error for ${sourceFile.path}")
-                val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
-                documents.add(Document(sourceCode, idsAndComments, sourceFile))
+
+                val idsAndComments = mutableListOf<Token>()
+                val startPos = tokens[startIndexInCaseOfFailure].startIndex
+                for(i in startIndexInCaseOfFailure until tokens.size) {
+                    val type = tokens[i].tokenType
+
+                    if(type == IDENTIFIER || type == COMMENT) {
+                        idsAndComments.add(tokens[i])
+                    }
+                }
+
+                documents.add(Document(sourceCode.substring(startPos), idsAndComments, sourceFile))
             }
 
         }
@@ -48,6 +60,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         when(previousToken.tokenType) {
             LEFT_BRACE -> {
                 generalBlock()
+                startIndexInCaseOfFailure = currentIndex
             }
             else -> { /* do nothing */ }
         }
