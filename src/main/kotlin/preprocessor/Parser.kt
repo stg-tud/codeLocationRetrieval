@@ -10,6 +10,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
 
     // TODO:
     private var isBraceCountEnabled = true
+    private var conditionalsNestCount = 0
 
     fun parse(): List<Document> {
         // take header files as they are
@@ -101,8 +102,14 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                     // 2. if we see this LEFT_BRACE within an #if[(n)def], then there will be others within an #elif/#else
                     //  -> in those cases their LEFT_BRACE should not be counted
                     when(token.value) {
-                        "#if", "#ifdef", "#ifndef" -> isBraceCountEnabled = false
-                        "#endif" -> isBraceCountEnabled = true
+                        "#if", "#ifdef", "#ifndef" -> {
+                            conditionalsNestCount++
+                            isBraceCountEnabled = false
+                        }
+                        "#endif" -> {
+                            conditionalsNestCount--
+                            isBraceCountEnabled = true
+                        }
                     }
                 }
                 else -> { /* do nothing */ }
@@ -138,7 +145,10 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                     }
 
                     if(token.value == "#endif") {
-                        isBraceCountEnabled = true
+                        conditionalsNestCount = Integer.max(0, conditionalsNestCount - 1)
+                        if(conditionalsNestCount == 0) {
+                            isBraceCountEnabled = true
+                        }
                     }
                 }
                 else -> { /* do nothing */ }
