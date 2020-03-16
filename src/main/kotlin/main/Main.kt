@@ -8,6 +8,7 @@ import retrieval.Location
 import retrieval.Query
 import retrieval.RetrievalResult
 import retrieval.lsi.LatentSemanticIndexingModel
+import retrieval.vsm.VectorSpaceModel
 import java.lang.Exception
 import java.util.*
 
@@ -21,7 +22,8 @@ fun main(args: Array<String>) {
 
     bigInput()
     createTdm()
-    mainLoop()
+//    mainLoop()
+    vsmLoop()
 }
 
 private fun bigInput() {
@@ -194,6 +196,50 @@ private fun printResult(retrievalResult: RetrievalResult, query: Query) {
     sb.deleteCharAt(sb.lastIndexOf(","))
 
     println(sb)
+}
+
+private fun vsmLoop() {
+    val startTime = System.currentTimeMillis()
+    val vsmModel = VectorSpaceModel(mTdm)
+    println("Time(VSM): ${(System.currentTimeMillis() - startTime) / 1000}s")
+
+    val scanner = Scanner(System.`in`)
+    val querySb = StringBuilder()
+
+    // true on first iteration !
+    var isNewQuery = true
+
+    while(true) {
+        if(isNewQuery) {
+            // read in user query
+            querySb.setLength(0)
+            print("Type in query: ")
+            while(scanner.hasNextLine()) {
+                val line = scanner.nextLine()
+                querySb.append(line)
+                if(querySb.isNotBlank()) {
+                    break
+                }
+            }
+            println("User query is: $querySb")
+        }
+
+        val query = Query(querySb.toString(), mTdm)
+
+        val results = vsmModel.retrieveDocuments(query)
+        results.subList(0, Integer.min(results.size, 20)).forEach {
+            printResult(retrievalResult = it, query = query)
+        }
+
+        println("\n\nType Q for a new query: ")
+        val input = scanner.next()
+        when(input) {
+            "q", "Q" -> {
+                isNewQuery = true
+            }
+            else -> return // finish main loop
+        }
+    }
 }
 
 // extension function for printing Commons Math RealMatrix
