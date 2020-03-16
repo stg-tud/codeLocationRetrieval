@@ -1,5 +1,8 @@
+import io.mockk.every
+import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import preprocessor.Document
 import preprocessor.Lexer
 import preprocessor.Parser
 import preprocessor.Token
@@ -18,7 +21,7 @@ class ParserTest {
         val actualDocuments = parser.parse()
 
         // Then the contents should equal the expected output
-        val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput")
+        val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/planner")
         expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
             if(expectedOutputFile.isFile) {
                 // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
@@ -102,5 +105,58 @@ class ParserTest {
             "block_buffer_planned", "block", "buffer", "planned",
             "block_buffer_tail", "block", "buffer", "tail"
         )
+    }
+
+    @Test
+    fun testEmptyBlock() {
+        // Given input to the parser (maybe make a directory with multiple files instead of just one file)
+        val sourceFile = File("src/test/resources/ParserTest/actualInput/empty_block.c")
+        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+
+        // When parsing the input and retrieving the resulting documents
+        val actualDocuments = parser.parse()
+
+        // Then the contents should equal the expected output
+        val expectedOutput =
+            File("src/test/resources/ParserTest/expectedOutput/empty_block/doc00_empty_block_c.cc").readText()
+        assertThat(actualDocuments[0].content).isEqualToIgnoringWhitespace(expectedOutput)
+    }
+
+    @Test
+    fun testConditionalCompiling() {
+        // Given input to the parser (maybe make a directory with multiple files instead of just one file)
+        val sourceFile = File("src/test/resources/ParserTest/actualInput/conditional_compiling.c")
+        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+
+        // When parsing the input and retrieving the resulting documents
+        val actualDocuments = parser.parse()
+
+        // Then the contents should equal the expected output
+        val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/conditional_compiling")
+        expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
+            if(expectedOutputFile.isFile) {
+                // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
+                assertThat(actualDocuments[index].content).isEqualToIgnoringWhitespace(expectedOutputFile.readText())
+            }
+        }
+    }
+
+    @Test
+    fun testErrorHandling() {
+        // Given input to the parser (maybe make a directory with multiple files instead of just one file)
+        val sourceFile = File("src/test/resources/ParserTest/actualInput/unbalanced_braces.c")
+        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+
+        // When parsing the input and retrieving the resulting documents
+        val actualDocuments = parser.parse()
+
+        // Then the contents should equal the expected output
+        val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/unbalanced_braces")
+        expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
+            if(expectedOutputFile.isFile) {
+                // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
+                assertThat(actualDocuments[index].content).isEqualToIgnoringWhitespace(expectedOutputFile.readText())
+            }
+        }
     }
 }
