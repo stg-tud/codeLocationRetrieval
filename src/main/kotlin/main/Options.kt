@@ -245,8 +245,11 @@ object Options {
 
     private fun printOptionsConfirmationMessage() {
         println("OPTIONS")
+        println("\tIR-Model:                $irModel")
         println("\tTerm weighting strategy: ${termWeightingStrategy.javaClass.simpleName}")
-        println("\tSVD file name (.ser):    $svdFilename")
+        if(irModel == "lsi") {
+            println("\tSVD file name (.ser):    $svdFilename")
+        }
         println("\tRoot directory:          $inputRootDirectory")
         println("\tStop-list:               ${stopList.subList(0, Integer.min(stopList.size, 7))} ...")
     }
