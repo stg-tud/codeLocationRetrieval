@@ -146,9 +146,28 @@ private fun lsiLoop() {
         val query = Query(querySb.toString(), mTdm)
 
         val results = lsiModel.retrieveDocuments(k, query)
-        results.subList(0, Integer.min(results.size, 20)).forEach {
-            printResult(retrievalResult = it, query = query)
+        var startIdx = 0
+        results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
+            printResult(retrievalResult = retrievalResult, query = query, rank = startIdx + index + 1)
         }
+
+        println("Show more results?")
+        var next = scanner.next()
+        while(next == "y" || next == "Y") {
+            startIdx += Integer.min(20, results.size - startIdx)
+            results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
+                printResult(retrievalResult = retrievalResult, query = query, rank = startIdx + index + 1)
+            }
+
+            if(startIdx == results.size) {
+                println("All retrieved.")
+                break
+            }
+
+            println("Show more results? $startIdx")
+            next = scanner.next()
+        }
+
 
         println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
         val input = scanner.next()
@@ -195,8 +214,8 @@ private fun vsmLoop() {
         val query = Query(querySb.toString(), mTdm)
 
         val results = vsmModel.retrieveDocuments(query)
-        results.subList(0, Integer.min(results.size, 20)).forEach {
-            printResult(retrievalResult = it, query = query)
+        results.subList(0, Integer.min(results.size, 20)).forEachIndexed { index, retrievalResult ->
+            printResult(retrievalResult = retrievalResult, query = query, rank = index + 1)
         }
 
         println("\n\nType Q for a new query: ")
@@ -210,8 +229,8 @@ private fun vsmLoop() {
     }
 }
 
-private fun printResult(retrievalResult: RetrievalResult, query: Query) {
-    val sb = StringBuilder("$retrievalResult\t\t")
+private fun printResult(retrievalResult: RetrievalResult, query: Query, rank: Int = 0) {
+    val sb = StringBuilder("$rank.\t$retrievalResult\t\t")
 
     val documentLines = mTdm.documents[retrievalResult.docIdx].content.lines()
 
