@@ -19,7 +19,7 @@ class TfIdfWeighting : TermWeightingStrategy {
             val docFrequencyOfTermI = matrix.data[i].filter { it != 0.0 }.size.toDouble()
 
             for(j in matrix.data[i].indices) {
-                val tf = matrix.data[i][j]
+                val tf = Math.log10(1 + matrix.data[i][j])
                 val idf = Math.log10(matrix.numOfDocs / docFrequencyOfTermI)
                 weightedData[i][j] = tf * idf
             }
