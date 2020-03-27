@@ -1,11 +1,10 @@
 package main.console
 
-import preprocessor.Document
 import retrieval.Query
 import retrieval.vsm.VectorSpaceModel
 import java.util.*
 
-class VsmConsole(terms: Set<String>, documents: List<Document>) : ConsoleApplication(terms, documents) {
+class VsmConsole : ConsoleApplication() {
 
     override fun start() {
         val tdm = createTdm()

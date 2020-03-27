@@ -1,11 +1,10 @@
 package main.console
 
-import preprocessor.Document
 import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.util.*
 
-class LsiConsole(terms: Set<String>, documents: List<Document>) : ConsoleApplication(terms, documents) {
+class LsiConsole : ConsoleApplication() {
 
     override fun start() {
         val tdm = createTdm()
