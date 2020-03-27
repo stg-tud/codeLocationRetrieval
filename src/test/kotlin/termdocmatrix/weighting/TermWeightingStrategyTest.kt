@@ -71,19 +71,18 @@ class TermWeightingStrategyTest {
          * t5   4   1   0
          */
 
-        // When applying TF-IDF weighting
+        // When applying TF-IDF weighting (TFs being log-normalized!)
         val actualMatrix = TfIdfWeighting().weightEntries(matrixToBeWeighted)
 
         // Then
         actualMatrix.apply {
             //                                        d1     d2     d3
             assertThat(data[0]).isCloseTo(0.000, 0.000, 0.000)   // t1
-            assertThat(data[1]).isCloseTo(0.352, 0.352, 0.000)   // t2
-            assertThat(data[2]).isCloseTo(0.000, 0.528, 0.176)   // t3
-            assertThat(data[3]).isCloseTo(0.000, 0.352, 1.233)   // t4
-            assertThat(data[4]).isCloseTo(0.704, 0.176, 0.000)   // t5
+            assertThat(data[1]).isCloseTo(0.084, 0.084, 0.000)   // t2
+            assertThat(data[2]).isCloseTo(0.000, 0.106, 0.053)   // t3
+            assertThat(data[3]).isCloseTo(0.000, 0.084, 0.159)   // t4
+            assertThat(data[4]).isCloseTo(0.123, 0.053, 0.000)   // t5
         }
-
     }
 
     @Test

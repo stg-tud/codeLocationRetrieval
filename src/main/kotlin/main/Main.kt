@@ -1,34 +1,37 @@
 package main
 
+import main.console.ConsoleApplication
+import main.console.LsiConsole
+import main.console.VsmConsole
 import java.io.File
-import termdocmatrix.TermDocumentMatrix
 import org.apache.commons.math3.linear.RealMatrix
 import preprocessor.*
-import retrieval.Location
-import retrieval.Query
-import retrieval.RetrievalResult
-import retrieval.lsi.LatentSemanticIndexingModel
-import retrieval.vsm.VectorSpaceModel
 import java.lang.Exception
 import java.util.*
 
-val mDocuments = ArrayList<Document>()
-val mTerms = HashSet<String>()
-lateinit var mTdm: TermDocumentMatrix
+private val mDocuments = ArrayList<Document>()
+private val mTerms = HashSet<String>()
 
 fun main(args: Array<String>) {
     println("ARGS = ${args.toList()}")
     Options.parse(args)
+    processInput()
 
-    bigInput()
-    createTdm()
-    when(Options.irModel) {
-        "lsi" -> lsiLoop()
-        "vsm" -> vsmLoop()
+    val consoleApp = when(Options.irModel) {
+        "lsi" -> LsiConsole(mTerms, mDocuments)
+        "vsm" -> VsmConsole(mTerms, mDocuments)
+        else -> object : ConsoleApplication(mTerms, mDocuments) {
+            override fun start() {
+                println("Could not find an appropriate console for argument ${Options.irModel}. Abort.")
+                System.exit(64)
+            }
+        }
     }
+
+    consoleApp.start()
 }
 
-private fun bigInput() {
+private fun processInput() {
     val start = System.currentTimeMillis()
 
     val (terms, documents) = getTermsAndDocuments(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
@@ -69,198 +72,6 @@ private fun bigInput() {
 
     val end = System.currentTimeMillis()
     println("Time to create the corpus: ${(end - start) / 1000f}s")
-}
-
-private fun createTdm() {
-    val startTime = System.currentTimeMillis()
-
-    // -1 because of empty line at the end (get rid of that)
-    val matrix = TermDocumentMatrix(mTerms, mDocuments)
-    println("Number of terms = ${matrix.numOfTerms}")
-    println("Number of documents = ${matrix.numOfDocs}")
-    mTdm = Options.termWeightingStrategy.weightEntries(matrix)
-
-    // time in seconds
-    println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
-}
-
-private fun lsiLoop() {
-    val startTime = System.currentTimeMillis()
-    val lsiModel = LatentSemanticIndexingModel(mTdm)
-    println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
-
-    println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")
-    println("dim(S): ${lsiModel.svd.s.rowDimension} x ${lsiModel.svd.s.columnDimension}")
-    println("dim(VT): ${lsiModel.svd.vt.rowDimension} x ${lsiModel.svd.vt.columnDimension}")
-
-    println("max singular value = ${lsiModel.svd.singularValues.first()}")
-    println("min singular value = ${lsiModel.svd.singularValues.last()}")
-    println("rank = ${lsiModel.svd.rank},\tnorm = ${lsiModel.svd.norm},\tcn = ${lsiModel.svd.conditionNumber}," +
-            "\ticn = ${lsiModel.svd.inverseConditionNumber}")
-
-    val scanner = Scanner(System.`in`)
-    val querySb = StringBuilder()
-    var k: Int = -1
-
-    // true on first iteration !
-    var isNewK = true
-    var isNewQuery = true
-
-    while(true) {
-        if(isNewQuery) {
-            // read in user query
-            querySb.setLength(0)
-            print("Type in query: ")
-            while(scanner.hasNextLine()) {
-                val line = scanner.nextLine()
-                querySb.append(line)
-                if(querySb.isNotBlank()) {
-                    break
-                }
-            }
-            println("User query is: $querySb")
-        }
-
-        if(isNewK) {
-            // print the singular values
-            val singularValues = lsiModel.svd.singularValues
-            for(i in singularValues.indices) {
-                if(i > 0 && (i % 5 == 0)) {
-                    println()
-                }
-
-                print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
-            }
-
-            // dimensionality reduction k in [1, S.rowDim]
-            do {
-                print("\nType in a value for k [1, ${lsiModel.svd.s.rowDimension}]: ")
-                while(!scanner.hasNextInt()) {
-                    print("Type in a value for k [1, ${lsiModel.svd.s.rowDimension }]: ")
-                    scanner.next()
-                }
-                k = scanner.nextInt()
-            } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
-        }
-
-        val query = Query(querySb.toString(), mTdm)
-
-        val results = lsiModel.retrieveDocuments(k, query)
-        var startIdx = 0
-        results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-            printResult(retrievalResult = retrievalResult, query = query, rank = startIdx + index + 1)
-        }
-
-        println("Show more results?")
-        var next = scanner.next()
-        while(next == "y" || next == "Y") {
-            startIdx += Integer.min(20, results.size - startIdx)
-            results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                printResult(retrievalResult = retrievalResult, query = query, rank = startIdx + index + 1)
-            }
-
-            if(startIdx == results.size) {
-                println("All retrieved.")
-                break
-            }
-
-            println("Show more results? $startIdx")
-            next = scanner.next()
-        }
-
-
-        println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
-        val input = scanner.next()
-        when(input) {
-            "q", "Q" -> {
-                isNewQuery = true
-                isNewK = true
-            }
-            "k", "K" -> {
-                isNewQuery = false
-                isNewK = true
-            }
-            else -> return // finish main loop
-        }
-    }
-}
-
-private fun vsmLoop() {
-    val startTime = System.currentTimeMillis()
-    val vsmModel = VectorSpaceModel(mTdm)
-    println("Time(VSM): ${(System.currentTimeMillis() - startTime) / 1000}s")
-
-    val scanner = Scanner(System.`in`)
-    val querySb = StringBuilder()
-
-    // true on first iteration !
-    var isNewQuery = true
-
-    while(true) {
-        if(isNewQuery) {
-            // read in user query
-            querySb.setLength(0)
-            print("Type in query: ")
-            while(scanner.hasNextLine()) {
-                val line = scanner.nextLine()
-                querySb.append(line)
-                if(querySb.isNotBlank()) {
-                    break
-                }
-            }
-            println("User query is: $querySb")
-        }
-
-        val query = Query(querySb.toString(), mTdm)
-
-        val results = vsmModel.retrieveDocuments(query)
-        results.subList(0, Integer.min(results.size, 20)).forEachIndexed { index, retrievalResult ->
-            printResult(retrievalResult = retrievalResult, query = query, rank = index + 1)
-        }
-
-        println("\n\nType Q for a new query: ")
-        val input = scanner.next()
-        when(input) {
-            "q", "Q" -> {
-                isNewQuery = true
-            }
-            else -> return // finish main loop
-        }
-    }
-}
-
-private fun printResult(retrievalResult: RetrievalResult, query: Query, rank: Int = 0) {
-    val sb = StringBuilder("$rank.\t$retrievalResult\t\t")
-
-    val documentLines = mTdm.documents[retrievalResult.docIdx].content.lines()
-
-    val locations = mutableListOf<Location>()
-    for(queryTerm in query.indexedTerms) {
-        var isDocumentContainsTerm = false
-
-        sb.append("[$queryTerm:")
-        for(i in documentLines.indices) {
-            if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
-                isDocumentContainsTerm = true
-                locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
-            }
-        }
-
-        if(isDocumentContainsTerm) {
-            // the term was found in this document
-            // list.toString(): "[...]"
-            // list.toString().substring(1): "...]"
-            sb.append(" ${locations.toString().substring(1)},")
-        }
-        else {
-            // the term was not found
-            sb.append(" --],")
-        }
-    }
-
-    sb.deleteCharAt(sb.lastIndexOf(","))
-
-    println(sb)
 }
 
 // extension function for printing Commons Math RealMatrix
