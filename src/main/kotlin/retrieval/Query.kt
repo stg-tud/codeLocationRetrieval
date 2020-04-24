@@ -18,7 +18,13 @@ class Query(input: String, private val tdm: TermDocumentMatrix) {
 
         // construct the query vector and store all indexed terms in a set (those that are in the term-document matrix)
         for(queryTerm in normalizedTerms) {
-            val termIdx = tdm.terms.indexOf(queryTerm)
+            val termIdx = tdm.terms.foldIndexed(-1, {index,old,t ->
+                if (t.term == queryTerm) {
+                    index
+                } else {
+                    old
+                }
+            })
             if(termIdx != -1) {
                 // query term is contained in the TDM
                 println("Setting query[$termIdx] (\"$queryTerm\") to ${queryVector.getEntry(termIdx) + 1}")

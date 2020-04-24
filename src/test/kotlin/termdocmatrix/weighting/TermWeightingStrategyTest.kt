@@ -20,14 +20,14 @@ class TermWeightingStrategyTest {
         val doc2 = mockk<Document>()
         val doc3 = mockk<Document>()
 
-        every { doc1.terms } returns listOf("t1", "t1", "t1", "t2", "t2", "t5", "t5", "t5", "t5")
-        every { doc2.terms } returns listOf("t1", "t2", "t2", "t3", "t3", "t3", "t4", "t4", "t5")
-        every { doc3.terms } returns listOf("t1", "t3", "t4", "t4", "t4", "t4", "t4", "t4", "t4")
-
-        matrixToBeWeighted = TermDocumentMatrix(
-            setOf("t1", "t2", "t3", "t4", "t5"),
-            listOf(doc1, doc2, doc3)
-        )
+//        every { doc1.terms } returns listOf("t1", "t1", "t1", "t2", "t2", "t5", "t5", "t5", "t5")
+//        every { doc2.terms } returns listOf("t1", "t2", "t2", "t3", "t3", "t3", "t4", "t4", "t5")
+//        every { doc3.terms } returns listOf("t1", "t3", "t4", "t4", "t4", "t4", "t4", "t4", "t4")
+//
+//        matrixToBeWeighted = TermDocumentMatrix(
+//            setOf("t1", "t2", "t3", "t4", "t5"),
+//            listOf(doc1, doc2, doc3)
+//        )
     }
 
     @Test

@@ -19,7 +19,7 @@ class QueryTest {
         fun setUpMockForNormalizationTests() {
             tdmMock = mockk()
             every { tdmMock.numOfTerms } returns 0
-            every { tdmMock.terms } returns emptySet()
+            every { tdmMock.terms } returns HashSet()
         }
 
         @Test
@@ -109,7 +109,7 @@ class QueryTest {
         @BeforeEach
         fun setUpMockForVectorConstructionTests() {
             tdmMock = mockk()
-            every { tdmMock.terms } returns setOf("vector", "construction", "tests", "rock")
+//            every { tdmMock.terms } returns setOf("vector", "construction", "tests", "rock")
             every { tdmMock.numOfTerms } returns tdmMock.terms.size
         }
 
@@ -179,7 +179,7 @@ class QueryTest {
         @BeforeEach
         fun setUpMockForIndexedTermsTests() {
             tdmMock = mockk()
-            every { tdmMock.terms } returns setOf("indexed", "terms", "tests", "rock")
+            every { tdmMock.terms.map { it.term }.toSet() } returns setOf("indexed", "terms", "tests", "rock")
             every { tdmMock.numOfTerms } returns tdmMock.terms.size
         }
 

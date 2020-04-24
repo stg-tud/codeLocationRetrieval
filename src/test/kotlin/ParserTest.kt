@@ -2,10 +2,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import preprocessor.Document
-import preprocessor.Lexer
-import preprocessor.Parser
-import preprocessor.Token
+import preprocessor.*
 import java.io.File
 import preprocessor.TokenType.*
 
@@ -23,7 +20,7 @@ class ParserTest {
         // Then the contents should equal the expected output
         val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/planner")
         expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
-            if(expectedOutputFile.isFile) {
+            if (expectedOutputFile.isFile) {
                 // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
                 assertThat(actualDocuments[index].content).isEqualToIgnoringWhitespace(expectedOutputFile.readText())
             }
@@ -55,18 +52,45 @@ class ParserTest {
 
         // Then a small document should contain the following number of identifiers and comments
         assertThat(smallDocument.idsAndComments).usingElementComparatorIgnoringFields("startIndex").containsExactly(
-            Token(tokenType = IDENTIFIER,   value = "plan_reset"),
-            Token(tokenType = IDENTIFIER,   value = "memset"),
-            Token(tokenType = IDENTIFIER,   value = "pl"),
-            Token(tokenType = IDENTIFIER,   value = "planner_t"),
-            Token(tokenType = COMMENT,      value = "// Clear planner struct"),
-            Token(tokenType = IDENTIFIER,   value = "block_buffer_tail"),
-            Token(tokenType = IDENTIFIER,   value = "block_buffer_head"),
-            Token(tokenType = COMMENT,      value = "// Empty = tail"),
-            Token(tokenType = IDENTIFIER,   value = "next_buffer_head"),
-            Token(tokenType = COMMENT,      value = "// plan_next_block_index(block_buffer_head)"),
-            Token(tokenType = IDENTIFIER,   value = "block_buffer_planned"),
-            Token(tokenType = COMMENT,      value = "// = block_buffer_tail;")
+            Token(
+                tokenType = IDENTIFIER, value = "plan_reset", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "memset", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "pl", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "planner_t", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = COMMENT, value = "// Clear planner struct", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "block_buffer_tail", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "block_buffer_head", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = COMMENT, value = "// Empty = tail", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "next_buffer_head", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = COMMENT,
+                value = "// plan_next_block_index(block_buffer_head)",
+                startIndex = -1,
+                location = Location(0, 0)
+            ),
+            Token(
+                tokenType = IDENTIFIER, value = "block_buffer_planned", startIndex = -1, location = Location(0, 0)
+            ),
+            Token(
+                tokenType = COMMENT, value = "// = block_buffer_tail;", startIndex = -1, location = Location(0, 0)
+            )
         )
     }
 
@@ -84,7 +108,7 @@ class ParserTest {
         println("====")
 
         // Then the document should contain the following terms
-        assertThat(smallDocument.terms).containsExactly(
+        assertThat(smallDocument.terms.map { it.term }).containsExactly(
             // void plan_reset() {
             "plan_reset", "plan", "reset",
             // memset(&pl, 0, sizeof(planner_t)); // Clear planner struct
@@ -134,7 +158,7 @@ class ParserTest {
         // Then the contents should equal the expected output
         val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/conditional_compiling")
         expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
-            if(expectedOutputFile.isFile) {
+            if (expectedOutputFile.isFile) {
                 // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
                 assertThat(actualDocuments[index].content).isEqualToIgnoringWhitespace(expectedOutputFile.readText())
             }
@@ -153,7 +177,7 @@ class ParserTest {
         // Then the contents should equal the expected output
         val expectedOutputDir = File("src/test/resources/ParserTest/expectedOutput/unbalanced_braces")
         expectedOutputDir.listFiles().forEachIndexed { index, expectedOutputFile ->
-            if(expectedOutputFile.isFile) {
+            if (expectedOutputFile.isFile) {
                 // ignore whitespace (e.g. CRLF vs LF issues, empty spaces, etc. make this rather cumbersome)
                 assertThat(actualDocuments[index].content).isEqualToIgnoringWhitespace(expectedOutputFile.readText())
             }

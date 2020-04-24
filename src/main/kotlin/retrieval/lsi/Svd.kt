@@ -23,7 +23,7 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
 
     init {
         @Suppress("UNCHECKED_CAST")
-        if(isDataStored()) {
+        if(isDataStored()&& false) {
             println("=== LOADING STORED SVD ===")
             println("Reading SVD from: ${storedSvdFile.path}")
             val ois = ObjectInputStream(FileInputStream(storedSvdFile.path))

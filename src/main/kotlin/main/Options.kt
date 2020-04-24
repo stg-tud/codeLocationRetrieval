@@ -150,8 +150,8 @@ object Options {
         }
 
         // split the arguments at blanks
-        val myArgs = args[0].split("""\s+""".toRegex())
-        myArgs.forEach {
+//        val myArgs = args[0].split("""\s+""".toRegex())
+        args.forEach {
             var option = it
             var optionValue = ""
 

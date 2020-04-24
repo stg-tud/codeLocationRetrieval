@@ -1,10 +1,11 @@
 package termdocmatrix
 
 import preprocessor.Document
+import preprocessor.Term
 
 // N terms and M documents
 class TermDocumentMatrix {
-    val terms: Set<String>
+    val terms: HashSet<Term>
     val documents: List<Document>
 
     val numOfTerms: Int
@@ -14,8 +15,8 @@ class TermDocumentMatrix {
     val data: Array<DoubleArray>
 
     // constructor that constructs the matrix based on the terms and documents
-    constructor(terms: Set<String>, documents: List<Document>) {
-        this.terms = terms
+    constructor(terms: Set<Term>, documents: List<Document>) {
+        this.terms = terms.toHashSet()
         this.documents = documents
 
         numOfTerms = terms.size
@@ -32,13 +33,13 @@ class TermDocumentMatrix {
     // -> possible solution to this: make 'data' a var with a private setter
     //      and provide a public weightEntries(TermWeightingStrategy) method in which we can alter 'data'
     //      (requires refactoring of TermWeightingStrategy though; postpone until we do weighting with query vectors)
-    constructor(terms: Set<String>, documents: List<Document>, data: Array<DoubleArray>) {
+    constructor(terms: Set<Term>, documents: List<Document>, data: Array<DoubleArray>) {
         if(data.size != terms.size || data[0].size != documents.size) {
             throw RuntimeException("Dimensions of provided TDM do not match: " +
                     "Expected dimensions [${terms.size} x ${documents.size}, but was [${data.size} x ${data[0].size}")
         }
 
-        this.terms = terms
+        this.terms = terms.toHashSet()
         this.documents = documents
         this.data = data
 
@@ -48,10 +49,10 @@ class TermDocumentMatrix {
 
     // populates the data using local term-frequency weights
     private fun populateTdm() {
-        for(docIdx in 0..(documents.size - 1)) {
+        for(docIdx in 0 until documents.size) {
             val block = documents[docIdx]
             block.terms.forEach { term ->
-                val termIdx = terms.indexOf(term)
+                val termIdx = terms.indexOfFirst { term.term == it.term  }
 
                 if(termIdx != -1) {
                     // term is contained in the corpus
