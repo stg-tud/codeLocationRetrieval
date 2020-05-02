@@ -62,4 +62,5 @@ output/
 inputSandbox/
 outputSandbox/
 decompositions/
+eval/
 .idea/kotlinc.xml

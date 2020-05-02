@@ -19,7 +19,9 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         // take header files as they are
         if(sourceFile.extension == "h") {
             val idsAndComments = tokens.filter { it.tokenType == IDENTIFIER || it.tokenType == COMMENT }
-            documents.add(Document(sourceCode, idsAndComments, sourceFile))
+            if(idsAndComments.isNotEmpty()) {
+                documents.add(Document(sourceCode, idsAndComments, sourceFile))
+            }
         }
         // for .c files partition it around outermost blocks {...}
         else {
@@ -83,7 +85,10 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         val token = previous()!!    // token.type == '}'
 
         val endIndex = token.startIndex + token.value.length
-        documents.add(Document(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
+
+        if(idsAndComments.isNotEmpty()) {
+            documents.add(Document(sourceCode.substring(startIndex, endIndex), idsAndComments, sourceFile))
+        }
     }
 
     private fun determineStartIndex(): Int {
