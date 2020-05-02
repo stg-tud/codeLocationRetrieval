@@ -30,13 +30,13 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
+                singularValues = get("singularValues") as DoubleArray
+                s   = MatrixUtils.createRealDiagonalMatrix(singularValues)
+
                 u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
-                s   = MatrixUtils.createRealMatrix(get("s.data") as Array<DoubleArray>)
                 v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
                 ut  = u.transpose()
                 vt  = v.transpose()
-
-                singularValues = get("singularValues") as DoubleArray
 
                 rank                    = get("rank") as Int
                 norm                    = get("norm") as Double
@@ -76,15 +76,17 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
         val fieldsMap = mutableMapOf<String, Any>()
         fieldsMap.apply {
             put("u.data", u.data)
-            put("s.data", s.data)
             put("v.data", v.data)
-//            put("ut.data", ut.data)   // no need to store, can be computed via u.transpose()
-//            put("vt.data", vt.data)   // no need to store, can be computed via v.transpose()
             put("singularValues", singularValues)
             put("rank", rank)
             put("norm", norm)
             put("conditionNumber", conditionNumber)
             put("inverseConditionNumber", inverseConditionNumber)
+
+            // we don't have to store the following
+//            put("s.data", s.data)     // can be computed via MatrixUtils.createRealDiagonalMatrix(singularValues)
+//            put("ut.data", ut.data)   // can be computed via u.transpose()
+//            put("vt.data", vt.data)   // can be computed via v.transpose()
         }
         oos.writeObject(fieldsMap)
     }
