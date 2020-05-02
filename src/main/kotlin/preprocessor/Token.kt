@@ -4,17 +4,12 @@ data class Token(val tokenType: TokenType, val value: String, val startIndex: In
 
 enum class TokenType {
     // single character
-    EQUAL,
-    LEFT_PAREN,
-    RIGHT_PAREN,
     LEFT_BRACE,
     RIGHT_BRACE,
-    SEMICOLON,
 
     IDENTIFIER,
     COMMENT,
     PP_DIRECTIVE,
-    PP_END,         // marks the end of a directive
 
     // keywords
     AUTO,       DOUBLE, INT,        STRUCT,
@@ -26,5 +21,5 @@ enum class TokenType {
     DEFAULT,    GOTO,   SIZEOF,     VOLATILE,
     DO,         IF,     STATIC,     WHILE,
 
-    EOF
+//    EOF
 }

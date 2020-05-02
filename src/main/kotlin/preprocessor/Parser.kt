@@ -161,8 +161,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                         token = advance()
                         braceCount += handleConditionalCompilation(token, idsAndComments)
                     }
-
-                    if(token.value == "#endif") {
+                    else if(token.value == "#endif") {
                         conditionalsNestCount = Integer.max(0, conditionalsNestCount - 1)
                         if(conditionalsNestCount == 0) {
                             isBraceCountEnabled = true
@@ -250,8 +249,6 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         }
 
         // #endif; done with conditional compiling
-        advance()
-
         return ppConditionalBraceCount
     }
 
