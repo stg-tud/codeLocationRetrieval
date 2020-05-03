@@ -26,6 +26,9 @@ dependencies {
     // Commons Math
     compile("org.apache.commons:commons-math3:3.6.1")
 
+    // JCommander (to parse command line arguments)
+    compile("com.beust:jcommander:1.78")
+
     // MockK
     testImplementation("io.mockk:mockk:1.9.3")
 }

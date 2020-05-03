@@ -31,17 +31,16 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
                 singularValues = get("singularValues") as DoubleArray
-                s   = MatrixUtils.createRealDiagonalMatrix(singularValues)
-
                 u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
                 v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
-                ut  = u.transpose()
-                vt  = v.transpose()
-
                 rank                    = get("rank") as Int
                 norm                    = get("norm") as Double
                 conditionNumber         = get("conditionNumber") as Double
                 inverseConditionNumber  = get("inverseConditionNumber") as Double
+
+                s   = MatrixUtils.createRealDiagonalMatrix(singularValues)
+                ut  = u.transpose()
+                vt  = v.transpose()
             }
         }
         else {
@@ -75,9 +74,9 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
         // Missing: solver, getCovariance()
         val fieldsMap = mutableMapOf<String, Any>()
         fieldsMap.apply {
+            put("singularValues", singularValues)
             put("u.data", u.data)
             put("v.data", v.data)
-            put("singularValues", singularValues)
             put("rank", rank)
             put("norm", norm)
             put("conditionNumber", conditionNumber)
