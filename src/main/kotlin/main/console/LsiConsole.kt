@@ -56,15 +56,15 @@ class LsiConsole : ConsoleApplication() {
                     print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
                 }
 
-                // dimensionality reduction k in [1, S.rowDim]
+                // dimensionality reduction k in [1, rank]
                 do {
-                    print("\nType in a value for k [1, ${lsiModel.svd.s.rowDimension}]: ")
+                    print("\nType in a value for k [1, ${lsiModel.svd.rank}]: ")
                     while(!scanner.hasNextInt()) {
-                        print("Type in a value for k [1, ${lsiModel.svd.s.rowDimension }]: ")
+                        print("Type in a value for k [1, ${lsiModel.svd.rank}]: ")
                         scanner.next()
                     }
                     k = scanner.nextInt()
-                } while(!(1 <= k && k <= lsiModel.svd.s.rowDimension))
+                } while(!(1 <= k && k <= lsiModel.svd.rank))
             }
 
             val query = Query(querySb.toString(), tdm)
