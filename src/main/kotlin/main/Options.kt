@@ -9,6 +9,10 @@ import java.io.File
 @Parameters(separators="=")
 object Options {
 
+    // on change, don't forget to update descriptions (cannot be used in descriptions since compile-time const is required for annotations)
+    val supportedIrModels = listOf("vsm", "lsi")
+    val supportedWeightingStrategies = listOf("binary", "tf", "tf-idf", "log-entropy")
+
     // ==================
     // == Option Names ==
     // ==================
@@ -69,7 +73,7 @@ object Options {
     lateinit var stopList: List<String>
         private set
 
-    @Parameter(names=[OPTION_IR_MODEL], description = DESCRIPTION_IR_MODEL, validateWith = [SupportedIrModel::class])
+    @Parameter(names=[OPTION_IR_MODEL], description = DESCRIPTION_IR_MODEL, validateWith = [SupportedIrModels::class])
     lateinit var irModel: String
         private set
 
