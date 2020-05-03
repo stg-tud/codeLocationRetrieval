@@ -12,6 +12,7 @@ object Options {
     // on change, don't forget to update descriptions (cannot be used in descriptions since compile-time const is required for annotations)
     val supportedIrModels = listOf("vsm", "lsi")
     val supportedWeightingStrategies = listOf("binary", "tf", "tf-idf", "log-entropy")
+    val supportedScoreFunctions = listOf("dot", "cosine")
 
     // ==================
     // == Option Names ==
@@ -23,6 +24,7 @@ object Options {
     private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
     private const val OPTION_STOP_LIST          = "--stop-list"
     private const val OPTION_IR_MODEL           = "--ir-model"
+    private const val OPTION_SCORE_FUNCTION     = "--score-function"
 
     // =========================
     // == Option Descriptions ==
@@ -47,6 +49,8 @@ object Options {
     private const val DESCRIPTION_IR_MODEL = "The model to use to retrieve information. Can be " +
             "'lsi' (default) or 'vsm'. Any other input will default to 'lsi'."
 
+    private const val DESCRIPTION_SCORE_FUNCTION = "The score function to be used to compute similarity between " +
+            "two vectors. Currently supported score functions: 'dot', 'cosine' (default)."
 
     // ===================
     // == Option Values ==
@@ -71,6 +75,10 @@ object Options {
 
     @Parameter(names = [OPTION_IR_MODEL], description = DESCRIPTION_IR_MODEL, validateWith = [SupportedIrModels::class])
     lateinit var irModel: String
+        private set
+
+    @Parameter(names = [OPTION_SCORE_FUNCTION], description = DESCRIPTION_SCORE_FUNCTION, validateWith = [SupportedScoringFunctions::class])
+    lateinit var scoreFunctionName: String
         private set
 
     // TODO: a bit dangerous, because could be paired with incompatible weighting strategy
@@ -220,6 +228,7 @@ object Options {
         stopList = defaultStopList
         svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}_$defaultStopListText"
         irModel = "lsi"
+        scoreFunctionName = "cosine"
     }
 
     private fun checkSvdFilename() {

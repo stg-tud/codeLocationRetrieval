@@ -30,6 +30,15 @@ class SupportedWeightingStrategies : IParameterValidator {
     }
 }
 
+class SupportedScoringFunctions : IParameterValidator {
+    override fun validate(parameterName: String?, scoreFunction: String?) {
+        if(!Options.supportedScoreFunctions.contains(scoreFunction)) {
+            throw ParameterException("The passed in score function \'$scoreFunction\' is not supported. The list " +
+                    "of currently supported score functions is ${Options.supportedScoreFunctions}")
+        }
+    }
+}
+
 /**
  * Creates the appropriate [TermWeightingStrategy] object given the command line argument for the term weighting strategy.
  */

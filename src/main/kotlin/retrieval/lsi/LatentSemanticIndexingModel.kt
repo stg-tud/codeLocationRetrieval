@@ -29,7 +29,7 @@ class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
         val reducedQueryVector = uk.multiply(MatrixUtils.inverse(sk)).preMultiply(queryVector)
 
         // 5. compute similarity scores
-        val scorer = SimilarityScorer()
+        val scorer = SimilarityScorer(Options.scoreFunctionName)
         val listOfRetrievalResults = ArrayList<RetrievalResult>()
         for(i in 0..(vtk.columnDimension - 1)) {
             val docIVector = vtk.getColumnVector(i)

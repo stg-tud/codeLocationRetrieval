@@ -1,5 +1,6 @@
 package retrieval.vsm
 
+import main.Options
 import org.apache.commons.math3.linear.MatrixUtils
 import retrieval.Query
 import retrieval.RetrievalResult
@@ -21,7 +22,7 @@ class VectorSpaceModel(private val tdm: TermDocumentMatrix) {
         }
 
         // compute similarity scores
-        val scorer = SimilarityScorer()
+        val scorer = SimilarityScorer(Options.scoreFunctionName)
         val listOfRetrievalResults = ArrayList<RetrievalResult>()
         for(i in 0..(tdmAsRealMatrix.columnDimension - 1)) {
             val docIVector = tdmAsRealMatrix.getColumnVector(i)
