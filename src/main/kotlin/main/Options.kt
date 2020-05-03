@@ -256,6 +256,7 @@ object Options {
         }
         println("\tRoot directory:          $inputRootDirectory")
         println("\tStop-list:               ${stopList.subList(0, Integer.min(stopList.size, 7))} ...")
+        println("\tSimilarity function:     $scoreFunctionName")
     }
 
     private fun createOutputDirectoriesAndFiles() {
