@@ -1,4 +1,4 @@
---root-directory=inputBig/grbl
+--root-directory=input/grbl
 --ir-model=lsi
 --weighting-strategy=log-entropy
 --score-function=cosine

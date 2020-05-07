@@ -1,4 +1,4 @@
---root-directory=inputBig/ncsa-mosaic-master
+--root-directory=input/ncsa-mosaic-master
 --ir-model=lsi
 --weighting-strategy=log-entropy
 --score-function=cosine
