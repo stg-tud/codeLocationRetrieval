@@ -21,14 +21,10 @@ class Query(input: String, private val tdm: TermDocumentMatrix) {
             val termIdx = tdm.terms.indexOf(queryTerm)
             if(termIdx != -1) {
                 // query term is contained in the TDM
-                println("Setting query[$termIdx] (\"$queryTerm\") to ${queryVector.getEntry(termIdx) + 1}")
                 queryVector.setEntry(termIdx, queryVector.getEntry(termIdx) + 1)
 
                 // also store it in the indexedTerm set
                 indexedTerms.add(queryTerm)
-            }
-            else {
-                println("The term $queryTerm does not exist in the index")
             }
         }
     }

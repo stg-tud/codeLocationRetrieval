@@ -42,20 +42,11 @@ class LsiConsole : ConsoleApplication() {
                         break
                     }
                 }
-                println("User query is: $querySb")
+                println("User query: $querySb")
+                println("Indexed query terms: ${Query(querySb.toString(), tdm).indexedTerms}")
             }
 
             if(isNewK) {
-                // print the singular values
-                val singularValues = lsiModel.svd.singularValues
-                for(i in singularValues.indices) {
-                    if(i > 0 && (i % 5 == 0)) {
-                        println()
-                    }
-
-                    print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
-                }
-
                 // dimensionality reduction k in [1, rank]
                 do {
                     print("\nType in a value for k [1, ${lsiModel.svd.rank}]: ")
@@ -77,34 +68,53 @@ class LsiConsole : ConsoleApplication() {
 
             println("Show more results? [y/n]")
             var next = scanner.next()
-            while(next == "y" || next == "Y") {
-                startIdx += Integer.min(20, results.size - startIdx)
-                results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                    printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
-                }
+            yesorno@while(true) {
+                when(next) {
+                    "n", "N" -> break@yesorno
+                    "y", "Y" -> {
+                        startIdx += Integer.min(20, results.size - startIdx)
+                        results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
+                            printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
+                        }
 
-                if(startIdx == results.size) {
-                    println("All retrieved.")
-                    break
-                }
+                        if(startIdx == results.size) {
+                            println("All retrieved.")
+                            break@yesorno
+                        }
 
-                println("Show more results? [y/n] $startIdx")
-                next = scanner.next()
+                        println("Show more results? [y/n]")
+                        next = scanner.next()
+                    }
+                    else -> {
+                        println("Show more results? [y/n]")
+                        next = scanner.next()
+                    }
+                }
             }
 
 
-            println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
-            val input = scanner.next()
-            when(input) {
-                "q", "Q" -> {
-                    isNewQuery = true
-                    isNewK = true
+            println("\n\nType Q for a new query, or type K for the same query but another approximation. " +
+                    "Type 'exit' or 'stop' to stop the program: ")
+            var input = scanner.next()
+            qork@while(true) {
+                when(input) {
+                    "q", "Q" -> {
+                        isNewQuery = true
+                        isNewK = true
+                        break@qork
+                    }
+                    "k", "K" -> {
+                        isNewQuery = false
+                        isNewK = true
+                        break@qork
+                    }
+                    "exit", "stop" -> return // finish main loop
+                    else -> {
+                        println("\n\nType Q for a new query, or type K for the same query but another approximation. " +
+                                "Type 'exit' or 'stop' to stop the program: ")
+                        input = scanner.next()
+                    }
                 }
-                "k", "K" -> {
-                    isNewQuery = false
-                    isNewK = true
-                }
-                else -> return // finish main loop
             }
         }
     }

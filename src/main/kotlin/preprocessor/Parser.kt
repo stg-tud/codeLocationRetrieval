@@ -264,7 +264,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
 
             if(type == RIGHT_BRACE) {
                 if(idsAndComments.isNotEmpty()) {
-                    println("Contains Ids/Comments after last block: ${sourceFile.name}")
+//                    println("Contains Ids/Comments after last block: ${sourceFile.name}")
                     val startIndex = tokens[i + 1].startIndex
 
                     // update the last block to include everything that follows till the end of file

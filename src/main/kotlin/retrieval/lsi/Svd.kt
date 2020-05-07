@@ -22,6 +22,8 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
     val inverseConditionNumber: Double
 
     init {
+        /*
+            No store/load
         @Suppress("UNCHECKED_CAST")
         if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
@@ -63,6 +65,23 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
             // store the computed decomposition
             storeValues()
         }
+        */
+
+        println("=== COMPUTING SVD ===")
+//        println("Writing SVD to: ${storedSvdFile.path}")
+
+        val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
+
+        u = svd.u
+        s = svd.s
+        v = svd.v
+        ut = svd.ut
+        vt = svd.vt
+        singularValues = svd.singularValues
+        rank = svd.rank
+        norm = svd.norm
+        conditionNumber = svd.conditionNumber
+        inverseConditionNumber = svd.inverseConditionNumber
     }
 
     private fun isDataStored() = Options.outputDecompositionsDir.listFiles()?.contains(storedSvdFile) ?: false
