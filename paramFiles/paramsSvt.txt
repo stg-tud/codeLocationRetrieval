@@ -1,0 +1,5 @@
+--root-directory=inputBig/svt-av1-master
+--ir-model=lsi
+--weighting-strategy=log-entropy
+--score-function=cosine
+

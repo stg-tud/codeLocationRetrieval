@@ -1,0 +1,5 @@
+--root-directory=inputBig/mpv-master
+--ir-model=lsi
+--weighting-strategy=log-entropy
+--score-function=cosine
+

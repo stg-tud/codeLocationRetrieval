@@ -1,0 +1,4 @@
+--ir-model=vsm
+--score-function=dot
+--weighting-strategy=binary
+--root-directory=inputBig/grbl

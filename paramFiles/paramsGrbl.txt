@@ -1,0 +1,5 @@
+--root-directory=inputBig/grbl
+--ir-model=lsi
+--weighting-strategy=log-entropy
+--score-function=cosine
+
