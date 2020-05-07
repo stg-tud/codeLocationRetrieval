@@ -5,9 +5,17 @@ import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import termdocmatrix.weighting.*
 import java.io.File
+import java.io.PrintWriter
 
 @Parameters(separators = "=")
 object Options {
+
+    // for Patrick
+    lateinit var printOutputFile: File
+        private set
+
+    lateinit var printOutputWriter: PrintWriter
+        private set
 
     // on change, don't forget to update descriptions (cannot be used in descriptions since compile-time const is required for annotations)
     val supportedIrModels = listOf("vsm", "lsi")
@@ -280,5 +288,12 @@ object Options {
         outputTermsFile = File("$outputRootDirPath/terms.txt")
 
         outputSvdFile = File("${outputDecompositionsDir.path}/$svdFilename.ser")
+
+        val printDir = File("prints")
+        if(!printDir.exists()) {
+            printDir.mkdirs()
+        }
+        printOutputFile = File("${printDir.path}/print_${inputRootDirectory.name}.txt")
+        printOutputWriter = printOutputFile.printWriter()
     }
 }

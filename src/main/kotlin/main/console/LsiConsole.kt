@@ -1,5 +1,6 @@
 package main.console
 
+import main.Options
 import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.util.*
@@ -12,15 +13,22 @@ class LsiConsole : ConsoleApplication() {
         val startTime = System.currentTimeMillis()
         val lsiModel = LatentSemanticIndexingModel(tdm)
         println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
+        Options.printOutputWriter.println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
 
         println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")
         println("dim(S): ${lsiModel.svd.s.rowDimension} x ${lsiModel.svd.s.columnDimension}")
         println("dim(VT): ${lsiModel.svd.vt.rowDimension} x ${lsiModel.svd.vt.columnDimension}")
+        Options.printOutputWriter.println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")
+        Options.printOutputWriter.println("dim(S): ${lsiModel.svd.s.rowDimension} x ${lsiModel.svd.s.columnDimension}")
+        Options.printOutputWriter.println("dim(VT): ${lsiModel.svd.vt.rowDimension} x ${lsiModel.svd.vt.columnDimension}")
 
         println("max singular value = ${lsiModel.svd.singularValues.first()}")
         println("min singular value = ${lsiModel.svd.singularValues.last()}")
         println("rank = ${lsiModel.svd.rank},\tnorm = ${lsiModel.svd.norm},\tcn = ${lsiModel.svd.conditionNumber}," +
                 "\ticn = ${lsiModel.svd.inverseConditionNumber}")
+        Options.printOutputWriter.println("rank = ${lsiModel.svd.rank}")
+        Options.printOutputWriter.close()
+
 
         val scanner = Scanner(System.`in`)
         val querySb = StringBuilder()

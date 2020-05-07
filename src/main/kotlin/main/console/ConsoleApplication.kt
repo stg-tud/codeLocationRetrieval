@@ -61,6 +61,7 @@ abstract class ConsoleApplication {
 
         val end = System.currentTimeMillis()
         println("Time to create the corpus: ${(end - start) / 1000f}s")
+        Options.printOutputWriter.println("Time to create the corpus: ${(end - start) / 1000f}s")
     }
 
     /*
@@ -78,10 +79,13 @@ abstract class ConsoleApplication {
         val matrix = TermDocumentMatrix(terms, documents)
         println("Number of terms = ${matrix.numOfTerms}")
         println("Number of documents = ${matrix.numOfDocs}")
+        Options.printOutputWriter.println("Number of terms = ${matrix.numOfTerms}")
+        Options.printOutputWriter.println("Number of documents = ${matrix.numOfDocs}")
         val tdm = Options.termWeightingStrategy.weightEntries(matrix)
 
         // time in seconds
         println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
+        Options.printOutputWriter.println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
 
         return tdm
     }

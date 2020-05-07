@@ -68,6 +68,9 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
         */
 
         println("=== COMPUTING SVD ===")
+//        Options.printOutputFile.writeText("=== COMPUTING SVD ===\n")
+        Options.printOutputWriter.println("=== COMPUTING SVD ===")
+
 //        println("Writing SVD to: ${storedSvdFile.path}")
 
         val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))

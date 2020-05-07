@@ -1,5 +1,6 @@
 package preprocessor
 
+import main.Options
 import preprocessor.TokenType.*
 import java.io.File
 
@@ -37,6 +38,7 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
                 // TODO: some kind of synchronization/error-recovery would be nice ...
                 // (For now: include everything starting from where the error occurred)
                 println("${e.javaClass.simpleName}: Parse error for ${sourceFile.path}")
+                Options.printOutputWriter.println("${e.javaClass.simpleName}: Parse error for ${sourceFile.path}")
 
                 val idsAndComments = mutableListOf<Token>()
                 val startPos = tokens[startIndexInCaseOfFailure].startIndex
