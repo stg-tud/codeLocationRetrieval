@@ -1,5 +1,6 @@
 import main.Options
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import termdocmatrix.weighting.LocalBinaryWeighting
@@ -13,6 +14,7 @@ import termdocmatrix.weighting.TfIdfWeighting
 //
 // For now leave it. But maybe consider a different approach (i.e. do not make Options a singleton)
 // Read: http://blog.davidehringer.com/testing/test-driven-development/unit-testing-singletons/
+@Disabled("(Immutable) Singleton hard to test. Delete this test.")
 class OptionsTest {
 
     @Test

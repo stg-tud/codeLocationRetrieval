@@ -9,6 +9,9 @@ import java.io.File
 @Parameters(separators = "=")
 object Options {
 
+    // write-once to ensure immutability
+    private var hasBeenWrittenTo = false
+
     // on change, don't forget to update descriptions (cannot be used in descriptions since compile-time const is required for annotations)
     val supportedIrModels = listOf("vsm", "lsi")
     val supportedWeightingStrategies = listOf("binary", "tf", "tf-idf", "log-entropy")
@@ -33,39 +36,38 @@ object Options {
     private const val DESCRIPTION_HELP_MESSAGE = "Shows possible options. Program execution will stop after help message is shown."
 
     private const val DESCRIPTION_WEIGHTING_STRATEGY = "Specifies how to weight the entries of " +
-            "the term-document matrix. Values are 'binary', 'tf', 'tf-idf', 'log-entropy' (default)."
+            "the term-document matrix. Values are 'binary', 'tf', 'tf-idf', 'log-entropy'."
 
     private const val DESCRIPTION_SVD_FILENAME = "The SVD will be stored as a *.ser file " +
             "with the provided file name. By default, the file name will mirror the options in order to make it " +
             "identifiable. If the file already exists, it will be used to load the SVD from the *.ser file."
 
     private const val DESCRIPTION_ROOT_DIRECTORY = "The root directory where the C project is located at. " +
-            "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl')."
+            "Can be an absolute path or a relative one."
 
-    private const val DESCRIPTION_STOP_LIST = "The stop-list to apply. The file should contain one " +
-            "stop word per line. Pass 'empty' as an argument to not use a stop-list. By default, " +
-            "a stop-list equal to the content of 'stoplists/defaultStopList.txt' is used."
+    private const val DESCRIPTION_STOP_LIST = "The stop-list to apply. " +
+            "Pass 'empty' as an argument to not use a stop-list."
 
-    private const val DESCRIPTION_IR_MODEL = "The model to use to retrieve information. Can be " +
-            "'lsi' (default) or 'vsm'. Any other input will default to 'lsi'."
+    private const val DESCRIPTION_IR_MODEL = "The model to use to retrieve information. Currently supported models:  " +
+            "'lsi', 'vsm'."
 
     private const val DESCRIPTION_SCORE_FUNCTION = "The score function to be used to compute similarity between " +
-            "two vectors. Currently supported score functions: 'dot', 'cosine' (default)."
+            "two vectors. Currently supported score functions: 'dot', 'cosine'."
 
     // ===================
     // == Option Values ==
     // ===================
 
     @Parameter(names = [OPTION_HELP_MESSAGE], description = DESCRIPTION_HELP_MESSAGE, help = true)
-    var isHelp = false
+    private var isHelp = false
 
     @Parameter(names=[OPTION_WEIGHTING_STRATEGY], description = DESCRIPTION_WEIGHTING_STRATEGY,
                 converter = TermWeightingConverter::class, validateWith = [SupportedWeightingStrategies::class])
     lateinit var termWeightingStrategy: TermWeightingStrategy
         private set
 
-    // TODO: make required?
-    @Parameter(names = [OPTION_ROOT_DIRECTORY], description = DESCRIPTION_ROOT_DIRECTORY, converter = FileConverter::class)
+    @Parameter(names = [OPTION_ROOT_DIRECTORY], description = DESCRIPTION_ROOT_DIRECTORY, converter = FileConverter::class,
+                required = true)
     lateinit var inputRootDirectory: File
         private set
 
@@ -81,12 +83,11 @@ object Options {
     lateinit var scoreFunctionName: String
         private set
 
-    // TODO: a bit dangerous, because could be paired with incompatible weighting strategy
-    // TODO: is there a better way to check whether a custom SVD filename has been provided or not?
+    /** If user does not provide a custom name for the SVD file, then this parameter will not be initialized.
+        In that case a default name will be constructed for [svdFilename]. */
     @Parameter(names = [OPTION_SVD_FILENAME], description = DESCRIPTION_SVD_FILENAME)
     private lateinit var customSvdFilename: String
 
-    // TODO: see [customSvdFilename]
     lateinit var svdFilename: String
         private set
 
@@ -197,6 +198,11 @@ object Options {
     }
 
     fun parse(args: Array<String>) {
+        if(hasBeenWrittenTo) {
+            throw RuntimeException("Attempt to parse options more than once. Options is write-once, read-only.")
+        }
+        hasBeenWrittenTo = true
+
         if(args.isEmpty() || args[0].isEmpty()) {
             // Use the defaults
             createOutputDirectoriesAndFiles()
@@ -224,7 +230,6 @@ object Options {
 
     private fun setDefaultOptions() {
         termWeightingStrategy = LogEntropyWeighting()
-        inputRootDirectory = File("inputBig/grbl")
         stopList = defaultStopList
         svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}_$defaultStopListText"
         irModel = "lsi"
