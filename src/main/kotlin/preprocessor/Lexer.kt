@@ -155,7 +155,7 @@ class Lexer(private val input: String) {
 
         // process #includes' here (easy way of getting past "..." or <...>)
         if(lexeme.toString() == "#include") {
-            while(peek() != '\n') {
+            while(!isAtEnd() && peek() != '\n') {
                 advance()
             }
         }
