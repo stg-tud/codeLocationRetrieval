@@ -2,7 +2,7 @@ package main.console
 
 import main.Options
 import preprocessor.Document
-import preprocessor.getTermsAndDocuments
+import preprocessor.Preprocessor
 import retrieval.Location
 import retrieval.Query
 import retrieval.RetrievalResult
@@ -24,7 +24,8 @@ abstract class ConsoleApplication {
     private fun processInput() {
         val start = System.currentTimeMillis()
 
-        val (terms, documents) = getTermsAndDocuments(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
+        val (terms, documents) = Preprocessor().getTermsAndDocuments(
+            inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
 
         if(documents.isEmpty()) {
             println("No C files were found. Please choose a directory that contains C files.")
