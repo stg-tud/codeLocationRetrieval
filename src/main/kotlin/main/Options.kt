@@ -210,7 +210,7 @@ object Options {
             return
         }
 
-        val argsAsArray = args[0].split("""\s+""".toRegex()).toTypedArray()
+        val argsAsArray = args[0].trim().split("""\s+""".toRegex()).toTypedArray()
         val commander = JCommander.newBuilder()
             .programName("Feature Location")
             .addObject(this)
