@@ -3,6 +3,7 @@ package main.console
 import main.Options
 import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
+import termdocmatrix.TermDocumentMatrix
 import java.util.*
 
 class LsiConsole : ConsoleApplication() {
@@ -27,95 +28,98 @@ class LsiConsole : ConsoleApplication() {
         if(Options.isSvdOnly) {
             val out = String.format("[Corpus: %10d, TDM: %10d, SVD: %10d]",
                 Options.corpusTimeInS, Options.tdmTimeInS, Options.svdTimeInS)
-            Options.printWriter.println(out)
-            Options.printWriter.close()
+            Options.printWriterSvd.println(out)
+            Options.printWriterSvd.close()
             System.exit(0)
         }
 
-        val scanner = Scanner(System.`in`)
-        val querySb = StringBuilder()
-        var k: Int = -1
+        // else query time
+        queryLoop(lsiModel, tdm)
+    }
 
-        // true on first iteration !
-        var isNewK = true
-        var isNewQuery = true
+    private fun queryLoop(lsiModel: LatentSemanticIndexingModel, tdm: TermDocumentMatrix) {
+        val queryTerms = mutableListOf<String>()
 
-        while(true) {
-            if(isNewQuery) {
-                // read in user query
-                querySb.setLength(0)
-                print("Type in query: ")
-                while(scanner.hasNextLine()) {
-                    val line = scanner.nextLine()
-                    querySb.append(line)
-                    if(querySb.isNotBlank()) {
-                        break
-                    }
-                }
-                println("User query is: $querySb")
+        // different queries for different projects
+        var queryString = ""
+        val dirName = Options.outputRootDir.name
+        when {
+            dirName.contains("grbl") -> {
+                queryString = "axis buffer arc helical bresenham motion linear command line position clock"
+                queryTerms.addAll("axis buffer arc helical bresenham motion linear command line position clock".split(" "))
             }
-
-            if(isNewK) {
-                // print the singular values
-                val singularValues = lsiModel.svd.singularValues
-                for(i in singularValues.indices) {
-                    if(i > 0 && (i % 5 == 0)) {
-                        println()
-                    }
-
-                    print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
-                }
-
-                // dimensionality reduction k in [1, rank]
-                do {
-                    print("\nType in a value for k [1, ${lsiModel.svd.rank}]: ")
-                    while(!scanner.hasNextInt()) {
-                        print("Type in a value for k [1, ${lsiModel.svd.rank}]: ")
-                        scanner.next()
-                    }
-                    k = scanner.nextInt()
-                } while(!(1 <= k && k <= lsiModel.svd.rank))
+            dirName.contains("ncsa") -> {
+                queryString = "font size style small regular large family bold italics medium type"
+                queryTerms.addAll("font size style small regular large family bold italics medium type".split(" "))
             }
-
-            val query = Query(querySb.toString(), tdm)
-
-            val results = lsiModel.retrieveDocuments(k, query)
-            var startIdx = 0
-            results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
+            dirName.contains("svt") -> {
+                queryString = "video encoder frame film picture channel display quantizer chroma mode driver"
+                queryTerms.addAll("video encoder frame film picture channel display quantizer chroma mode driver".split(" "))
             }
-
-            println("Show more results? [y/n]")
-            var next = scanner.next()
-            while(next == "y" || next == "Y") {
-                startIdx += Integer.min(20, results.size - startIdx)
-                results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                    printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
-                }
-
-                if(startIdx == results.size) {
-                    println("All retrieved.")
-                    break
-                }
-
-                println("Show more results? [y/n] $startIdx")
-                next = scanner.next()
-            }
-
-
-            println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
-            val input = scanner.next()
-            when(input) {
-                "q", "Q" -> {
-                    isNewQuery = true
-                    isNewK = true
-                }
-                "k", "K" -> {
-                    isNewQuery = false
-                    isNewK = true
-                }
-                else -> return // finish main loop
+            dirName.contains("obs") -> {
+                queryString = "stream record lzma signal video graphics capture color converter audio encoder"
+                queryTerms.addAll("stream record lzma signal video graphics capture color converter audio encoder".split(" "))
             }
         }
+
+        println("Query terms: $queryTerms")
+
+        // k values
+        val rank = lsiModel.svd.rank
+        val percentiles = listOf<Long>(
+            1L,
+            Math.round(rank * 0.1),
+            Math.round(rank * 0.2),
+            Math.round(rank * 0.3),
+            Math.round(rank * 0.4),
+            Math.round(rank * 0.5),
+            Math.round(rank * 0.6),
+            Math.round(rank * 0.7),
+            Math.round(rank * 0.8),
+            Math.round(rank * 0.9),
+            rank.toLong())
+        println(percentiles)
+
+        var start: Long
+        var end: Long
+        val timeResults = mutableListOf<Long>()
+        for(k in percentiles) {
+            start = System.currentTimeMillis()
+            val query = Query(queryString, tdm)
+            val results = lsiModel.retrieveDocuments(k.toInt(), query)
+            results.subList(0, 20).forEachIndexed { index, result ->
+                println("${index + 1}.\t$result")
+            }
+            end = System.currentTimeMillis()
+            timeResults.add((end - start) / 1000)
+        }
+
+        // write time results
+        val out = String.format("SVD: %10d, " +
+                "k=${percentiles[0]}: %10d, " +
+                "k=${percentiles[1]}: %10d, " +
+                "k=${percentiles[2]}: %10d, " +
+                "k=${percentiles[3]}: %10d, " +
+                "k=${percentiles[4]}: %10d, " +
+                "k=${percentiles[5]}: %10d, " +
+                "k=${percentiles[6]}: %10d, " +
+                "k=${percentiles[7]}: %10d, " +
+                "k=${percentiles[8]}: %10d, " +
+                "k=${percentiles[9]}: %10d, " +
+                "k=${percentiles[10]}: %10d, ",
+                Options.svdTimeInS,
+                timeResults[0],
+                timeResults[1],
+                timeResults[2],
+                timeResults[3],
+                timeResults[4],
+                timeResults[5],
+                timeResults[6],
+                timeResults[7],
+                timeResults[8],
+                timeResults[9],
+                timeResults[10])
+        Options.printWriterQuery.println(out)
+        Options.printWriterQuery.close()
     }
 }

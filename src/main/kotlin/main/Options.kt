@@ -28,8 +28,11 @@ object Options {
     @Parameter(names = ["--svd-only"], description = "Stops after SVD computation")
     var isSvdOnly = false
 
-    lateinit var printFile: File
-    lateinit var printWriter: PrintWriter
+    lateinit var printFileSvd: File
+    lateinit var printWriterSvd: PrintWriter
+
+    lateinit var printFileQuery: File
+    lateinit var printWriterQuery: PrintWriter
 
     // ==========================================================================================
     // ==========================================================================================
@@ -320,7 +323,10 @@ object Options {
         if(!printDir.exists()) {
             printDir.mkdirs()
         }
-        printFile = File("${printDir.path}/svdTime_${inputRootDirectory.name}.txt")
-        printWriter = PrintWriter(FileOutputStream(printFile, true))
+        printFileSvd = File("${printDir.path}/svdTime_${inputRootDirectory.name}.txt")
+        printWriterSvd = PrintWriter(FileOutputStream(printFileSvd, true))
+
+        printFileQuery = File("${printDir.path}/queryTime_${inputRootDirectory.name}.txt")
+        printWriterQuery = PrintWriter(FileOutputStream(printFileQuery, true))
     }
 }
