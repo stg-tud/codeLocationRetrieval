@@ -5,9 +5,38 @@ import com.beust.jcommander.Parameter
 import com.beust.jcommander.Parameters
 import termdocmatrix.weighting.*
 import java.io.File
+import java.io.FileOutputStream
+import java.io.PrintWriter
 
 @Parameters(separators = "=")
 object Options {
+
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+
+    // Evaluation stuff
+
+    // Time measurements
+    var corpusTimeInS = 0L
+    var tdmTimeInS = 0L
+    var svdTimeInS = 0L
+
+    @Parameter(names = ["--svd-only"], description = "Stops after SVD computation")
+    var isSvdOnly = false
+
+    lateinit var printFile: File
+    lateinit var printWriter: PrintWriter
+
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
+    // ==========================================================================================
 
     // write-once to ensure immutability
     private var hasBeenWrittenTo = false
@@ -285,5 +314,13 @@ object Options {
         outputTermsFile = File("$outputRootDirPath/terms.txt")
 
         outputSvdFile = File("${outputDecompositionsDir.path}/$svdFilename.ser")
+
+        // EVALUATION
+        val printDir = File("eval_results")
+        if(!printDir.exists()) {
+            printDir.mkdirs()
+        }
+        printFile = File("${printDir.path}/svdTime_${inputRootDirectory.name}.txt")
+        printWriter = PrintWriter(FileOutputStream(printFile, true))
     }
 }

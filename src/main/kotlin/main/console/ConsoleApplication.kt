@@ -61,6 +61,7 @@ abstract class ConsoleApplication {
         }
 
         val end = System.currentTimeMillis()
+        Options.corpusTimeInS = (end - start) / 1000
         println("Time to create the corpus: ${(end - start) / 1000f}s")
     }
 
@@ -82,6 +83,7 @@ abstract class ConsoleApplication {
         val tdm = Options.termWeightingStrategy.weightEntries(matrix)
 
         // time in seconds
+        Options.tdmTimeInS = (System.currentTimeMillis() - startTime) / 1000
         println("Time to create the TDM: ${(System.currentTimeMillis() - startTime) / 1000}s")
 
         return tdm

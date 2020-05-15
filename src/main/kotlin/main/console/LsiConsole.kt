@@ -1,5 +1,6 @@
 package main.console
 
+import main.Options
 import retrieval.Query
 import retrieval.lsi.LatentSemanticIndexingModel
 import java.util.*
@@ -11,6 +12,7 @@ class LsiConsole : ConsoleApplication() {
 
         val startTime = System.currentTimeMillis()
         val lsiModel = LatentSemanticIndexingModel(tdm)
+        Options.svdTimeInS = (System.currentTimeMillis() - startTime) / 1000
         println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
 
         println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")
@@ -21,6 +23,14 @@ class LsiConsole : ConsoleApplication() {
         println("min singular value = ${lsiModel.svd.singularValues.last()}")
         println("rank = ${lsiModel.svd.rank},\tnorm = ${lsiModel.svd.norm},\tcn = ${lsiModel.svd.conditionNumber}," +
                 "\ticn = ${lsiModel.svd.inverseConditionNumber}")
+
+        if(Options.isSvdOnly) {
+            val out = String.format("[Corpus: %10d, TDM: %10d, SVD: %10d]",
+                Options.corpusTimeInS, Options.tdmTimeInS, Options.svdTimeInS)
+            Options.printWriter.println(out)
+            Options.printWriter.close()
+            System.exit(0)
+        }
 
         val scanner = Scanner(System.`in`)
         val querySb = StringBuilder()

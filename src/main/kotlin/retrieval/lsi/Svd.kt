@@ -23,7 +23,20 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
 
     init {
         @Suppress("UNCHECKED_CAST")
-        if(isDataStored()) {
+        if(Options.isSvdOnly) {
+            val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
+            u = svd.u
+            s = svd.s
+            v = svd.v
+            ut = svd.ut
+            vt = svd.vt
+            singularValues = svd.singularValues
+            rank = svd.rank
+            norm = svd.norm
+            conditionNumber = svd.conditionNumber
+            inverseConditionNumber = svd.inverseConditionNumber
+        }
+        else if(isDataStored()) {
             println("=== LOADING STORED SVD ===")
             println("Reading SVD from: ${storedSvdFile.path}")
             val ois = ObjectInputStream(FileInputStream(storedSvdFile.path))
