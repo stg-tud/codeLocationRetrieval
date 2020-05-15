@@ -323,10 +323,14 @@ object Options {
         if(!printDir.exists()) {
             printDir.mkdirs()
         }
-        printFileSvd = File("${printDir.path}/svdTime_${inputRootDirectory.name}.txt")
-        printWriterSvd = PrintWriter(FileOutputStream(printFileSvd, true))
+        if(isSvdOnly) {
+            printFileSvd = File("${printDir.path}/svdTime_${inputRootDirectory.name}.txt")
+            printWriterSvd = PrintWriter(FileOutputStream(printFileSvd, true))
+        }
 
-        printFileQuery = File("${printDir.path}/queryTime_${inputRootDirectory.name}.txt")
-        printWriterQuery = PrintWriter(FileOutputStream(printFileQuery, true))
+        if(!isSvdOnly) {
+            printFileQuery = File("${printDir.path}/queryTime_${inputRootDirectory.name}.txt")
+            printWriterQuery = PrintWriter(FileOutputStream(printFileQuery, true))
+        }
     }
 }

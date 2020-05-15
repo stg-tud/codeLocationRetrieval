@@ -1,5 +1,6 @@
---root-directory=input/grbl
+--root-directory=input/obs-studio-master
 --ir-model=lsi
 --weighting-strategy=log-entropy
 --score-function=cosine
 --stop-list=empty
+--svd-only
