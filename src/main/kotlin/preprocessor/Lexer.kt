@@ -10,6 +10,9 @@ class Lexer(private val input: String) {
     private var startIndex = 0      // points at the beginning of the lexeme of the current token
     private var currentIndex = 0    // points at the character that is to be consumed next
 
+    private val directives = listOf("#include", "#define", "#undef", "#line", "#error", "#pragma",
+        "#if", "#ifdef", "#ifndef", "#elif", "#else", "#endif") // left out the null directive
+
     // map keywords to token types
     private val keywords: Map<String, TokenType?>
 
@@ -148,8 +151,8 @@ class Lexer(private val input: String) {
             advance()
         }
 
-        // the preprocessor directive (include, define, if, etc.)
-        while(!isAtEnd() && !peek().isWhitespace()) {
+        // the (potential) preprocessor directive (include, define, if, etc.)
+        while(!isAtEnd() && peek().isLetter()) {
             lexeme.append(advance())
         }
 
@@ -158,6 +161,14 @@ class Lexer(private val input: String) {
             while(!isAtEnd() && peek() != '\n') {
                 advance()
             }
+        }
+
+        // make sure it is a directive
+        if(!directives.contains(lexeme.toString())) {
+            // e.g. #define DEF_FN(name)            {FN_OFFS(name), "gl" # name}
+            // #name is not a directive, but an identifier
+            tokens.add(Token(IDENTIFIER, lexeme.substring(1), startIndex))
+            return
         }
 
         tokens.add(Token(PP_DIRECTIVE, lexeme.toString(), startIndex))
