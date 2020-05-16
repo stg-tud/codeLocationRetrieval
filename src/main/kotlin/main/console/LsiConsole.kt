@@ -1,7 +1,7 @@
 package main.console
 
 import retrieval.Query
-import retrieval.lsi.LatentSemanticIndexingModel
+import retrieval.lsi.LsiModel
 import java.util.*
 
 class LsiConsole : ConsoleApplication() {
@@ -10,7 +10,7 @@ class LsiConsole : ConsoleApplication() {
         val tdm = createTdm()
 
         val startTime = System.currentTimeMillis()
-        val lsiModel = LatentSemanticIndexingModel(tdm)
+        val lsiModel = LsiModel(tdm)
         println("Time(SVD): ${(System.currentTimeMillis() - startTime) / 1000}s")
 
         println("dim(U): ${lsiModel.svd.u.rowDimension} x ${lsiModel.svd.u.columnDimension}")

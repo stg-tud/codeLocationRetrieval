@@ -9,7 +9,7 @@ import retrieval.RetrievalResult
 import retrieval.SimilarityScorer
 import java.util.*
 
-class LatentSemanticIndexingModel(private val tdm: TermDocumentMatrix) {
+class LsiModel(private val tdm: TermDocumentMatrix) {
     // 1. compute SVD
     val svd = Svd(tdm, Options.outputSvdFile)
 
