@@ -44,7 +44,6 @@ fun getTermsAndDocuments(inputRootDir: File, stopList: List<String> = emptyList(
     }
 
     val filteredSet = termSet.filter { !stopList.contains(it.key) }.map { Term(it.key, it.value) }.toSet()
-    val sorted = filteredSet.stream().sorted { term, term2 -> term.term.compareTo(term2.term) }.toList()
     return Pair(filteredSet, documents)
 }
 
@@ -67,7 +66,7 @@ fun extractTerms(tokens: List<Token>): List<Term> {
     for (token in tokens) {
         when (token.tokenType) {
             IDENTIFIER -> {
-                addTerm(token.value.toLowerCase(), token.location)
+                addTerm(token.value.toLowerCase(), token.location.withMeta(TokenMetaType.Kind,Kind.Identifier))
                 val modifiedTerm = getModifiedIdentifier(token.value)
                 modifiedTerm?.split(" ")?.forEach { t ->
                     addTerm(t, token.location.withMeta(TokenMetaType.Kind, Kind.Identifier))

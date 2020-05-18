@@ -1,9 +1,18 @@
 package main
 
+import com.beust.jcommander.JCommander
+import com.beust.jcommander.Parameter
+import com.beust.jcommander.Parameters
 import termdocmatrix.weighting.*
 import java.io.File
 
+@Parameters(separators = "=")
 object Options {
+
+    // on change, don't forget to update descriptions (cannot be used in descriptions since compile-time const is required for annotations)
+    val supportedIrModels = listOf("vsm", "lsi")
+    val supportedWeightingStrategies = listOf("binary", "tf", "tf-idf", "log-entropy")
+    val supportedScoreFunctions = listOf("dot", "cosine")
 
     // ==================
     // == Option Names ==
@@ -15,25 +24,70 @@ object Options {
     private const val OPTION_ROOT_DIRECTORY     = "--root-directory"
     private const val OPTION_STOP_LIST          = "--stop-list"
     private const val OPTION_IR_MODEL           = "--ir-model"
+    private const val OPTION_SCORE_FUNCTION     = "--score-function"
+
+    // =========================
+    // == Option Descriptions ==
+    // =========================
+
+    private const val DESCRIPTION_HELP_MESSAGE = "Shows possible options. Program execution will stop after help message is shown."
+
+    private const val DESCRIPTION_WEIGHTING_STRATEGY = "Specifies how to weight the entries of " +
+            "the term-document matrix. Values are 'binary', 'tf', 'tf-idf', 'log-entropy' (default)."
+
+    private const val DESCRIPTION_SVD_FILENAME = "The SVD will be stored as a *.ser file " +
+            "with the provided file name. By default, the file name will mirror the options in order to make it " +
+            "identifiable. If the file already exists, it will be used to load the SVD from the *.ser file."
+
+    private const val DESCRIPTION_ROOT_DIRECTORY = "The root directory where the C project is located at. " +
+            "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl')."
+
+    private const val DESCRIPTION_STOP_LIST = "The stop-list to apply. The file should contain one " +
+            "stop word per line. Pass 'empty' as an argument to not use a stop-list. By default, " +
+            "a stop-list equal to the content of 'stoplists/defaultStopList.txt' is used."
+
+    private const val DESCRIPTION_IR_MODEL = "The model to use to retrieve information. Can be " +
+            "'lsi' (default) or 'vsm'. Any other input will default to 'lsi'."
+
+    private const val DESCRIPTION_SCORE_FUNCTION = "The score function to be used to compute similarity between " +
+            "two vectors. Currently supported score functions: 'dot', 'cosine' (default)."
 
     // ===================
     // == Option Values ==
     // ===================
 
+    @Parameter(names = [OPTION_HELP_MESSAGE], description = DESCRIPTION_HELP_MESSAGE, help = true)
+    var isHelp = false
+
+    @Parameter(names=[OPTION_WEIGHTING_STRATEGY], description = DESCRIPTION_WEIGHTING_STRATEGY,
+                converter = TermWeightingConverter::class, validateWith = [SupportedWeightingStrategies::class])
     lateinit var termWeightingStrategy: TermWeightingStrategy
         private set
 
-    // TODO: a bit dangerous, because could be paired with incompatible weighting strategy
-    lateinit var svdFilename: String
-        private set
-
+    // TODO: make required?
+    @Parameter(names = [OPTION_ROOT_DIRECTORY], description = DESCRIPTION_ROOT_DIRECTORY, converter = FileConverter::class)
     lateinit var inputRootDirectory: File
         private set
 
+    @Parameter(names = [OPTION_STOP_LIST], description = DESCRIPTION_STOP_LIST, listConverter = StopListConverter::class)
     lateinit var stopList: List<String>
         private set
 
+    @Parameter(names = [OPTION_IR_MODEL], description = DESCRIPTION_IR_MODEL, validateWith = [SupportedIrModels::class])
     lateinit var irModel: String
+        private set
+
+    @Parameter(names = [OPTION_SCORE_FUNCTION], description = DESCRIPTION_SCORE_FUNCTION, validateWith = [SupportedScoringFunctions::class])
+    lateinit var scoreFunctionName: String
+        private set
+
+    // TODO: a bit dangerous, because could be paired with incompatible weighting strategy
+    // TODO: is there a better way to check whether a custom SVD filename has been provided or not?
+    @Parameter(names = [OPTION_SVD_FILENAME], description = DESCRIPTION_SVD_FILENAME)
+    private lateinit var customSvdFilename: String
+
+    // TODO: see [customSvdFilename]
+    lateinit var svdFilename: String
         private set
 
     // ==================================
@@ -132,6 +186,7 @@ object Options {
 
     private const val defaultStopListText = "defaultStopList"
     private const val emptyStopListText = "noStopList"
+    private const val customStopListText = "customStopList"
 
     // =============
     // == Methods ==
@@ -149,55 +204,21 @@ object Options {
             return
         }
 
-        // split the arguments at blanks
-//        val myArgs = args[0].split("""\s+""".toRegex())
-        args.forEach {
-            var option = it
-            var optionValue = ""
 
-            if(option.contains("=")) {
-                val split = option.split("=".toRegex())
-                option = split[0]       // e.g. "--weighting-strategy"
-                optionValue = split[1]  // e.g. "tf-idf"
-            }
+        val argsAsArray = args[0].split("""\s+""".toRegex()).toTypedArray()
+        val commander = JCommander.newBuilder()
+            .programName("Feature Location")
+            .addObject(this)
+            .build()
 
-            when(option) {
-                OPTION_HELP_MESSAGE -> {
-                    printHelpMessage()
-                    System.exit(0)
-                }
-                OPTION_WEIGHTING_STRATEGY -> {
-                    termWeightingStrategy = weightingStrategy(optionValue)
-                }
-                OPTION_SVD_FILENAME -> {
-                    // TODO: make sure it's a valid file name
-                    svdFilename = optionValue
-                }
-                OPTION_ROOT_DIRECTORY -> {
-                    // TODO: make sure optionValue contains a valid path
-                    inputRootDirectory = File(optionValue)
-                }
-                OPTION_STOP_LIST -> {
-                    if(optionValue == "empty") {
-                        stopList = emptyList()
-                        svdFilename = svdFilename.replace(defaultStopListText, emptyStopListText)
-                    }
-                    else {
-                        stopList = File(optionValue).readLines()
-                        svdFilename = svdFilename.replace(defaultStopListText, File(optionValue).nameWithoutExtension)
-                    }
-                }
-                OPTION_IR_MODEL -> {
-                    irModel = optionValue
-                    if(optionValue != "vsm") {
-                        // TODO: for now a cheap solution to handle invalid input
-                        irModel = "lsi"
-                    }
-                }
-                else -> println("Some unknown option: $option, $optionValue")
-            }
+        commander.parse(*argsAsArray)    // expects vararg, so use Kotlin's spread operator (*) on Array<String>
+
+        if(isHelp) {
+            commander.usage()
+            System.exit(0)
         }
 
+        checkSvdFilename()
         createOutputDirectoriesAndFiles()
         printOptionsConfirmationMessage()
     }
@@ -208,39 +229,23 @@ object Options {
         stopList = defaultStopList
         svdFilename = "svd_${termWeightingStrategy.javaClass.simpleName}_$defaultStopListText"
         irModel = "lsi"
+        scoreFunctionName = "cosine"
     }
 
-    private fun weightingStrategy(strategyName: String): TermWeightingStrategy {
-        return when(strategyName) {
-            "binary"        -> LocalBinaryWeighting()
-            "tf"            -> TermFrequencyWeighting()
-            "tf-idf"        -> TfIdfWeighting()
-            "log-entropy"   -> LogEntropyWeighting()
-            // throw Exception or settle for default (Log-Entropy)?
-            else            -> throw RuntimeException("Unknown value for $OPTION_WEIGHTING_STRATEGY." +
-                    "Expected one of 'binary', 'tf', 'tf-idf', 'log-entropy'. " +
-                    "But was $strategyName")
+    private fun checkSvdFilename() {
+        // check whether to use custom SVD name (if provided) or default one
+        svdFilename = if(this::customSvdFilename.isInitialized) {
+            customSvdFilename
         }
-    }
+        else {
+            val stopListText = when {
+                stopList.isEmpty()          -> emptyStopListText
+                stopList == defaultStopList -> defaultStopListText
+                else                        -> customStopListText
+            }
 
-    private fun printHelpMessage() {
-        printFormattedOption(OPTION_HELP_MESSAGE, "Show possible options")
-        printFormattedOption(OPTION_WEIGHTING_STRATEGY, "Specifies how to weight the entries of " +
-                "the term-document matrix. Values are 'binary', 'tf', 'tf-idf', 'log-entropy' (default).")
-        printFormattedOption(OPTION_SVD_FILENAME, "The SVD will be stored as a *.ser file " +
-                "with the provided file name. By default, the file name will mirror the options in order to make it " +
-                "identifiable. If the file already exists, it will be used to load the SVD from the *.ser file.")
-        printFormattedOption(OPTION_ROOT_DIRECTORY, "The root directory where the C project is located at. " +
-                "Can be an absolute path or a relative one. (Fragile option, currently defaults to 'inputBig/grbl').")
-        printFormattedOption(OPTION_STOP_LIST, "The stop-list to apply. The file should contain one " +
-                "stop word per line. Pass 'empty' as an argument to not use a stop-list. By default, " +
-                "a stop-list equal to the content of 'stoplists/defaultStopList.txt' is used.")
-        printFormattedOption(OPTION_IR_MODEL, "The model to use to retrieve information. Can be " +
-                "'lsi' (default) or 'vsm'. Any other input will default to 'lsi'.")
-    }
-
-    private fun printFormattedOption(option: String, description: String) {
-        println(String.format("%-25s %s", option, description))
+            "svd_${termWeightingStrategy.javaClass.simpleName}_$stopListText"
+        }
     }
 
     private fun printOptionsConfirmationMessage() {
@@ -252,6 +257,7 @@ object Options {
         }
         println("\tRoot directory:          $inputRootDirectory")
         println("\tStop-list:               ${stopList.subList(0, Integer.min(stopList.size, 7))} ...")
+        println("\tSimilarity function:     $scoreFunctionName")
     }
 
     private fun createOutputDirectoriesAndFiles() {

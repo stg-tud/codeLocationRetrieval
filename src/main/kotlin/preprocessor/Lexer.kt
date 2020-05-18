@@ -12,10 +12,6 @@ class Lexer(private val input: String) {
     private var currentLine = 0
     private var currentColumn = 0
 
-    // keep track of directives
-    private var directiveBacktrackIndex = 0     // farthes point to backtrack to when checking for newline
-    private var isPreprocessorDirective = false
-
     // map keywords to token types
     private val keywords: Map<String, TokenType?>
 
@@ -63,8 +59,6 @@ class Lexer(private val input: String) {
             scanToken()
         }
 
-//        addToken(EOF, "")
-        tokens.add(Token("",EOF,0, Location(currentLine,currentColumn)))
         return tokens
     }
 
@@ -76,42 +70,13 @@ class Lexer(private val input: String) {
     private fun scanToken() {
         when (val previousChar = advance()) {     // note: we have advanced the current pointer
             // simple stuff
-            '=' -> addToken(EQUAL, "=")
-            '(' -> addToken(LEFT_PAREN, "(")
-            ')' -> addToken(RIGHT_PAREN, ")")
             '{' -> addToken(LEFT_BRACE, "{")
             '}' -> addToken(RIGHT_BRACE, "}")
-            ';' -> addToken(SEMICOLON, ";")
 
             // more complex cases
-            '\'', '\"' -> {
-                skipQuotes(previousChar)
-            }
-            '#' -> {
-                preprocessorDirective()
-                isPreprocessorDirective = true
-                directiveBacktrackIndex = startIndex
-            }
-            '\r', '\n' -> {
-                if (isPreprocessorDirective) {
-                    var isDirectiveContinueOnNextLine = false
-                    for (i in (currentIndex - 1) downTo directiveBacktrackIndex) {
-                        if (!input[i].isWhitespace()) {
-                            isDirectiveContinueOnNextLine = (input[i] == '\\')
-                            break
-                        }
-                    }
+            '\'', '\"'  -> skipQuotes(previousChar)
+            '#'         -> preprocessorDirective()
 
-                    if (!isDirectiveContinueOnNextLine) {
-                        // mark the end of a directive
-                        addToken(PP_END, "")
-                        isPreprocessorDirective = false
-                    }
-                }
-                currentLine++
-                currentColumn = 0
-                // TODO check whether this works on windows
-            }
             '/' -> {
                 /* check if comment */
                 if (match('/')) {
@@ -134,15 +99,18 @@ class Lexer(private val input: String) {
 
     // consumes an entire identifier (advances currentIndex accordingly) and adds it to the token list
     private fun identifier() {
-        // advance pointer until past the identifier
-        while (!isAtEnd() && isAlphaNumeric(input[currentIndex])) {
+
+        // advance pointer until one past the identifier
+        while(!isAtEnd() && isAlphaNumeric(input[currentIndex])) {
             advance()
         }
 
         // check if lexeme is keyword or identifier
         val lexeme = input.substring(startIndex, currentIndex)
         var type = keywords[lexeme]
-        if (type == null) {
+
+        if(type == null) {
+            // the lexeme was not found in the [keywords] map, hence it must be an identifier
             type = IDENTIFIER
         }
         addToken(type, lexeme)
@@ -175,20 +143,17 @@ class Lexer(private val input: String) {
     }
 
     private fun preprocessorDirective() {
+        // hash symbol has already been matched
         val lexeme = StringBuilder("#")
 
         // consume potential whitespace in-between: e.g. "#   include <stdio.h>"
         while (!isAtEnd() && peek().isWhitespace()) {
             // null directive: #\s*[\r\n|\n]
-            when (peek()) {
-                '\r', '\n' -> {
-                    addToken(PP_DIRECTIVE, lexeme.toString())
-                    return
-                }
+            if(peek() == '\r' || peek() == '\n') {
+                addToken(PP_DIRECTIVE, lexeme.toString())
+                return
             }
 
-            // TODO: include whitespace in lexeme or not?
-//            lexeme.append(advance())
             advance()
         }
 
@@ -197,10 +162,10 @@ class Lexer(private val input: String) {
             lexeme.append(advance())
         }
 
-        // #includes' are always single line, so process it here (easy way of handling <...>)
-        if (lexeme.toString().matches("""#\s*include""".toRegex())) {
-            while (peek() != '\n') {
-                lexeme.append(advance())
+        // process #includes' here (easy way of getting past "..." or <...>)
+        if(lexeme.toString() == "#include") {
+            while(peek() != '\n') {
+                advance()
             }
         }
 

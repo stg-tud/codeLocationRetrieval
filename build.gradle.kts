@@ -2,10 +2,15 @@ import groovy.util.Eval
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.72"
+    id("com.squareup.sqldelight")
     application
 }
 
+repositories {
+    mavenCentral()
+    google()
+}
 group = "com.bekiroe.featurelocation"
 version = "1.0-SNAPSHOT"
 
@@ -19,12 +24,18 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("com.squareup.sqldelight:sqlite-driver:1.3.0")
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testImplementation("org.assertj:assertj-core:3.11.1")
 
+    implementation("com.google.code.gson:gson:2.8.5")
     // Commons Math
-    compile("org.apache.commons:commons-math3:3.6.1")
+    implementation("org.apache.commons:commons-math3:3.6.1")
+
+    // JCommander (to parse command line arguments)
+    implementation("com.beust:jcommander:1.78")
 
     // MockK
     testImplementation("io.mockk:mockk:1.9.3")
@@ -32,6 +43,14 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+sqldelight {
+    database("Corpus") {
+        packageName = "corpus"
+        sourceFolders = listOf("db")
+        schemaOutputDirectory = file("build/dbs")
+    }
 }
 
 val run by tasks.getting(JavaExec::class) {

@@ -127,6 +127,10 @@ private fun Writer.write(t: Term) {
     write(t.term)
     write("\t")
     t.locations.forEach {
-        write("(${it.line}, ${it.column}) ")
+        write("[(${it.line}, ${it.column}) ")
+        it.meta.forEach{ entry ->
+            write("(${entry.key} ${entry.value}) ")
+        }
+        write("]")
     }
 }

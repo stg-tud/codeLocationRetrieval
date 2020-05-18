@@ -30,18 +30,17 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
-                u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
-                s   = MatrixUtils.createRealMatrix(get("s.data") as Array<DoubleArray>)
-                v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
-                ut  = MatrixUtils.createRealMatrix(get("ut.data") as Array<DoubleArray>)
-                vt  = MatrixUtils.createRealMatrix(get("vt.data") as Array<DoubleArray>)
-
                 singularValues = get("singularValues") as DoubleArray
-
+                u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
+                v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
                 rank                    = get("rank") as Int
                 norm                    = get("norm") as Double
                 conditionNumber         = get("conditionNumber") as Double
                 inverseConditionNumber  = get("inverseConditionNumber") as Double
+
+                s   = MatrixUtils.createRealDiagonalMatrix(singularValues)
+                ut  = u.transpose()
+                vt  = v.transpose()
             }
         }
         else {
@@ -75,17 +74,20 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
         // Missing: solver, getCovariance()
         val fieldsMap = mutableMapOf<String, Any>()
         fieldsMap.apply {
-            put("u.data", u.data)
-            put("s.data", s.data)
-            put("v.data", v.data)
-            put("ut.data", ut.data)
-            put("vt.data", vt.data)
             put("singularValues", singularValues)
+            put("u.data", u.data)
+            put("v.data", v.data)
             put("rank", rank)
             put("norm", norm)
             put("conditionNumber", conditionNumber)
             put("inverseConditionNumber", inverseConditionNumber)
+
+            // we don't have to store the following
+//            put("s.data", s.data)     // can be computed via MatrixUtils.createRealDiagonalMatrix(singularValues)
+//            put("ut.data", ut.data)   // can be computed via u.transpose()
+//            put("vt.data", vt.data)   // can be computed via v.transpose()
         }
         oos.writeObject(fieldsMap)
     }
+
 }

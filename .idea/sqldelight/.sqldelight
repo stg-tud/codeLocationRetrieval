@@ -1,0 +1,1 @@
+{"databases":[{"packageName":"corpus","compilationUnits":[{"name":"main","sourceFolders":[{"path":"src/main/db","dependency":false}]}],"outputDirectory":"build/generated/sqldelight/code/Corpus","className":"Corpus","dependencies":[],"dialectPreset":"SQLITE_3_18"}]}
