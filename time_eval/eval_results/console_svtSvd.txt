@@ -1,0 +1,670 @@
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.292s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 467s
+Time(SVD): 23921s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 46m 31s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.302s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 465s
+Time(SVD): 23741s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 43m 28s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.35s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 474s
+Time(SVD): 23647s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 42m 4s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.314s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 472s
+Time(SVD): 23611s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 41m 26s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.346s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 469s
+Time(SVD): 23306s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 36m 17s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.331s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 473s
+Time(SVD): 23468s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 39m 4s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.34s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 467s
+Time(SVD): 23488s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 39m 17s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.35s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 471s
+Time(SVD): 23519s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 39m 52s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.321s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 474s
+Time(SVD): 23498s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 39m 34s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/svtSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/svt-av1-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: gstsvtav1enc.c
+Contains Ids/Comments after last block: EbUnitTestUtility.c
+Contains Ids/Comments after last block: nonmax.c
+Contains Ids/Comments after last block: fast_9.c
+Contains Ids/Comments after last block: fast.c
+Contains Ids/Comments after last block: EbDecMemInit.c
+Contains Ids/Comments after last block: convolve.c
+Contains Ids/Comments after last block: EbCabacContextModel.c
+Contains Ids/Comments after last block: grainSynthesis.c
+Contains Ids/Comments after last block: EbBitstreamUnit.c
+Contains Ids/Comments after last block: EbPictureOperators_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: jnt_convolve_2d_avx512.c
+Contains Ids/Comments after last block: cdef_block_avx512.c
+Contains Ids/Comments after last block: convolve_2d_avx512.c
+Contains Ids/Comments after last block: wiener_convolve_avx512.c
+Contains Ids/Comments after last block: convolve_avx512.c
+Contains Ids/Comments after last block: jnt_convolve_avx512.c
+Contains Ids/Comments after last block: aom_subpixel_8t_intrin_avx2.c
+Contains Ids/Comments after last block: highbd_convolve_avx2.c
+Contains Ids/Comments after last block: EbEncHandle.c
+Contains Ids/Comments after last block: EbString.c
+Contains Ids/Comments after last block: EbRateControlTables.c
+Contains Ids/Comments after last block: EbProductCodingLoop.c
+Contains Ids/Comments after last block: EbPictureDecisionProcess.c
+Contains Ids/Comments after last block: obmc_variance_sse4.c
+Contains Ids/Comments after last block: EbComputeVariance_C.c
+Contains Ids/Comments after last block: sad_av1.c
+Contains Ids/Comments after last block: encodetxb_avx512.c
+Contains Ids/Comments after last block: EbCombinedAveragingSAD_AVX512.c
+Contains Ids/Comments after last block: pickrst_avx512.c
+Contains Ids/Comments after last block: EbComputeSAD_Intrinsic_AVX512.c
+Contains Ids/Comments after last block: EbCdef_AVX512.c
+Contains Ids/Comments after last block: obmc_sad_avx2.c
+Contains Ids/Comments after last block: obmc_variance_avx2.c
+Contains Ids/Comments after last block: variance_avx2.c
+Contains Ids/Comments after last block: sse_avx2.c
+Contains Ids/Comments after last block: highbd_variance_avx2.c
+Contains Ids/Comments after last block: EbAppString.c
+Time to create the corpus: 1.368s
+Number of terms = 38022
+Number of documents = 6470
+Time to create the TDM: 477s
+Time(SVD): 23468s
+dim(U): 38022 x 6470
+dim(S): 6470 x 6470
+dim(VT): 6470 x 6470
+max singular value = 60.14124537650989
+min singular value = 1.418582083335341E-15
+rank = 6158,	norm = 60.14124537650989,	cn = 4.2395322824821696E16,	icn = 2.3587507615687223E-17
+
+BUILD SUCCESSFUL in 6h 39m 8s
+3 actionable tasks: 2 executed, 1 up-to-date

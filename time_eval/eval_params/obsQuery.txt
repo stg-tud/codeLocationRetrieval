@@ -1,0 +1,5 @@
+--root-directory=input/obs-studio-master
+--ir-model=lsi
+--weighting-strategy=log-entropy
+--score-function=cosine
+--stop-list=empty

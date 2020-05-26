@@ -47,14 +47,14 @@ class LsiConsole : ConsoleApplication() {
 
             if(isNewK) {
                 // print the singular values
-                val singularValues = lsiModel.svd.singularValues
-                for(i in singularValues.indices) {
-                    if(i > 0 && (i % 5 == 0)) {
-                        println()
-                    }
-
-                    print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
-                }
+//                val singularValues = lsiModel.svd.singularValues
+//                for(i in singularValues.indices) {
+//                    if(i > 0 && (i % 5 == 0)) {
+//                        println()
+//                    }
+//
+//                    print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
+//                }
 
                 // dimensionality reduction k in [1, rank]
                 do {

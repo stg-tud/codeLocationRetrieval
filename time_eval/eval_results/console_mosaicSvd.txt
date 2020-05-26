@@ -1,0 +1,380 @@
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.437s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 38s
+Time(SVD): 1994s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 54s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.459s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 37s
+Time(SVD): 1983s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 42s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.446s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 38s
+Time(SVD): 2020s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 34m 20s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.474s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 38s
+Time(SVD): 1983s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 43s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.453s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 38s
+Time(SVD): 1954s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 14s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.46s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 39s
+Time(SVD): 1943s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 4s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.447s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 39s
+Time(SVD): 1988s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 48s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.458s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 37s
+Time(SVD): 2016s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 34m 15s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.463s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 37s
+Time(SVD): 1941s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 0s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/mosaicSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/ncsa-mosaic-master
+	Stop-list:               [] ...
+	Similarity function:     cosine
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/libhtmlw/HTML.c
+Contains Ids/Comments after last block: HTMLjot.c
+IndexOutOfBoundsException: Parse error for input/ncsa-mosaic-master/src/cciServer.c
+Contains Ids/Comments after last block: hdf-browse.c
+Contains Ids/Comments after last block: mo-dtm.c
+Contains Ids/Comments after last block: mo-hdf.c
+Contains Ids/Comments after last block: HTParse.c
+Contains Ids/Comments after last block: HTWAIS.c
+Contains Ids/Comments after last block: CUkerb.c
+Time to create the corpus: 0.446s
+Number of terms = 16708
+Number of documents = 2327
+Time to create the TDM: 38s
+Time(SVD): 1999s
+dim(U): 16708 x 2327
+dim(S): 2327 x 2327
+dim(VT): 2327 x 2327
+max singular value = 30.626517786570552
+min singular value = 3.757820120595052E-15
+rank = 2270,	norm = 30.626517786570552,	cn = 8.150075523498138E15,	icn = 1.226982494968077E-16
+
+BUILD SUCCESSFUL in 33m 59s
+3 actionable tasks: 2 executed, 1 up-to-date
