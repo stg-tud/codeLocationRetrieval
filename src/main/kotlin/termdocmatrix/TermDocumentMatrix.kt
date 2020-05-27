@@ -22,7 +22,7 @@ class TermDocumentMatrix {
         numOfTerms = terms.size
         numOfDocs = documents.size
 
-        data = Array(numOfTerms) { DoubleArray(numOfDocs) {0.0} }
+        data = Array(numOfTerms) { DoubleArray(numOfDocs) { 0.0 } }
         populateTdm()
     }
 
@@ -34,9 +34,11 @@ class TermDocumentMatrix {
     //      and provide a public weightEntries(TermWeightingStrategy) method in which we can alter 'data'
     //      (requires refactoring of TermWeightingStrategy though; postpone until we do weighting with query vectors)
     constructor(terms: Set<Term>, documents: List<Document>, data: Array<DoubleArray>) {
-        if(data.size != terms.size || data[0].size != documents.size) {
-            throw RuntimeException("Dimensions of provided TDM do not match: " +
-                    "Expected dimensions [${terms.size} x ${documents.size}, but was [${data.size} x ${data[0].size}")
+        if (data.size != terms.size || data[0].size != documents.size) {
+            throw RuntimeException(
+                "Dimensions of provided TDM do not match: " +
+                        "Expected dimensions [${terms.size} x ${documents.size}, but was [${data.size} x ${data[0].size}"
+            )
         }
 
         this.terms = terms.toHashSet()
@@ -49,12 +51,12 @@ class TermDocumentMatrix {
 
     // populates the data using local term-frequency weights
     private fun populateTdm() {
-        for(docIdx in 0 until documents.size) {
+        for (docIdx in documents.indices) {
             val block = documents[docIdx]
             block.terms.forEach { term ->
-                val termIdx = terms.indexOfFirst { term.term == it.term  }
+                val termIdx = terms.indexOfFirst { term.term == it.term }
 
-                if(termIdx != -1) {
+                if (termIdx != -1) {
                     // term is contained in the corpus
                     data[termIdx][docIdx] += 1.0
                 }

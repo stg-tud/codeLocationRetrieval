@@ -13,7 +13,8 @@ class QueryTest {
     @MockK
     private lateinit var tdmMock: TermDocumentMatrix
 
-    @Nested inner class NormalizationTests {
+    @Nested
+    inner class NormalizationTests {
 
         @BeforeEach
         fun setUpMockForNormalizationTests() {
@@ -45,7 +46,8 @@ class QueryTest {
             // Then
             assertThat(actualQueryTerms).containsExactlyInAnyOrder(
                 "camelcase", "camel", "case",
-                "pascalcase", "pascal", "case")
+                "pascalcase", "pascal", "case"
+            )
         }
 
         @Test
@@ -60,13 +62,15 @@ class QueryTest {
             assertThat(actualQueryTerms).containsExactlyInAnyOrder(
                 "_at_start", "at", "start",
                 "in_the_middle", "in", "the", "middle",
-                "at_end_", "at", "end")
+                "at_end_", "at", "end"
+            )
         }
 
         @Test
         fun testQueryNormalization_mixedCaseAndUnderscores() {
             // Given
-            val inputQuery = "normal Title mixedCase MixedCase underScore_with_camelCase BIGCase CaseBIG ALL_UPPER SUPPER"
+            val inputQuery =
+                "normal Title mixedCase MixedCase underScore_with_camelCase BIGCase CaseBIG ALL_UPPER SUPPER"
 
             // When
             val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
@@ -81,7 +85,8 @@ class QueryTest {
                 "bigcase", "big", "case",
                 "casebig", "case", "big",
                 "all_upper", "all", "upper",
-                "supper")
+                "supper"
+            )
         }
 
         @Test
@@ -93,11 +98,13 @@ class QueryTest {
             val actualQueryTerms = Query(inputQuery, tdmMock).normalizedTerms
 
             assertThat(actualQueryTerms).containsExactlyInAnyOrder(
-                "query", "normalization", "or", "so", "has", "to", "work", "100", "of", "the", "time")
+                "query", "normalization", "or", "so", "has", "to", "work", "100", "of", "the", "time"
+            )
         }
     }
 
-    @Nested inner class VectorConstructionTests {
+    @Nested
+    inner class VectorConstructionTests {
 
         /*
          * Actual values may depend on term weighting, so try to prefer tests that test for greater/smaller than,
@@ -174,7 +181,8 @@ class QueryTest {
         }
     }
 
-    @Nested inner class IndexedTermsTests {
+    @Nested
+    inner class IndexedTermsTests {
 
         @BeforeEach
         fun setUpMockForIndexedTermsTests() {

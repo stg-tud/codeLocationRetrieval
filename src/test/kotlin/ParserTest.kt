@@ -1,10 +1,12 @@
-import io.mockk.every
-import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import preprocessor.*
+import preprocessor.Lexer
+import preprocessor.Location
+import preprocessor.Parser
+import preprocessor.Token
+import preprocessor.TokenType.COMMENT
+import preprocessor.TokenType.IDENTIFIER
 import java.io.File
-import preprocessor.TokenType.*
 
 class ParserTest {
 

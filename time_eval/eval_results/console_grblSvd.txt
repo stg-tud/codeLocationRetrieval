@@ -1,0 +1,640 @@
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.142s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.119s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.12s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.123s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.118s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.12s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.118s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.119s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.12s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.118s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.133s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.116s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.116s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.128s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.119s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.116s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.118s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 1s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.117s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.117s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :discoverMainScriptsExtensions
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :run
+ARGS = [@eval_params/grblSvd.txt]
+OPTIONS
+	IR-Model:                lsi
+	Term weighting strategy: LogEntropyWeighting
+	SVD file name (.ser):    svd_LogEntropyWeighting_noStopList
+	Root directory:          input/grbl
+	Stop-list:               [] ...
+	Similarity function:     cosine
+Contains Ids/Comments after last block: print.c
+Contains Ids/Comments after last block: gcode.c
+Contains Ids/Comments after last block: eeprom.c
+Time to create the corpus: 0.12s
+Number of terms = 3502
+Number of documents = 159
+Time to create the TDM: 0s
+Time(SVD): 0s
+dim(U): 3502 x 159
+dim(S): 159 x 159
+dim(VT): 159 x 159
+max singular value = 20.19199087404263
+min singular value = 0.25005143602515206
+rank = 159,	norm = 20.19199087404263,	cn = 80.75134938241894,	icn = 0.012383693989610513
+
+BUILD SUCCESSFUL in 2s
+3 actionable tasks: 2 executed, 1 up-to-date

@@ -19,15 +19,15 @@ class VsmConsole : ConsoleApplication() {
         // true on first iteration !
         var isNewQuery = true
 
-        while(true) {
-            if(isNewQuery) {
+        while (true) {
+            if (isNewQuery) {
                 // read in user query
                 querySb.setLength(0)
                 print("Type in query: ")
-                while(scanner.hasNextLine()) {
+                while (scanner.hasNextLine()) {
                     val line = scanner.nextLine()
                     querySb.append(line)
-                    if(querySb.isNotBlank()) {
+                    if (querySb.isNotBlank()) {
                         break
                     }
                 }
@@ -38,19 +38,31 @@ class VsmConsole : ConsoleApplication() {
 
             val results = vsmModel.retrieveDocuments(query)
             var startIdx = 0
-            results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
-            }
+            results.subList(startIdx, Integer.min(results.size, startIdx + 20))
+                .forEachIndexed { index, retrievalResult ->
+                    printResult(
+                        retrievalResult = retrievalResult,
+                        tdm = tdm,
+                        query = query,
+                        rank = startIdx + index + 1
+                    )
+                }
 
             println("Show more results? [y/n]")
             var next = scanner.next()
-            while(next == "y" || next == "Y") {
+            while (next == "y" || next == "Y") {
                 startIdx += Integer.min(20, results.size - startIdx)
-                results.subList(startIdx, Integer.min(results.size, startIdx + 20)).forEachIndexed { index, retrievalResult ->
-                    printResult(retrievalResult = retrievalResult, tdm = tdm, query = query, rank = startIdx + index + 1)
-                }
+                results.subList(startIdx, Integer.min(results.size, startIdx + 20))
+                    .forEachIndexed { index, retrievalResult ->
+                        printResult(
+                            retrievalResult = retrievalResult,
+                            tdm = tdm,
+                            query = query,
+                            rank = startIdx + index + 1
+                        )
+                    }
 
-                if(startIdx == results.size) {
+                if (startIdx == results.size) {
                     println("All retrieved.")
                     break
                 }
@@ -61,7 +73,7 @@ class VsmConsole : ConsoleApplication() {
 
             println("\n\nType Q for a new query: ")
             val input = scanner.next()
-            when(input) {
+            when (input) {
                 "q", "Q" -> {
                     isNewQuery = true
                 }

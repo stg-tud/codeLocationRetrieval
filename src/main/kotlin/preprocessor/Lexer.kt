@@ -12,6 +12,11 @@ class Lexer(private val input: String) {
     private var currentLine = 0
     private var currentColumn = 0
 
+    private val directives = listOf(
+        "#include", "#define", "#undef", "#line", "#error", "#pragma",
+        "#if", "#ifdef", "#ifndef", "#elif", "#else", "#endif"
+    ) // left out the null directive
+
     // map keywords to token types
     private val keywords: Map<String, TokenType?>
 
@@ -74,8 +79,8 @@ class Lexer(private val input: String) {
             '}' -> addToken(RIGHT_BRACE, "}")
 
             // more complex cases
-            '\'', '\"'  -> skipQuotes(previousChar)
-            '#'         -> preprocessorDirective()
+            '\'', '\"' -> skipQuotes(previousChar)
+            '#' -> preprocessorDirective()
 
             '/' -> {
                 /* check if comment */
@@ -101,7 +106,7 @@ class Lexer(private val input: String) {
     private fun identifier() {
 
         // advance pointer until one past the identifier
-        while(!isAtEnd() && isAlphaNumeric(input[currentIndex])) {
+        while (!isAtEnd() && isAlphaNumeric(input[currentIndex])) {
             advance()
         }
 
@@ -109,7 +114,7 @@ class Lexer(private val input: String) {
         val lexeme = input.substring(startIndex, currentIndex)
         var type = keywords[lexeme]
 
-        if(type == null) {
+        if (type == null) {
             // the lexeme was not found in the [keywords] map, hence it must be an identifier
             type = IDENTIFIER
         }
@@ -149,7 +154,7 @@ class Lexer(private val input: String) {
         // consume potential whitespace in-between: e.g. "#   include <stdio.h>"
         while (!isAtEnd() && peek().isWhitespace()) {
             // null directive: #\s*[\r\n|\n]
-            if(peek() == '\r' || peek() == '\n') {
+            if (peek() == '\r' || peek() == '\n') {
                 addToken(PP_DIRECTIVE, lexeme.toString())
                 return
             }
@@ -157,16 +162,24 @@ class Lexer(private val input: String) {
             advance()
         }
 
-        // the preprocessor directive (include, define, if, etc.)
-        while (!isAtEnd() && !peek().isWhitespace()) {
+        // the (potential) preprocessor directive (include, define, if, etc.)
+        while (!isAtEnd() && peek().isLetter()) {
             lexeme.append(advance())
         }
 
         // process #includes' here (easy way of getting past "..." or <...>)
-        if(lexeme.toString() == "#include") {
-            while(peek() != '\n') {
+        if (lexeme.toString() == "#include") {
+            while (!isAtEnd() && peek() != '\n') {
                 advance()
             }
+        }
+
+        // make sure it is a directive
+        if (!directives.contains(lexeme.toString())) {
+            // e.g. #define DEF_FN(name)            {FN_OFFS(name), "gl" # name}
+            // #name is not a directive, but an identifier
+            addToken(IDENTIFIER, lexeme.substring(1))
+            return
         }
 
         addToken(PP_DIRECTIVE, lexeme.toString())
@@ -188,7 +201,7 @@ class Lexer(private val input: String) {
 
     // return current char and advance the pointer to the next char to be consumed
     private fun advance(): Char {
-        currentColumn++;
+        currentColumn++
         return input[currentIndex++]
     }
 

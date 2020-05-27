@@ -23,7 +23,7 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
 
     init {
         @Suppress("UNCHECKED_CAST")
-        if(isDataStored()&& false) {
+        if (isDataStored() && false) {
             println("=== LOADING STORED SVD ===")
             println("Reading SVD from: ${storedSvdFile.path}")
             val ois = ObjectInputStream(FileInputStream(storedSvdFile.path))
@@ -31,22 +31,21 @@ class Svd(private val tdm: TermDocumentMatrix, private val storedSvdFile: File) 
             val fieldsMap = ois.readObject() as Map<String, Any>
             with(fieldsMap) {
                 singularValues = get("singularValues") as DoubleArray
-                u   = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
-                v   = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
-                rank                    = get("rank") as Int
-                norm                    = get("norm") as Double
-                conditionNumber         = get("conditionNumber") as Double
-                inverseConditionNumber  = get("inverseConditionNumber") as Double
+                u = MatrixUtils.createRealMatrix(get("u.data") as Array<DoubleArray>)
+                v = MatrixUtils.createRealMatrix(get("v.data") as Array<DoubleArray>)
+                rank = get("rank") as Int
+                norm = get("norm") as Double
+                conditionNumber = get("conditionNumber") as Double
+                inverseConditionNumber = get("inverseConditionNumber") as Double
 
-                s   = MatrixUtils.createRealDiagonalMatrix(singularValues)
-                ut  = u.transpose()
-                vt  = v.transpose()
+                s = MatrixUtils.createRealDiagonalMatrix(singularValues)
+                ut = u.transpose()
+                vt = v.transpose()
             }
-        }
-        else {
+        } else {
             println("=== COMPUTING NEW SVD ===")
             println("Writing SVD to: ${storedSvdFile.path}")
-            
+
             val svd = SingularValueDecomposition(MatrixUtils.createRealMatrix(tdm.data))
 
             u = svd.u

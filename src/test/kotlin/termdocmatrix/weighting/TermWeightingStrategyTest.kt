@@ -1,14 +1,13 @@
 package termdocmatrix.weighting
 
-import io.mockk.every
 import io.mockk.mockk
-import termdocmatrix.TermDocumentMatrix
 import org.assertj.core.api.AbstractDoubleArrayAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.withPrecision
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import preprocessor.Document
+import termdocmatrix.TermDocumentMatrix
 
 class TermWeightingStrategyTest {
 
@@ -89,39 +88,39 @@ class TermWeightingStrategyTest {
     fun testLogEntropyWeighting() {
         // Given term-document matrix
 
-            /* Assumed TDM
-            *
-            *      d1  d2  d3
-            * t1   3   1   1
-            * t2   2   2   0
-            * t3   0   3   1
-            * t4   0   2   7
-            * t5   4   1   0
-            */
-            /* CFs
-             *
-             * t1: 5
-             * t2: 4
-             * t3: 4
-             * t4: 9
-             * t5: 5
-             */
-            /* LOGs
-             *
-             * t1: 0.602, 0.301, 0.301
-             * t2: 0.477, 0.477, 0.000
-             * t3: 0.000, 0.602, 0.301
-             * t4: 0.000, 0.477, 0.903
-             * t5: 0.699, 0.301, 0.000
-             */
-            /* ENTROPYs
-             *
-             * t1: 0.135
-             * t2: 0.369
-             * t3: 0.488
-             * t4: 0.518
-             * t5: 0.545
-             */
+        /* Assumed TDM
+        *
+        *      d1  d2  d3
+        * t1   3   1   1
+        * t2   2   2   0
+        * t3   0   3   1
+        * t4   0   2   7
+        * t5   4   1   0
+        */
+        /* CFs
+         *
+         * t1: 5
+         * t2: 4
+         * t3: 4
+         * t4: 9
+         * t5: 5
+         */
+        /* LOGs
+         *
+         * t1: 0.602, 0.301, 0.301
+         * t2: 0.477, 0.477, 0.000
+         * t3: 0.000, 0.602, 0.301
+         * t4: 0.000, 0.477, 0.903
+         * t5: 0.699, 0.301, 0.000
+         */
+        /* ENTROPYs
+         *
+         * t1: 0.135
+         * t2: 0.369
+         * t3: 0.488
+         * t4: 0.518
+         * t5: 0.545
+         */
 
         // When applying Log-Entropy weighting
         val actualMatrix = LogEntropyWeighting().weightEntries(matrixToBeWeighted)

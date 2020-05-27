@@ -1,8 +1,6 @@
 package termdocmatrix.weighting
 
 import termdocmatrix.TermDocumentMatrix
-import org.apache.commons.math3.linear.MatrixUtils
-import org.apache.commons.math3.linear.RealVector
 
 /*
  * Log Entropy = LOG * ENTROPY
@@ -20,12 +18,12 @@ import org.apache.commons.math3.linear.RealVector
 class LogEntropyWeighting : TermWeightingStrategy {
 
     override fun weightEntries(matrix: TermDocumentMatrix): TermDocumentMatrix {
-        val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) {0.0} }
+        val weightedData = Array(matrix.numOfTerms) { DoubleArray(matrix.numOfDocs) { 0.0 } }
 
-        for(i in matrix.data.indices) {
+        for (i in matrix.data.indices) {
             val entropyForTermI = entropy(matrix.data[i], matrix.numOfDocs)
 
-            for(j in matrix.data[i].indices) {
+            for (j in matrix.data[i].indices) {
                 val log = Math.log10(matrix.data[i][j] + 1)
                 weightedData[i][j] = log * entropyForTermI
             }
@@ -40,11 +38,11 @@ class LogEntropyWeighting : TermWeightingStrategy {
         // cf(t) = sum of all frequencies of a term t
         val collectionFrequency = termRow.sum()
 
-        for(i in termRow.indices) {
+        for (i in termRow.indices) {
             val tf = termRow[i]
             val p = tf / collectionFrequency
 
-            if(p > 0) {
+            if (p > 0) {
                 entropy += (p * Math.log10(p)) / Math.log10(numOfDocs.toDouble())
             }
         }

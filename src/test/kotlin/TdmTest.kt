@@ -1,8 +1,8 @@
-import termdocmatrix.TermDocumentMatrix
-import preprocessor.getTermsAndDocuments
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import preprocessor.Preprocessor
+import termdocmatrix.TermDocumentMatrix
 import java.io.File
 
 class TdmTest {
@@ -10,7 +10,7 @@ class TdmTest {
 
     @BeforeEach
     fun init() {
-        val (termSet, documents) = getTermsAndDocuments(File("src/test/resources/TermDocMatrixTest/in"))
+        val (termSet, documents) = Preprocessor().getTermsAndDocuments(File("src/test/resources/TermDocMatrixTest/in"))
         matrix = TermDocumentMatrix(termSet, documents)
 
         println(termSet)
@@ -47,7 +47,7 @@ class TdmTest {
             fibonacci           0,          4
 
          */
-        val expectedTdm = Array(7) { DoubleArray(2) {0.0} }
+        val expectedTdm = Array(7) { DoubleArray(2) { 0.0 } }
         expectedTdm[0] = doubleArrayOf(1.0, 0.0)    // "Calculates"
         expectedTdm[1] = doubleArrayOf(1.0, 1.0)    // "the"
         expectedTdm[2] = doubleArrayOf(3.0, 0.0)    // "faculty"

@@ -2,19 +2,16 @@ package main.console
 
 import main.Options
 import preprocessor.Document
-import preprocessor.Term
-import preprocessor.getTermsAndDocuments
+import preprocessor.Preprocessor
 import retrieval.Location
 import retrieval.Query
 import retrieval.RetrievalResult
 import termdocmatrix.TermDocumentMatrix
 import java.io.File
-import java.io.Writer
-import java.lang.Exception
 
 abstract class ConsoleApplication {
 
-    protected val terms = HashSet<Term>()
+    protected val terms = HashSet<String>()
     protected val documents = ArrayList<Document>()
 
     init {
@@ -26,9 +23,11 @@ abstract class ConsoleApplication {
     private fun processInput() {
         val start = System.currentTimeMillis()
 
-        val (terms, documents) = getTermsAndDocuments(inputRootDir = Options.inputRootDirectory, stopList = Options.stopList)
+        val (terms, documents) = Preprocessor().getTermsAndDocuments(
+            inputRootDir = Options.inputRootDirectory, stopList = Options.stopList
+        )
 
-        if(documents.isEmpty()) {
+        if (documents.isEmpty()) {
             println("No C files were found. Please choose a directory that contains C files.")
             System.exit(0)
         }
@@ -47,17 +46,18 @@ abstract class ConsoleApplication {
         // write documents
         var docIndex = 0
         try {
-            for(document in documents) {
+            for (document in documents) {
                 // in output/corpus: doc#_origFileName_origExtension.cc
-                val docFile = File("${Options.outputCorpusDir}" +
-                        "/doc${docIndex}_${document.sourceFile.nameWithoutExtension}_${document.sourceFile.extension}.cc")
+                val docFile = File(
+                    "${Options.outputCorpusDir}" +
+                            "/doc${docIndex}_${document.sourceFile.nameWithoutExtension}_${document.sourceFile.extension}.cc"
+                )
                 val docWriter = docFile.bufferedWriter()
                 docWriter.write(document.content)
                 docIndex++
                 docWriter.close()
             }
-        }
-        catch(e: Exception) {
+        } catch (e: Exception) {
             throw e
         }
 
@@ -94,24 +94,23 @@ abstract class ConsoleApplication {
         val documentLines = tdm.documents[retrievalResult.docIdx].content.lines()
 
         val locations = mutableListOf<Location>()
-        for(queryTerm in query.indexedTerms) {
+        for (queryTerm in query.indexedTerms) {
             var isDocumentContainsTerm = false
 
             sb.append("[$queryTerm:")
-            for(i in documentLines.indices) {
-                if(documentLines[i].contains(queryTerm, ignoreCase = true)) {
+            for (i in documentLines.indices) {
+                if (documentLines[i].contains(queryTerm, ignoreCase = true)) {
                     isDocumentContainsTerm = true
-                    locations.add(Location(i+1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+                    locations.add(Location(i + 1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
                 }
             }
 
-            if(isDocumentContainsTerm) {
+            if (isDocumentContainsTerm) {
                 // the term was found in this document
                 // list.toString(): "[...]"
                 // list.toString().substring(1): "...]"
                 sb.append(" ${locations.toString().substring(1)},")
-            }
-            else {
+            } else {
                 // the term was not found
                 sb.append(" --],")
             }
@@ -120,17 +119,5 @@ abstract class ConsoleApplication {
         sb.deleteCharAt(sb.lastIndexOf(","))
 
         println(sb)
-    }
-}
-
-private fun Writer.write(t: Term) {
-    write(t.term)
-    write("\t")
-    t.locations.forEach {
-        write("[(${it.line}, ${it.column}) ")
-        it.meta.forEach{ entry ->
-            write("(${entry.key} ${entry.value}) ")
-        }
-        write("]")
     }
 }

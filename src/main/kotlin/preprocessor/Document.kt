@@ -10,11 +10,11 @@ import java.io.File
  * @param[sourceFile]       The original file to which this document's content belongs to.
  */
 data class Document(val content: String, val idsAndComments: List<Token>, val sourceFile: File) {
-//    val terms = extractTerms(idsAndComments, sourceFile)
+    //    val terms = extractTerms(idsAndComments, sourceFile)
     val terms = extractTerms(idsAndComments)
 }
 
-data class Term(val term:String, val locations: Set<Location>)
+data class Term(val term: String, val locations: Set<Location>)
 
 data class Corpus(val Blocks: List<Document>, val terms: List<Term>)
 

@@ -17,14 +17,14 @@ class VectorSpaceModel(private val tdm: TermDocumentMatrix) {
         val queryVector = query.queryVector
 
         // check if we even have a valid query
-        if(queryVector.norm == 0.0) {
+        if (queryVector.norm == 0.0) {
             return Collections.emptyList()
         }
 
         // compute similarity scores
         val scorer = SimilarityScorer(Options.scoreFunctionName)
         val listOfRetrievalResults = ArrayList<RetrievalResult>()
-        for(i in 0..(tdmAsRealMatrix.columnDimension - 1)) {
+        for (i in 0..(tdmAsRealMatrix.columnDimension - 1)) {
             val docIVector = tdmAsRealMatrix.getColumnVector(i)
             val similarityScore = scorer.score(queryVector, docIVector)
             val retrievalResult = RetrievalResult(i, similarityScore, tdm.documents[i].sourceFile.path)
