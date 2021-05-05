@@ -3,6 +3,9 @@ package preprocessor
 import preprocessor.TokenType.COMMENT
 import preprocessor.TokenType.IDENTIFIER
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -24,7 +27,7 @@ fun extractTerms(tokens: List<Token>): List<Term> {
     for (token in tokens) {
         when (token.tokenType) {
             IDENTIFIER -> {
-                addTerm(token.value.toLowerCase(), token.location)
+                addTerm(token.value.lowercase(), token.location)
                 val modifiedTerm = getModifiedIdentifier(token.value)
                 modifiedTerm?.split(" ")?.forEach { t ->
                     addTerm(t, token.location.withMeta(TokenMetaType.Kind, Kind.Identifier))
@@ -49,48 +52,49 @@ fun extractTerms(tokens: List<Token>): List<Term> {
 // e.g. some_mixedCase  -> some mixed case
 fun getModifiedIdentifier(identifier: String): String? {
     val hasUnderscore = identifier.contains("_")
-    val hasCamelCase = identifier.toUpperCase() != identifier && identifier.toLowerCase() != identifier
+    val hasCamelCase =
+        identifier.uppercase(Locale.getDefault()) != identifier && identifier.lowercase(Locale.getDefault()) != identifier
 
-    if(!hasUnderscore && !hasCamelCase) {
+    if (!hasUnderscore && !hasCamelCase) {
         // no underscore and no camel case -> nothing to do
         return null
     }
 
     val separateCamelCaseSb = StringBuilder()
-    if(hasCamelCase) {
+    if (hasCamelCase) {
         // separate at appropriate positions
         val rangeLimit = identifier.indices.endInclusive
-        for(i in 0..(rangeLimit - 1)) {
+        for (i in 0..(rangeLimit - 1)) {
             val current = identifier[i]
             val next = identifier[i + 1]
 
             separateCamelCaseSb.append(current)
-            if(current.isLowerCase() && next.isUpperCase()) {
+            if (current.isLowerCase() && next.isUpperCase()) {
                 separateCamelCaseSb.append(" ")
             }
             // case for e.g. URILocation (I is upper, L is upper, but o is lower
             // so we've appended 'I' at this point, now put a space in-between I and L
-            else if(i + 2 <= rangeLimit && current.isUpperCase() && next.isUpperCase()
-                && identifier[i + 2].isLowerCase()) {
+            else if (i + 2 <= rangeLimit && current.isUpperCase() && next.isUpperCase()
+                && identifier[i + 2].isLowerCase()
+            ) {
                 separateCamelCaseSb.append(" ")
             }
 
-            if(i == (rangeLimit - 1)) {
+            if (i == (rangeLimit - 1)) {
                 separateCamelCaseSb.append(next)
             }
         }
-    }
-    else {
+    } else {
         // no camel case -> just take the identifier as is
         separateCamelCaseSb.append(identifier)
     }
 
-    var modifiedIdentifier = separateCamelCaseSb.toString().toLowerCase()
-    if(hasUnderscore) {
+    var modifiedIdentifier = separateCamelCaseSb.toString().lowercase(Locale.getDefault())
+    if (hasUnderscore) {
         modifiedIdentifier = modifiedIdentifier.replace('_', ' ')
     }
 
-    if(!modifiedIdentifier.contains("""\s+""".toRegex())) {
+    if (!modifiedIdentifier.contains("""\s+""".toRegex())) {
         // no new words gained (e.g. can happen for Camel -> camel)
         return null
     }
@@ -138,7 +142,7 @@ private class CommentLexer(private val input: String) {
         }
         val currentTerm = termBuilder.toString()
 
-        terms.add(currentTerm.toLowerCase())
+        terms.add(currentTerm.lowercase(Locale.getDefault()))
         val modifiedTerm = getModifiedIdentifier(currentTerm)
         if (modifiedTerm != null) {
             terms.addAll(modifiedTerm.split(" "))

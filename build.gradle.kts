@@ -1,8 +1,7 @@
-import groovy.util.Eval
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.5.0"
     id("com.squareup.sqldelight")
     application
 }
@@ -16,7 +15,7 @@ version = "1.0-SNAPSHOT"
 
 
 application {
-    mainClassName = "main.MainKt"
+    mainClass.set("main.MainKt")
 }
 
 repositories {
@@ -45,13 +44,13 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-sqldelight {
+/* sqldelight {
     database("Corpus") {
         packageName = "corpus"
         sourceFolders = listOf("db")
         schemaOutputDirectory = file("build/dbs")
     }
-}
+}*/
 
 val run by tasks.getting(JavaExec::class) {
     // By default, Gradle's run task uses an empty stream for standard input -> we have to manually set it to System.in

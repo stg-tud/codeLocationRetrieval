@@ -4,6 +4,7 @@ import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.linear.RealVector
 import preprocessor.getModifiedIdentifier
 import termdocmatrix.TermDocumentMatrix
+import java.util.*
 
 class Query(input: String, private val tdm: TermDocumentMatrix) {
 
@@ -45,7 +46,7 @@ class Query(input: String, private val tdm: TermDocumentMatrix) {
                 normalizedTerms.addAll(modifiedTerm.split(" "))
             }
 
-            normalizedTerms[i] = normalizedTerms[i].toLowerCase()
+            normalizedTerms[i] = normalizedTerms[i].lowercase(Locale.getDefault())
         }
     }
 }
