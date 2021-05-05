@@ -14,29 +14,35 @@ import java.io.File
  * then the output list will be:
  *      [my_identifier, my, identifier, this, is, a, line, comment]
  */
-fun extractTerms(tokens: List<Token>): List<String> {
-    val terms = ArrayList<String>()
+fun extractTerms(tokens: List<Token>): List<Term> {
+    val terms = HashMap<String, Set<Location>>()
+    fun addTerm(t: String, l: Location) {
+        terms[t] = terms[t].orEmpty() + l
+    }
+
 
     for (token in tokens) {
         when (token.tokenType) {
             IDENTIFIER -> {
-                terms.add(token.value.toLowerCase())
+                addTerm(token.value.toLowerCase(), token.location)
                 val modifiedTerm = getModifiedIdentifier(token.value)
-                if (modifiedTerm != null) {
-                    terms.addAll(modifiedTerm.split(" "))
+                modifiedTerm?.split(" ")?.forEach { t ->
+                    addTerm(t, token.location.withMeta(TokenMetaType.Kind, Kind.Identifier))
                 }
             }
             COMMENT -> {
-                terms.addAll(extractTermsOutOfComment(token.value))
+                extractTermsOutOfComment(token.value).forEach {
+                    addTerm(it, token.location.withMeta(TokenMetaType.Kind, Kind.Comment))
+                }
+
             }
             else -> { /* do nothing */
             }
         }
     }
 
-    return terms
+    return terms.map { (t, l) -> Term(t, l) }
 }
-
 
 // e.g. camelCase       -> camel case
 // e.g. with_underscore -> with underscore

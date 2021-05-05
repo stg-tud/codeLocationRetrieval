@@ -1,11 +1,12 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import preprocessor.FileKind
 import preprocessor.Lexer
 import preprocessor.TokenType
 import java.io.File
 
 class LexerTest {
-    private val lexer = Lexer(File("src/test/resources/LexerTest/actualInput/qsort.c").readText())
+    private val lexer = Lexer(File("src/test/resources/LexerTest/actualInput/qsort.c").readText(),"", FileKind.Source)
 
     @Test
     fun testTokenListSize() {

@@ -2,6 +2,8 @@ package preprocessor
 
 import java.io.File
 
+import kotlin.streams.toList
+
 class Preprocessor {
 
     /**
@@ -13,40 +15,49 @@ class Preprocessor {
     fun getTermsAndDocuments(
         inputRootDir: File,
         stopList: List<String> = emptyList()
-    ): Pair<Set<String>, List<Document>> {
-        val termSet = mutableSetOf<String>()
+    ): Pair<Set<Term>, List<Document>> {
+        val termSet = mutableMapOf<String, MutableSet<Location>>()
+        val termSetS = mutableSetOf<String>()
         val documents = mutableListOf<Document>()
 
+        val preprocessor = Preprocessor()
         inputRootDir.walkTopDown().forEach {
             // only operate on .h and .c files
-            if (!(it.extension == "h" || it.extension == "c")) {
-                return@forEach  // mimics a continue
+
+            val fileKind = when (it.extension) {
+                "h" -> FileKind.Header
+                "c" -> FileKind.Source
+                else ->
+                    return@forEach  // mimics a continue
             }
 
             val sourceCode = it.readText()
-            val tokens = extractTokens(sourceCode)
+            val tokens = preprocessor.extractTokens(sourceCode, it.name, fileKind)
 
             // documents
-            documents.addAll(extractDocuments(tokens, sourceFile = it))
+            documents.addAll(preprocessor.extractDocuments(tokens, sourceFile = it))
         }
 
         // construct the terms of the TDM based on the indexed documents
         documents.forEach { document ->
-            termSet.addAll(document.terms)
+            val terms = document.terms
+            terms.forEach { t ->
+                termSet.getOrPut(t.term, { mutableSetOf() }).addAll(t.locations)
+                termSetS.add(t.term)
+            }
+
         }
 
-        termSet.removeAll(stopList)
-
-        /* Possible place for stemming */
-
-        return Pair(termSet, documents)
+        val filteredSet = termSet.filter { !stopList.contains(it.key) }.map { Term(it.key, it.value) }.toSet()
+        val sorted = filteredSet.stream().sorted { term, term2 -> term.term.compareTo(term2.term) }.toList()
+        return Pair(filteredSet, documents)
     }
 
     private fun extractDocuments(tokens: List<Token>, sourceFile: File): List<Document> {
         return Parser(tokens, sourceFile).parse()
     }
 
-    private fun extractTokens(input: String): List<Token> {
-        return Lexer(input).scan()
+    private fun extractTokens(input: String, fileName: String, fileKind: FileKind): List<Token> {
+        return Lexer(input, fileName, fileKind).scan()
     }
 }

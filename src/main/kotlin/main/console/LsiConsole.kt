@@ -1,10 +1,21 @@
 package main.console
 
+import retrieval.Location
 import retrieval.Query
+import retrieval.RetrievalResult
 import retrieval.lsi.LsiModel
+import termdocmatrix.TermDocumentMatrix
+import java.io.File
 import java.util.*
 
 class LsiConsole : ConsoleApplication() {
+
+    fun printTDM(tdm:TermDocumentMatrix) {
+        for (i in 0 .. tdm.numOfTerms -1) {
+            val locations = tdm.terms[i].locations.joinToString { "(" + it.line +","+ it.column + ")" }
+            println("%s & %s & %.2f \\\\ \\hline".format(tdm.terms[i].term, locations,tdm.data[i][0] ))
+        }
+    }
 
     override fun start() {
         val tdm = createTdm()
@@ -72,6 +83,7 @@ class LsiConsole : ConsoleApplication() {
             val query = Query(querySb.toString(), tdm)
 
             val results = lsiModel.retrieveDocuments(k, query)
+            saveAllLocations(query, tdm, results)
             var startIdx = 0
             results.subList(startIdx, Integer.min(results.size, startIdx + 20))
                 .forEachIndexed { index, retrievalResult ->
@@ -121,5 +133,63 @@ class LsiConsole : ConsoleApplication() {
                 else -> return // finish main loop
             }
         }
+    }
+
+    private fun saveAllLocations(query: Query, tdm: TermDocumentMatrix, results: List<RetrievalResult>) {
+
+
+        val sb = StringBuilder()
+        sb.append("[")
+        results.forEach { retrievalResult ->
+            val documentLines = tdm.documents[retrievalResult.docIdx].content.lines()
+            for (queryTerm in query.indexedTerms) {
+                var isDocumentContainsTerm = false
+                val locations = mutableListOf<Location>()
+                for (i in documentLines.indices) {
+                    if (documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                        isDocumentContainsTerm = true
+                        locations.add(Location(i + 1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+                    }
+                }
+
+
+                if (isDocumentContainsTerm) {
+                    // the term was found in this document
+                    // list.toString(): "[...]"
+                    // list.toString().substring(1): "...]"
+//                    sb.append("{ \"term\" : \"$queryTerm\", \"file\" : \"${retrievalResult.sourceFileName}\", \"locations\" : [")
+//                    locations.forEach { loc ->
+//                        sb.append("{\"line\": ${loc.line}, \"column\" : ${loc.col}},")
+//                    }
+//                    sb.deleteCharAt(sb.length - 1)
+//                    sb.append("]},")
+                }
+            }
+        }
+        for (queryTerm in query.indexedTerms) {
+            val term = this.terms.filter { it.term == queryTerm }.get(0)
+            term.locations.groupBy { it.fileName }.forEach {
+                sb.append("{ \"term\" : \"$queryTerm\", \"file\" : \"${it.key}\", \"locations\" : [")
+                it.value.forEach { loc ->
+                    sb.append("{\"line\": ${loc.line}, \"column\" : ${loc.column}, \"meta\" : {")
+                    loc.meta.forEach { (metaKind, info) ->
+                        sb.append("\"$metaKind\": \"$info\",")
+                    }
+                    if (loc.meta.isNotEmpty()) {
+                        sb.deleteCharAt(sb.length - 1)
+                    }
+                    sb.append("}},")
+                }
+                sb.deleteCharAt(sb.length - 1)
+                sb.append("]},")
+            }
+        }
+        sb.deleteCharAt(sb.length - 1)
+        sb.append("]")
+        File("output/locations.json").bufferedWriter().use { out ->
+            out.write(sb.toString())
+        }
+
+
     }
 }

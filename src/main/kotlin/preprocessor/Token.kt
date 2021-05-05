@@ -2,7 +2,8 @@ package preprocessor
 
 data class Token(val value: String, val tokenType: TokenType, val startIndex: Int = -1, val location: Location)
 enum class TokenMetaType {
-    Kind
+    Kind,
+    FileKind,
 }
 
 sealed class TermMetaContent
@@ -11,9 +12,9 @@ enum class Kind {
     Identifier
 }
 
-data class Location(val line: Int, val column: Int, val meta: Map<TokenMetaType, Any> = mapOf()) {
+data class Location(val line: Int, val column: Int, val fileName: String, val meta: Map<TokenMetaType, Any> = mapOf()) {
     fun withMeta(type: TokenMetaType, content: Any): Location {
-        return Location(line, column, meta + (type to content))
+        return Location(line, column,fileName, meta + (type to content))
     }
 }
 

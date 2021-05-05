@@ -2,15 +2,18 @@ package preprocessor
 
 import preprocessor.TokenType.*
 
-class Lexer(private val input: String) {
+
+class Lexer(private val input: String, private val fileName: String, private val fileKind: FileKind) {
     // the list of tokens that is to be filled during the scan of the input
     private val tokens = ArrayList<Token>()
 
     // index pointers used throughout the scan
     private var startIndex = 0      // points at the beginning of the lexeme of the current token
     private var currentIndex = 0    // points at the character that is to be consumed next
-    private var currentLine = 0
-    private var currentColumn = 0
+    private var startLine = 1
+    private var startColumn = 1
+    private var currentLine = 1
+    private var currentColumn = 1
 
     private val directives = listOf(
         "#include", "#define", "#undef", "#line", "#error", "#pragma",
@@ -61,6 +64,8 @@ class Lexer(private val input: String) {
     fun scan(): List<Token> {
         while (!isAtEnd()) {
             startIndex = currentIndex
+            startLine = currentLine
+            startColumn = currentColumn
             scanToken()
         }
 
@@ -68,7 +73,7 @@ class Lexer(private val input: String) {
     }
 
     private fun addToken(tt: TokenType, v: String) {
-        tokens.add(Token(v, tt, startIndex, Location(currentLine, currentColumn)))
+        tokens.add(Token(v, tt, startIndex, Location(startLine, startColumn, fileName)))
     }
 
     // scans the next token and adds it to the [tokens]
@@ -123,6 +128,7 @@ class Lexer(private val input: String) {
 
     private fun lineComment() {
         // two slashes have already been matched and consumed
+
         val lexeme = StringBuilder("//")
 
         while (!isAtEnd() && !(match('\r') || match('\n'))) {
@@ -201,8 +207,14 @@ class Lexer(private val input: String) {
 
     // return current char and advance the pointer to the next char to be consumed
     private fun advance(): Char {
-        currentColumn++
-        return input[currentIndex++]
+        val nextChar = input[currentIndex++]
+        if (nextChar == '\n') {
+            currentLine++
+            currentColumn = 1
+        } else {
+            currentColumn++
+        }
+        return nextChar
     }
 
     // if match, advance the [currentIndex]

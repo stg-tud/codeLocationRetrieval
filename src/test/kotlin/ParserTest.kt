@@ -14,7 +14,7 @@ class ParserTest {
     fun testFileContents() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -33,7 +33,7 @@ class ParserTest {
     fun testBlockCount() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -46,13 +46,13 @@ class ParserTest {
     fun testIdsAndCommentsOnSmallDocument() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
 
         // When parsing the input and retrieving a document of small size
         val actualDocuments = parser.parse()
         val smallDocument = actualDocuments[4]
 
-        // Then a small document should contain the following number of identifiers and comments
+        // Then a small document should contain the following number of identifiers and comments``
         assertThat(smallDocument.idsAndComments).usingElementComparatorIgnoringFields("startIndex").containsExactly(
             Token(
                 tokenType = IDENTIFIER, value = "plan_reset", startIndex = -1, location = Location(0, 0)

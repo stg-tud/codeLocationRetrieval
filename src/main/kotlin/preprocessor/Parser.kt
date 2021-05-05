@@ -140,9 +140,8 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         // assumes we've already seen the opening brace '{'
         var braceCount = 1
 
-        var token: Token
         while (braceCount != 0) {
-            token = advance()
+            var token = advance()
 
             when (token.tokenType) {
                 LEFT_BRACE -> {
@@ -250,7 +249,6 @@ class Parser(private val tokens: List<Token>, private val sourceFile: File) {
         }
 
         // #endif; done with conditional compiling
-        advance()
 
         return ppConditionalBraceCount
     }

@@ -43,7 +43,7 @@ class LogEntropyWeighting : TermWeightingStrategy {
             val p = tf / collectionFrequency
 
             if (p > 0) {
-                entropy += (p * Math.log10(p)) / Math.log10(numOfDocs.toDouble())
+                entropy += (p * Math.log10(p)) /  (1 + Math.log10(numOfDocs.toDouble()))
             }
         }
 

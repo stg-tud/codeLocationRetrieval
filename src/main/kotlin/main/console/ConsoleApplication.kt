@@ -3,15 +3,17 @@ package main.console
 import main.Options
 import preprocessor.Document
 import preprocessor.Preprocessor
+import preprocessor.Term
 import retrieval.Location
 import retrieval.Query
 import retrieval.RetrievalResult
 import termdocmatrix.TermDocumentMatrix
 import java.io.File
+import java.io.Writer
 
 abstract class ConsoleApplication {
 
-    protected val terms = HashSet<String>()
+    protected val terms = HashSet<Term>()
     protected val documents = ArrayList<Document>()
 
     init {
@@ -90,9 +92,8 @@ abstract class ConsoleApplication {
 
     protected fun printResult(retrievalResult: RetrievalResult, tdm: TermDocumentMatrix, query: Query, rank: Int = 0) {
         val sb = StringBuilder("$rank.\t$retrievalResult\t\t")
-
+        val justLocations = java.lang.StringBuilder()
         val documentLines = tdm.documents[retrievalResult.docIdx].content.lines()
-
         val locations = mutableListOf<Location>()
         for (queryTerm in query.indexedTerms) {
             var isDocumentContainsTerm = false
@@ -119,5 +120,13 @@ abstract class ConsoleApplication {
         sb.deleteCharAt(sb.lastIndexOf(","))
 
         println(sb)
+    }
+}
+
+private fun Writer.write(t: Term) {
+    write(t.term)
+    write("\t")
+    t.locations.forEach {
+        write("(${it.line}, ${it.column}) ")
     }
 }
