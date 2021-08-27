@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import preprocessor.Term
 import retrieval.Query
 import termdocmatrix.TermDocumentMatrix
 
@@ -20,7 +21,7 @@ class QueryTest {
         fun setUpMockForNormalizationTests() {
             tdmMock = mockk()
             every { tdmMock.numOfTerms } returns 0
-            every { tdmMock.terms } returns HashSet()
+            every { tdmMock.terms } returns Array(0) { _ -> Term("", HashSet()) }
         }
 
         @Test

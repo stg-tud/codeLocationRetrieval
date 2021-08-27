@@ -1,9 +1,6 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import preprocessor.Lexer
-import preprocessor.Location
-import preprocessor.Parser
-import preprocessor.Token
+import preprocessor.*
 import preprocessor.TokenType.COMMENT
 import preprocessor.TokenType.IDENTIFIER
 import java.io.File
@@ -14,7 +11,7 @@ class ParserTest {
     fun testFileContents() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(), sourceFile.name, FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -33,7 +30,7 @@ class ParserTest {
     fun testBlockCount() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(), sourceFile.name, FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -46,7 +43,7 @@ class ParserTest {
     fun testIdsAndCommentsOnSmallDocument() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText(),"planner.c").scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(), "planner.c", FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving a document of small size
         val actualDocuments = parser.parse()
@@ -55,43 +52,67 @@ class ParserTest {
         // Then a small document should contain the following number of identifiers and comments``
         assertThat(smallDocument.idsAndComments).usingElementComparatorIgnoringFields("startIndex").containsExactly(
             Token(
-                tokenType = IDENTIFIER, value = "plan_reset", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER,
+                value = "plan_reset",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "memset", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER, value = "memset", startIndex = -1, location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "pl", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER, value = "pl", startIndex = -1, location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "planner_t", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER, value = "planner_t", startIndex = -1, location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = COMMENT, value = "// Clear planner struct", startIndex = -1, location = Location(0, 0)
+                tokenType = COMMENT,
+                value = "// Clear planner struct",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "block_buffer_tail", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER,
+                value = "block_buffer_tail",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "block_buffer_head", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER,
+                value = "block_buffer_head",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = COMMENT, value = "// Empty = tail", startIndex = -1, location = Location(0, 0)
+                tokenType = COMMENT,
+                value = "// Empty = tail",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "next_buffer_head", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER,
+                value = "next_buffer_head",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
                 tokenType = COMMENT,
                 value = "// plan_next_block_index(block_buffer_head)",
                 startIndex = -1,
-                location = Location(0, 0)
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = IDENTIFIER, value = "block_buffer_planned", startIndex = -1, location = Location(0, 0)
+                tokenType = IDENTIFIER,
+                value = "block_buffer_planned",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             ),
             Token(
-                tokenType = COMMENT, value = "// = block_buffer_tail;", startIndex = -1, location = Location(0, 0)
+                tokenType = COMMENT,
+                value = "// = block_buffer_tail;",
+                startIndex = -1,
+                location = Location(0, 0, sourceFile.name)
             )
         )
     }
@@ -100,7 +121,7 @@ class ParserTest {
     fun testTermsOnSmallDocument() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/planner.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),sourceFile.name,FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving a document of small size
         val actualDocuments = parser.parse()
@@ -137,7 +158,7 @@ class ParserTest {
     fun testEmptyBlock() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/empty_block.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),sourceFile.name, FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -152,7 +173,7 @@ class ParserTest {
     fun testConditionalCompiling() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/conditional_compiling.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),sourceFile.name,FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
@@ -171,7 +192,7 @@ class ParserTest {
     fun testErrorHandling() {
         // Given input to the parser (maybe make a directory with multiple files instead of just one file)
         val sourceFile = File("src/test/resources/ParserTest/actualInput/unbalanced_braces.c")
-        val parser = Parser(Lexer(sourceFile.readText()).scan(), sourceFile)
+        val parser = Parser(Lexer(sourceFile.readText(),sourceFile.name,FileKind.Source).scan(), sourceFile)
 
         // When parsing the input and retrieving the resulting documents
         val actualDocuments = parser.parse()
