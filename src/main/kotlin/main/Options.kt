@@ -6,6 +6,7 @@ import com.beust.jcommander.Parameters
 import termdocmatrix.weighting.LogEntropyWeighting
 import termdocmatrix.weighting.TermWeightingStrategy
 import java.io.File
+import java.util.*
 
 @Parameters(separators = "=")
 object Options {
@@ -60,7 +61,7 @@ object Options {
     // == Option Values ==
     // ===================
 
-    @Parameter(names = [OPTION_HELP_MESSAGE], description = DESCRIPTION_HELP_MESSAGE, help = true)
+    @Parameter(names = [OPTION_HELP_MESSAGE, "--help"], description = DESCRIPTION_HELP_MESSAGE, help = true)
     private var isHelp = false
 
     @Parameter(
@@ -97,6 +98,13 @@ object Options {
     lateinit var scoreFunctionName: String
         private set
 
+
+    @Parameter(
+        names = ["--search-term"],
+        description = ""
+    )
+    var searchTerms: List<String> = LinkedList()
+        private set
     /** If user does not provide a custom name for the SVD file, then this parameter will not be initialized.
     In that case a default name will be constructed for [svdFilename]. */
     @Parameter(names = [OPTION_SVD_FILENAME], description = DESCRIPTION_SVD_FILENAME)
@@ -124,6 +132,12 @@ object Options {
     lateinit var outputSvdFile: File
         private set
 
+    @Parameter(
+        names = ["--outputLocationJson"],
+        description = ""
+    )
+    var outputLocationsJson: String = "output/locations.json"
+        private set
     // ==========
     // == Misc ==
     // ==========
@@ -829,8 +843,8 @@ object Options {
             .programName("Feature Location")
             .addObject(this)
             .build()
-
-        commander.parse(*argsAsArray)    // expects vararg, so use Kotlin's spread operator (*) on Array<String>
+//        commander.parse(*argsAsArray)    // expects vararg, so use Kotlin's spread operator (*) on Array<String>
+        commander.parse(*args)
 
         if (isHelp) {
             commander.usage()

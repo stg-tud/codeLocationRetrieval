@@ -1,5 +1,6 @@
 package main.console
 
+import main.Options
 import retrieval.Location
 import retrieval.Query
 import retrieval.RetrievalResult
@@ -10,10 +11,10 @@ import java.util.*
 
 class LsiConsole : ConsoleApplication() {
 
-    fun printTDM(tdm:TermDocumentMatrix) {
-        for (i in 0 .. tdm.numOfTerms -1) {
-            val locations = tdm.terms[i].locations.joinToString { "(" + it.line +","+ it.column + ")" }
-            println("%s & %s & %.2f \\\\ \\hline".format(tdm.terms[i].term, locations,tdm.data[i][0] ))
+    fun printTDM(tdm: TermDocumentMatrix) {
+        for (i in 0..tdm.numOfTerms - 1) {
+            val locations = tdm.terms[i].locations.joinToString { "(" + it.line + "," + it.column + ")" }
+            println("%s & %s & %.2f \\\\ \\hline".format(tdm.terms[i].term, locations, tdm.data[i][0]))
         }
     }
 
@@ -42,24 +43,32 @@ class LsiConsole : ConsoleApplication() {
         // true on first iteration !
         var isNewK = true
         var isNewQuery = true
+        var isFixedQuery = Options.searchTerms.isNotEmpty()
+        if (isFixedQuery) {
 
-        while (true) {
-            if (isNewQuery) {
-                // read in user query
-                querySb.setLength(0)
-                print("Type in query: ")
-                while (scanner.hasNextLine()) {
-                    val line = scanner.nextLine()
-                    querySb.append(line)
-                    if (querySb.isNotBlank()) {
-                        break
+            val query = Query(Options.searchTerms.joinToString(), tdm)
+            val k90 = (lsiModel.svd.rank * 0.9).toInt()
+            val results = lsiModel.retrieveDocuments(k90, query)
+            saveAllLocations(query, tdm, results)
+
+        } else {
+            while (true) {
+                if (isNewQuery) {
+                    // read in user query
+                    querySb.setLength(0)
+                    print("Type in query: ")
+                    while (scanner.hasNextLine()) {
+                        val line = scanner.nextLine()
+                        querySb.append(line)
+                        if (querySb.isNotBlank()) {
+                            break
+                        }
                     }
+                    println("User query is: $querySb")
                 }
-                println("User query is: $querySb")
-            }
 
-            if (isNewK) {
-                // print the singular values
+                if (isNewK) {
+                    // print the singular values
 //                val singularValues = lsiModel.svd.singularValues
 //                for(i in singularValues.indices) {
 //                    if(i > 0 && (i % 5 == 0)) {
@@ -69,36 +78,22 @@ class LsiConsole : ConsoleApplication() {
 //                    print(String.format("%4d: %8.4f\t\t", i + 1, singularValues[i]))
 //                }
 
-                // dimensionality reduction k in [1, rank]
-                do {
-                    print("\nType in a value for k [1, ${lsiModel.svd.rank}]: ")
-                    while (!scanner.hasNextInt()) {
-                        print("Type in a value for k [1, ${lsiModel.svd.rank}]: ")
-                        scanner.next()
-                    }
-                    k = scanner.nextInt()
-                } while (!(1 <= k && k <= lsiModel.svd.rank))
-            }
-
-            val query = Query(querySb.toString(), tdm)
-
-            val results = lsiModel.retrieveDocuments(k, query)
-            saveAllLocations(query, tdm, results)
-            var startIdx = 0
-            results.subList(startIdx, Integer.min(results.size, startIdx + 20))
-                .forEachIndexed { index, retrievalResult ->
-                    printResult(
-                        retrievalResult = retrievalResult,
-                        tdm = tdm,
-                        query = query,
-                        rank = startIdx + index + 1
-                    )
+                    // dimensionality reduction k in [1, rank]
+                    do {
+                        print("\nType in a value for k [1, ${lsiModel.svd.rank}]: ")
+                        while (!scanner.hasNextInt()) {
+                            print("Type in a value for k [1, ${lsiModel.svd.rank}]: ")
+                            scanner.next()
+                        }
+                        k = scanner.nextInt()
+                    } while (!(1 <= k && k <= lsiModel.svd.rank))
                 }
 
-            println("Show more results? [y/n]")
-            var next = scanner.next()
-            while (next == "y" || next == "Y") {
-                startIdx += Integer.min(20, results.size - startIdx)
+                val query = Query(querySb.toString(), tdm)
+
+                val results = lsiModel.retrieveDocuments(k, query)
+                saveAllLocations(query, tdm, results)
+                var startIdx = 0
                 results.subList(startIdx, Integer.min(results.size, startIdx + 20))
                     .forEachIndexed { index, retrievalResult ->
                         printResult(
@@ -109,60 +104,70 @@ class LsiConsole : ConsoleApplication() {
                         )
                     }
 
-                if (startIdx == results.size) {
-                    println("All retrieved.")
-                    break
+                println("Show more results? [y/n]")
+                var next = scanner.next()
+                while (next == "y" || next == "Y") {
+                    startIdx += Integer.min(20, results.size - startIdx)
+                    results.subList(startIdx, Integer.min(results.size, startIdx + 20))
+                        .forEachIndexed { index, retrievalResult ->
+                            printResult(
+                                retrievalResult = retrievalResult,
+                                tdm = tdm,
+                                query = query,
+                                rank = startIdx + index + 1
+                            )
+                        }
+
+                    if (startIdx == results.size) {
+                        println("All retrieved.")
+                        break
+                    }
+
+                    println("Show more results? [y/n] $startIdx")
+                    next = scanner.next()
                 }
 
-                println("Show more results? [y/n] $startIdx")
-                next = scanner.next()
-            }
 
-
-            println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
-            val input = scanner.next()
-            when (input) {
-                "q", "Q" -> {
-                    isNewQuery = true
-                    isNewK = true
+                println("\n\nType Q for a new query, or type K for the same query but another approximation: ")
+                val input = scanner.next()
+                when (input) {
+                    "q", "Q" -> {
+                        isNewQuery = true
+                        isNewK = true
+                    }
+                    "k", "K" -> {
+                        isNewQuery = false
+                        isNewK = true
+                    }
+                    else -> return // finish main loop
                 }
-                "k", "K" -> {
-                    isNewQuery = false
-                    isNewK = true
-                }
-                else -> return // finish main loop
             }
         }
     }
 
     private fun saveAllLocations(query: Query, tdm: TermDocumentMatrix, results: List<RetrievalResult>) {
-
-
         val sb = StringBuilder()
+        val threshold = 0.9
         sb.append("[")
         results.forEach { retrievalResult ->
-            val documentLines = tdm.documents[retrievalResult.docIdx].content.lines()
-            for (queryTerm in query.indexedTerms) {
-                var isDocumentContainsTerm = false
-                val locations = mutableListOf<Location>()
-                for (i in documentLines.indices) {
-                    if (documentLines[i].contains(queryTerm, ignoreCase = true)) {
-                        isDocumentContainsTerm = true
-                        locations.add(Location(i + 1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+            if (retrievalResult.similarityScore > threshold) {
+                val documentLines = tdm.documents[retrievalResult.docIdx].content.lines()
+                for (queryTerm in query.indexedTerms) {
+                    var isDocumentContainsTerm = false
+                    val locations = mutableListOf<Location>()
+                    for (i in documentLines.indices) {
+                        if (documentLines[i].contains(queryTerm, ignoreCase = true)) {
+                            locations.add(Location(i + 1, documentLines[i].indexOf(queryTerm, ignoreCase = true)))
+                        }
                     }
-                }
-
-
-                if (isDocumentContainsTerm) {
-                    // the term was found in this document
-                    // list.toString(): "[...]"
-                    // list.toString().substring(1): "...]"
-//                    sb.append("{ \"term\" : \"$queryTerm\", \"file\" : \"${retrievalResult.sourceFileName}\", \"locations\" : [")
-//                    locations.forEach { loc ->
-//                        sb.append("{\"line\": ${loc.line}, \"column\" : ${loc.col}},")
-//                    }
-//                    sb.deleteCharAt(sb.length - 1)
-//                    sb.append("]},")
+                    if (isDocumentContainsTerm) {
+                        sb.append("{ \"term\" : \"$queryTerm\", \"file\" : \"${retrievalResult.sourceFileName}\", \"locations\" : [")
+                        locations.forEach { loc ->
+                            sb.append("{\"line\": ${loc.line}, \"column\" : ${loc.col}},")
+                        }
+                        sb.deleteCharAt(sb.length - 1)
+                        sb.append("]},")
+                    }
                 }
             }
         }
@@ -186,7 +191,7 @@ class LsiConsole : ConsoleApplication() {
         }
         sb.deleteCharAt(sb.length - 1)
         sb.append("]")
-        File("output/locations.json").bufferedWriter().use { out ->
+        File(Options.outputLocationsJson).bufferedWriter().use { out ->
             out.write(sb.toString())
         }
 
